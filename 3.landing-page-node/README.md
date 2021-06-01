@@ -12,9 +12,5 @@ yarn install
 ```
 
 ### Add Mustache Template Engine
-First, have a look at: [Mustache Documentation](https://github.com/janl/mustache.js)
-
-then:
-```
-yarn add mustache
-```
+- First, have a look at: [Mustache Documentation](https://github.com/janl/mustache.js)
+- Have a look at `src/app/app.js`: It configs Mustache as your view engine for your app. You can add new views and partial-views (templates) under `views/` folder, and serve them though new routes (and bind data to it 😬)
