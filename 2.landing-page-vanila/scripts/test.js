@@ -1,31 +1,38 @@
 function testFormInput() {
-    testInputName();
-    testInputEmail();
+    if (!isInputNameValid()) {
+        styleError("invalidName");
+    }
+    if (!isInputEmailValid()) {
+        styleError("invalidEmail");
+    }
+
 }
 
-function testInputName() {
+function isInputNameValid() {
     const inputName = document.getElementById("inputName");
-    let reg = new RegExp('[/w]+[/s][/w]+')
+    const reg = /^\w+\s\w+$/;
+    return reg.test(inputName.value);
 }
 
-function testInputEmail() {
-
+function isInputEmailValid() {
+    const inputEmail = document.getElementById("inputEmail");
+    const reg = /^\w+@\w{2,}\.\w{2,}$/;
+    return reg.test(inputEmail.value)
 }
 
-$(function () {
-    $("#button").click(function () {
-        $("#button").addClass("onclic", 250, validate);
-    });
+function clearInputName() {
+    document.getElementById("invalidName").style.display = "none";
+}
 
-    function validate() {
-        setTimeout(function () {
-            $("#button").removeClass("onclic");
-            $("#button").addClass("validate", 450, callback);
-        }, 2250);
-    }
-    function callback() {
-        setTimeout(function () {
-            $("#button").removeClass("validate");
-        }, 1250);
-    }
-});
+function clearInputEmail() {
+    document.getElementById("invalidEmail").style.display = "none";
+}
+
+function styleError(invalidElementId) {
+    const errorMsgStyle = document.getElementById(invalidElementId).style;
+    errorMsgStyle.display = "flex";
+    errorMsgStyle.color = "red";
+    errorMsgStyle.fontSize = "0.8em";
+    errorMsgStyle.position = "absolute";
+    errorMsgStyle.left = "70%";
+}
