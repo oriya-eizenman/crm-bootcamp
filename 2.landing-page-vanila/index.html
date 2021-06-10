@@ -1,23 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="description" content="Webpage description goes here" />
-        <meta charset="utf-8">
-        <title>Change_me</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+    <link rel="stylesheet" href="css/reset.css">
+
+    <meta name="description" content="Webpage description goes here" />
+    <meta charset="utf-8">
+    <title>Oogie Bakery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="">
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playball&family=Spartan&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="css/style.css">
-    
-    </head>
 
-    <body>
-    
-        <div class="container">
-            <h1>Hello Workiz Academy</h1>
-            <button onclick='testfunction()'>Test Script</button>
-        </div>
 
-    </body>
-    <script src="scripts/test.js"></script>
+</head>
+
+<body>
+    <main id="root">
+        <section class="container">
+            <header>
+                <video src="media/video.mp4" autoplay loop muted></video>
+                <div class="container title">
+                    <img class="headerImg" src="media/bakery_dining_white_24dp.png" />
+                    <h1>Oogie's Bakery</h1>
+                </div>
+            </header>
+            <article class="flex row">
+                <div class="about_container">
+                    <p class="about">
+                        OOGIE'S BAKERY was founded upon a passion for baking and food.
+                        The bakery is a one-stop shop for all kind of baked goods and desserts, including breads,
+                        challahs,
+                        croissant,
+                        yeast and cream cakes and
+                        personal desserts.
+                        Each pastry is made by hand and with a lot of love.
+                    </p>
+                    <h4>Visit us in our store!</h4>
+                </div>
+                <div class="vertical_divider">
+                    <img class="dividerImg" src="media/bakery_dining_black_24dp.png">
+                    <hr class="vertical">
+                </div>
+                <div id="leadForm">
+                    <h4>Leave your contact information now and get 10% off your first order!</h4>
+                    <div class="form">
+                        <div class="group">
+                            <span hidden id="invalidName">Please enter a valid name</span>
+                            <input type="text" class="input" id="inputName" required placeholder="Name"
+                                onclick="clearInputName()" />
+                        </div>
+
+                        <div class="group">
+                            <span hidden id="invalidEmail">Please enter a valid email</span>
+                            <input type="text" class="input" id="inputEmail" required placeholder="Email"
+                                onclick="clearInputEmail()" />
+                        </div>
+                        <div>
+                            <button id="button" onclick="testFormInput()">Send!</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+<script src="scripts/test.js"></script>
+
 </html>
