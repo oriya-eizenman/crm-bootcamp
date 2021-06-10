@@ -4,7 +4,7 @@
 <head>
     <meta name="description" content="Webpage description goes here" />
     <meta charset="utf-8">
-    <title>Golden Flour Bakery</title>
+    <title>Oogie Bakery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="">
 
@@ -25,11 +25,11 @@
     </div>
     <div id="goldenFlour">
         <img class="headerImg" src="media/bakery_dining_white_24dp.png">
-        <h1>Golden Flour</h1>
+        <h1>Oogie Bakery</h1>
     </div>
     <div id="content">
         <p id="about">
-            Golden Flour was founded upon a passion for baking and food.
+            OOGIE was founded upon a passion for baking and food.
             The bakery is a one-stop shop for all kind of baked goods and desserts, including breads, challahs,
             croissant,
             yeast and cream cakes and
@@ -43,28 +43,16 @@
     </div>
     <div id="leadForm">
         <h4>Leave your contact information now and get 10% off your first order!</h4>
-        <form action="">
-            <!-- <div>
-                <label for="name">Enter your name:</label>
-                <input type="text" id="name" name="name">
-            </div>
-            <div>
-                <label for="email">Enter your email:</label>
-                <input type="email" id="email" name="email">
-            </div>
-            <div>
-                <button type="submit">Send!</button>
-            </div> -->
-
+        <form action="" onsubmit="testFormInput()">
             <div class="group">
-                <input type="text" class="input" required>
+                <input type="text" class="input" id="inputName" required>
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Name</label>
             </div>
 
             <div class="group">
-                <input type="text" class="input" required>
+                <input type="email" class="input" id="inputEmail" required>
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Email</label>

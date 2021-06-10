@@ -1,9 +1,16 @@
-// var testfunction = function() {
+function testFormInput() {
+    testInputName();
+    testInputEmail();
+}
 
-//     var selector = document.querySelector('body');
-//     selector.style.backgroundColor = '#'+Math.random().toString(16).substr(-6);
+function testInputName() {
+    const inputName = document.getElementById("inputName");
+    let reg = new RegExp('[/w]+[/s][/w]+')
+}
 
-// }
+function testInputEmail() {
+
+}
 
 $(function () {
     $("#button").click(function () {
