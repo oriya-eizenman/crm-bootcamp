@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/reset.css">
+
+    <meta name="description" content="Webpage description goes here" />
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playball&family=Spartan&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="background-color: {{bgColor}};color: {{textColor}}">
+    <main id="root">
+        <section class="container">
+            <header>
+                <video src="media/{{video}}.mp4" autoplay loop muted></video>
+                <div class="container title">
+                    <img class="headerImg" src="media/bakery_dining_white_24dp.png" />
+                    <h1>{{title}}</h1>
+                </div>
+            </header>
+            <article class="flex row">
+                <div class="about_container">
+                    <p class="about">
+                        {{aboutContent}}
+                    </p>
+                    <h4>{{aboutLowerHeader}}</h4>
+                </div>
+                <div class="vertical_divider">
+                    <img class="dividerImg" src="media/bakery_dining_black_24dp.png">
+                    <hr class="vertical">
+                </div>
+                <div id="leadForm">
+                    <h4>{{formHeader}}</h4>
+                    <div class="form">
+
+                        {{#inputs}}
+                        <div class="group">
+                            <span hidden id={{inputErrorMsg}}>Please enter a valid {{inputErrorContent}}</span>
+                            <input type={{type}} class={{class}} id={{id}} {{required}} placeholder={{placeholder}}
+                                onclick="{{action}}" />
+                        </div>
+                        {{/inputs}}
+                        <div>
+                            <button id="button" onclick="testFormInput()">{{submitBtnText}}</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <footer class="flex row" style="background-color: {{footerBgColor}}; color: {{footerTextColor}}">
+                <p>{{footerAddress}}</p>
+                <p>{{footerEmail}}</p>
+                <p>{{footerTel}}</p>
+            </footer>
+        </section>
+    </main>
+</body>
+<script src="scripts/test.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="scripts/axios.js"></script>
+
+</html>

@@ -1,0 +1,175 @@
+body {
+    background-color: rgba(236, 228, 228, 0.925);
+}
+
+main header {
+    height: 60vh;
+    overflow: hidden;
+    position: relative;
+    line-height: 0;
+}         
+
+main header .container.title {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-family: 'Playball', cursive;
+    display: flex;
+    font-size: 2em;
+}
+
+main header .container.title.headerImg{
+    width: auto;
+    height: 10vh;
+}
+
+header > video {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+}
+
+.row.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+article .about_container {
+    width: 50%;
+    margin: 1em 1em 0;
+    text-align: center;
+}
+
+.about_container .about {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 2;
+}
+
+.about_container h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2em;
+    font-weight: 500;
+    margin-top: 0.7em;
+}
+
+article #leadForm {
+    width: 50%;
+    margin: 1em 1em 0;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#leadForm .form {
+    margin-top: 0.8em;
+    line-height: 3em;
+}
+
+#leadForm h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8em;
+    line-height: 1.5em;
+    font-weight: 700;
+}
+
+article .vertical_divider{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+}
+
+article hr.vertical {
+    border-right: 1px solid;
+    transform: translateX(-50%);
+    height: 100%;
+}
+
+article .dividerImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(236, 228, 228, 0.925);
+    z-index: 1;
+}
+
+.form .input {
+    border-bottom: 0.15em solid rgba(78, 124, 177, 0.925);
+    border-top: hidden;
+    border-left: hidden;
+    border-right: hidden;
+    background-color: rgba(236, 228, 228, 0.925);
+    font-size: 1.2em;
+}
+
+.form button {
+    background-color: rgba(236, 228, 228, 0.925);
+    color: rgba(78, 124, 177, 0.925); 
+    border-color: rgba(78, 124, 177, 0.925);
+    border-width: 0.2em;
+    font-size: 1.2em;
+    border-radius: 0.4em;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+}
+
+.group {
+    position: relative;
+}
+
+footer {
+    justify-content: space-around;
+    background-color: rgba(75, 72, 72, 0.925);
+    color: white;
+    padding: 1em;
+}
+
+/* mobile view */
+@media screen and (max-width: 600px) {
+    main header .container.title {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        justify-content: center;
+        margin: 0 auto;
+        color: white;
+        font-family: 'Playball', cursive;
+        display: flex;
+        font-size: 1.5em;
+        width: fit-content;
+    }
+
+    article.row.flex {
+        display: flex;
+        flex-direction: column;
+    }
+
+    article hr.vertical {
+        border-right: unset;
+        border-bottom: 1px solid;
+        transform: translateY(-50%);
+        width: 100%;
+    }
+
+    article .about_container {
+        width: 100%;
+        margin: 1em 1em 0;
+        text-align: center;
+    }
+
+    article #leadForm {
+        width: 100%;
+    }
+}
