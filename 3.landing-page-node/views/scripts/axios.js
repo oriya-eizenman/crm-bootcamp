@@ -12,3 +12,16 @@ sendReq = (leadName, leadEmail, leadPhone, populateRes) => {
         });
 }
 
+getLeads = (sortBy, order, populateRes) => {
+    axios.post('http://localhost:8004/leads', {
+        sortBy: sortBy,
+        order: order
+    })
+        .then(res => {
+            populateRes(res.data);
+        })
+        .catch(err => {
+            alert.apply(err);
+        })
+}
+

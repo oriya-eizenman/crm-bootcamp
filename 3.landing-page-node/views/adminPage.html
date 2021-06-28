@@ -17,47 +17,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cssAdminPage.css">
 </head>
 
 <body style="background-color: {{bgColor}};color: {{textColor}}">
     <main id="root">
         <section class="container">
             <header>
-                <video src="media/{{video}}.mp4" autoplay loop muted></video>
                 <div class="container title">
                     <img class="headerImg" src="media/bakery_dining_white_24dp.png" />
                     <h1>{{title}}</h1>
                 </div>
             </header>
-            <article class="flex row">
-                <div class="about_container">
-                    <p class="about">
-                        {{aboutContent}}
-                    </p>
-                    <h4>{{aboutLowerHeader}}</h4>
-                </div>
-                <div class="vertical_divider">
-                    <img class="dividerImg" src="media/bakery_dining_black_24dp.png">
-                    <hr class="vertical">
-                </div>
-                <div id="leadForm">
-                    <h4>{{formHeader}}</h4>
-                    <div class="form">
 
-                        {{#inputs}}
-                        <div class="group">
-                            <span hidden id={{inputErrorMsg}}>Please enter a valid {{inputErrorContent}}</span>
-                            <input type={{type}} class={{class}} id={{id}} {{required}} placeholder={{placeholder}}
-                                onclick="{{action}}" />
-                        </div>
-                        {{/inputs}}
-                        <div>
-                            <span hidden id="invalidSqlQuery">Couldn't send your information now. Sorry :(</span>
-                            <button id="button" onclick="testFormInput()">{{submitBtnText}}</button>
-                        </div>
-                    </div>
-                </div>
+
+            <article>
+                <table id='leadsTable'>
+                    <th>
+                    <td className='tableHeader'> Date Created
+                        <img src="media/arrow_down_black_24dp.png" onclick="getSqlLeads('created', 'asc')" />
+                        <img src="media/arrow_up_black_24dp.png" onclick="getSqlLeads('created', 'desc')" />
+                    </td>
+                    <td className="tableHeader">Name
+                        <img src="media/arrow_down_black_24dp.png" onclick="getSqlLeads('user_name', 'asc')" />
+                        <img src="media/arrow_up_black_24dp.png" onclick="getSqlLeads('user_name', 'desc')" />
+                    </td>
+                    <td className="tableHeader">Email
+                        <img src="media/arrow_down_black_24dp.png" onclick="getSqlLeads('user_email', 'asc')" />
+                        <img src="media/arrow_up_black_24dp.png" onclick="getSqlLeads('user_email', 'desc')" />
+                    </td>
+                    <td className="tableHeader">Phone
+                        <img src="media/arrow_down_black_24dp.png" onclick="getSqlLeads('user_phone', 'asc')" />
+                        <img src="media/arrow_up_black_24dp.png" onclick="getSqlLeads('user_phone', 'desc')" />
+                    </td>
+                    <td className="tableHeader">Status
+                        <img src="media/arrow_down_black_24dp.png" onclick="getSqlLeads('status', 'asc')" />
+                        <img src="media/arrow_up_black_24dp.png" onclick="getSqlLeads('status', 'desc')" />
+                    </td>
+                    </th>
+                </table>
             </article>
             <footer class="flex row" style="background-color: {{footerBgColor}}; color: {{footerTextColor}}">
                 <p>{{footerAddress}}</p>
@@ -72,5 +70,6 @@
     integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="scripts/axios.js"></script>
+<script src="scripts/leads.js"></script>
 
 </html>

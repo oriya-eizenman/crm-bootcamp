@@ -1,0 +1,91 @@
+main header {
+    height: 25vh;
+    position: relative;
+    line-height: 0;
+    top: 3vh;
+}         
+
+main header .container.title {
+    position: absolute;
+    top: 23%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-family: 'Playball', cursive;
+    display: flex;
+    font-size: 2em;
+}
+
+main header .container.title.headerImg{
+    width: auto;
+    height: 10vh;
+}
+
+.row.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* height: 115vh; */
+    justify-content: space-between;
+}
+
+article {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3vh;
+}
+
+article #leadsTable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 85%;
+    top: 30vh;
+}
+
+#leadsTable td, #leadsTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* #leadsTable > tbody > tr > td{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+
+#leadsTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#leadsTable tr:hover {background-color: #ddd;}
+
+.tableHeader{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+.tableHeader {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+td img {
+    height: 5vh !important;
+}
+
+footer {
+    justify-content: space-around;
+    background-color: rgba(75, 72, 72, 0.925);
+    color: white;
+    padding: 1em;
+}

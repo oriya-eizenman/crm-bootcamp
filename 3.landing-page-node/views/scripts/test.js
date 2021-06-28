@@ -21,6 +21,8 @@ function testFormInput() {
             isValid = true;
             let result = {};
             result.isValid = data;
+
+
             if (!result.isValid.isNameValid) {
                 isValid = false;
                 styleError("invalidName");
@@ -33,14 +35,16 @@ function testFormInput() {
                 isValid = false;
                 styleError("invalidPhone");
             }
+            if (!result.isValid.isSqlSuccessful) {
+                isValid = false;
+                styleError("invalidSqlQuery");
+            }
             if (isValid) {
                 styleSuccess("leadForm", leadName);
             }
-
         };
         sendReq(leadName, leadEmail, leadPhone, populateRes);
     }
-
 }
 
 
@@ -80,7 +84,7 @@ function styleError(invalidElementId) {
     errorMsgStyle.color = "red";
     errorMsgStyle.fontSize = "0.8em";
     errorMsgStyle.position = "absolute";
-    errorMsgStyle.left = "70%";
+    errorMsgStyle.left = invalidElementId === "invalidSqlQuery" ? "79%" : "70%";
 }
 
 function styleSuccess(formElementId, userName) {

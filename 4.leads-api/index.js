@@ -19,7 +19,8 @@ app.post('/', function (req, res) {
   const validation = {
     isNameValid: true,
     isEmailValid: true,
-    isPhoneValid: true
+    isPhoneValid: true,
+    isSqlSuccessful: true
   };
   let isValid = true;
 
@@ -37,14 +38,53 @@ app.post('/', function (req, res) {
   }
 
   if (isValid) {
-    sql.insertQuery(leadName, leadEmail, leadPhone);
+    try {
+      sql.insertQuery(leadName, leadEmail, leadPhone);
+    }
+    catch (exc) {
+      console.error(exc.message);
+      validation.isSqlSuccessful = false;
+    }
+
   }
   res.send(validation);
+})
+
+app.post('/leads', function (req, res) {
+  const sortBy = req.body.sortBy;
+  const order = req.body.order;
+  try {
+    sql.getQuery(sortBy, order, (data) => {
+      res.send(data);
+    });
+  }
+  catch (exc) {
+    console.error(exc.message);
+  }
 })
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running at http://localhost:${process.env.PORT}/`);
 });
+
+function exitHandler(options, exitCode) {
+  if (options.exit) process.exit();
+  mysql.end();
+
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null, { cleanup: true }));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, { exit: true }));
+process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 function isInputNameValid(leadName) {
   const reg = /^\w+\s\w+$/;
