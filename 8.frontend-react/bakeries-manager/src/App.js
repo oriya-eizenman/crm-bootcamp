@@ -12,6 +12,7 @@ import LandingPage from './Components/LandingPage';
 import LoginForm from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import WithLoggedInUser from './Components/WithLoggedInUser';
+import ResetPassword from './Components/ResetPassword';
 import manage from './scripts/manageLoggedinUser';
 
 class App extends React.Component {
@@ -82,6 +83,9 @@ class App extends React.Component {
               }
               ifLoggedOutPage={<ForgotPassword />}
             />
+            <Route path="/reset-password">
+              <ResetPassword />
+            </Route>
           </Switch>
         </div>
       </Router>

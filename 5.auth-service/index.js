@@ -6,9 +6,10 @@ const sql = require('./scripts/sql');
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
+const { isEmailValid, isPasswordValid } = require('./scripts/validations');
 const accessTokenSecret = 'secretsecretsecret';
-// const api_key = '1f1bd6a9-365c56ab';
-// const domain = 'oriya.workiz.dev';
+const api_key = '1f1bd6a9-365c56ab';
+const domain = 'oriya.workiz.dev';
 // const mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000", exposedHeaders: ["set-cookie"] }));
@@ -92,31 +93,32 @@ app.post('/login', function (req, res) {
     password: password
   };
 
-  // TODO: add validations
-  let isValid = true;
+  // if (!isEmailValid(userData.userEmail) || !isPasswordValid(req.body.password))
+  //   res.send('not valid');
+
+  // else {
   const token = jwt.sign({ userData: userData }, accessTokenSecret, { expiresIn: '24h' });
 
-  if (isValid) {
-    try {
-      sql.getUser(userData, (data) => {
-        if (data.length === 0)
-          res.send('email or password incorrect');
-        else {
-          res.cookie("access_token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-            .status(200)
-            .json({ message: "Logged in successfully" });
-        }
+  try {
+    sql.getUser(userData, (data) => {
+      if (data.length === 0)
+        res.send('email or password incorrect');
+      else {
+        res.cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+          .status(200)
+          .json({ message: "Logged in successfully" });
       }
-      );
     }
-    catch (exc) {
-      console.error(exc.message);
-    }
-
+    );
   }
+  catch (exc) {
+    console.error(exc.message);
+  }
+
+  // }
 });
 
 app.get("/logout", (req, res) => {
@@ -127,9 +129,29 @@ app.get("/logout", (req, res) => {
 });
 
 app.post("/forgotPassword", (req, res) => {
-  // mailgun.messages().send(data, function (error, body) {
-  //   console.log(body);
-  // });
+  const mailGun = new MailGun({
+    apiKey: api_key,
+    domain: domain,
+  });
+  const data = {
+    //Specify email data.
+    from: "oriya.eizenman@workiz.com",
+    //The email to contact.
+    to: "oriya.eizenman@gmail.com",
+    //Subject and text data.
+    subject: "Hello",
+    html: "http://localhost:3000/reset-password",
+  };
+  //Invokes the method to send emails given the above data with the helper library
+  mailGun.messages().send(data, function (err, body) {
+    //If there is an error, render the error page
+    if (err) {
+      res.json({ error: err });
+      console.log("got an error: ", err);
+    } else {
+      res.json({ email: emailInput });
+    }
+  });
 });
 
 app.get('/', function (req, res) {

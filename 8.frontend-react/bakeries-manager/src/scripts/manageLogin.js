@@ -1,6 +1,7 @@
 import { sendLoginData, test } from './axios';
+import { isEmailValid, isPasswordValid } from './validations';
 
-function testLoginInput(userEmail, password, populateLoggedInUser) {
+function testLoginInput(userEmail, password, populateLoggedInUser, setShowErrorMsg, event) {
     sendLoginData(userEmail, password, populateLoggedInUser);
 }
 

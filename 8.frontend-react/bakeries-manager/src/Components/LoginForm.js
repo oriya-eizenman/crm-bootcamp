@@ -4,13 +4,15 @@ import Button from './Button';
 import manage from '../scripts/manageLogin';
 import resetPassword from '../scripts/manageForgotPassword';
 import { Link } from "react-router-dom";
+import Label from './Label';
 
 export default (props) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
+    const [showErrorMsg, setShowErrorMsg] = useState(false);
 
     function handleLogin(event) {
-        manage(userEmail, userPassword, props.populateLoggedInUser);
+        manage(userEmail, userPassword, props.populateLoggedInUser, setShowErrorMsg, event);
     }
 
     return (
@@ -30,13 +32,21 @@ export default (props) => {
                 <Input
                     label="Email:"
                     type="text"
-                    handleChange={(event) => setUserEmail(event.target.value)}
+                    handleChange={(event) => {
+                        setUserEmail(event.target.value);
+                        setShowErrorMsg(false);
+                    }
+                    }
                     value={userEmail}
                 />
                 <Input
                     label="Password:"
                     type="password"
-                    handleChange={(event) => setUserPassword(event.target.value)}
+                    handleChange={(event) => {
+                        setUserPassword(event.target.value)
+                        setShowErrorMsg(false);;
+                    }
+                    }
                     value={userPassword}
                 />
 
@@ -46,6 +56,7 @@ export default (props) => {
                         handleClick={(event) => handleLogin(event)}
                     />
                 </Link>
+                {showErrorMsg && <Label value="Wrong email or password" />}
                 <br />
             </form>
             <Link to="/forgot-password">
