@@ -1,0 +1,26 @@
+.titles {
+    //padding: $m-size 0 0;
+
+    .title{
+        font-size: $xl-size;
+        margin: 0;
+    }
+
+    .subtitle{
+        color: $purple-red;
+        font-size: $l-size;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .container{
+        display: flex;
+        justify-content: center;
+        margin: $m-size auto;
+        padding: 0 $m-size;
+    }
+
+    .hr{
+        width: 100vh;
+    }
+}

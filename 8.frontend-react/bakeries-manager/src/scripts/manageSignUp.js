@@ -4,19 +4,31 @@ import { isEmailValid, isFullNameValid, isBusinessNameValid, isPhoneNumberValid,
 function testSignUpInput(userName, userEmail, businessName, userPhone, numOfWorkers, password,
     populateLoggedInUser, setShowFullNameErrorMsg, setShowEmailErrorMsg,
     setShowBusinessNameErrorMsg, setShowPhoneNumberErrorMsg, setShowPasswordErrorMsg,
-    setShowNumOfWorkersErrorMsg) {
-    if (!isFullNameValid(userName))
+    setShowNumOfWorkersErrorMsg, event) {
+    if (!isFullNameValid(userName)) {
+        event.preventDefault();
         setShowFullNameErrorMsg(true);
-    if (!isEmailValid(userEmail))
+    }
+    if (!isEmailValid(userEmail)) {
+        event.preventDefault();
         setShowEmailErrorMsg(true);
-    if (!isBusinessNameValid(businessName))
+    }
+    if (!isBusinessNameValid(businessName)) {
+        event.preventDefault();
         setShowBusinessNameErrorMsg(true);
-    if (!isPhoneNumberValid(userPhone))
+    }
+    if (!isPhoneNumberValid(userPhone)) {
+        event.preventDefault();
         setShowPhoneNumberErrorMsg(true);
-    if (!isPasswordValid(password))
+    }
+    if (!isPasswordValid(password)) {
+        event.preventDefault();
         setShowPasswordErrorMsg(true);
-    if (numOfWorkers === 0)
+    }
+    if (numOfWorkers === 0) {
+        event.preventDefault();
         setShowNumOfWorkersErrorMsg(true);
+    }
     else
         sendSignUpData(userName, userEmail, businessName, userPhone, numOfWorkers, password, populateLoggedInUser);
 }

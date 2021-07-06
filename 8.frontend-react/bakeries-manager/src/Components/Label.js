@@ -1,8 +1,10 @@
-import Reacr from 'react';
+import React from 'react';
 
-export default (props) => {
+export default function Label(props) {
     return (
-        <label>
+        <label
+            className={props.className}
+        >
             {props.value}
         </label>
     );

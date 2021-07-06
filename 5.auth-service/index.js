@@ -1,16 +1,12 @@
 const express = require('express');
 const app = express();
+const { port, domain, masterKey, accessTokenSecret } = require('./config');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const sql = require('./scripts/sql');
-const md5 = require('md5');
-const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
 const { isEmailValid, isPasswordValid } = require('./scripts/validations');
-const accessTokenSecret = 'secretsecretsecret';
-const api_key = '1f1bd6a9-365c56ab';
-const domain = 'oriya.workiz.dev';
-// const mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
+const middlewares = require('./controllers/middlewares');
+const helpers = require('./controllers/helpers');
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000", exposedHeaders: ["set-cookie"] }));
 app.use(bodyParser.json());
@@ -21,137 +17,42 @@ app.use((req, res, next) => {
   next();
 });
 
-const data = {
-  from: 'Excited User <oriya.eizenman@workiz.com>',
-  to: 'oriya.eizenman@gmail.com',
-  subject: 'Hello',
-  text: 'Testing some Mailgun awesomeness!'
-};
-
-app.use((req, res, next) => {
-  if (req.originalUrl === "/login" || req.originalUrl === "/logout" || req.originalUrl === "/signup") {
-    return next();
-  }
-  const token = req.cookies.access_token;
-  if (!token) {
-    return res.send(null)
-  }
-  try {
-    const data = jwt.verify(token, accessTokenSecret);
-    req.userData = data.userData;
-    return next();
-  } catch {
-    return res.sendStatus(403);
-  }
-});
+app.use(middlewares);
 
 app.post('/registred', function (req, res) {
   res.send(req.userData);
 })
 
 app.post('/signup', function (req, res) {
-  const password = (md5(req.body.password));
-  const userData = {
-    userName: req.body.userName,
-    userEmail: req.body.userEmail,
-    userPhone: req.body.userPhone,
-    businessName: req.body.businessName,
-    numOfWorkers: req.body.numOfWorkers,
-    password: password
-  };
-
-  // TODO: add validations
-  let isValid = true;
-
-  if (isValid) {
-    try {
-      sql.createUser(userData);
-      const token = jwt.sign({
-        userData: {
-          userName: userData.userName,
-          password: userData.password
-        }
-      }, accessTokenSecret, { expiresIn: '24h' });
-      res.cookie("access_token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      })
-        .status(200)
-        .json({ message: "Logged in successfully" });
-    }
-    catch (exc) {
-      console.error(exc.message);
-    }
-
-  }
+  helpers.makeNewUser(req, res);
 });
 
 app.post('/login', function (req, res) {
-  const password = (md5(req.body.password));
-  const userData = {
-    userEmail: req.body.userEmail,
-    password: password
-  };
-
-  // if (!isEmailValid(userData.userEmail) || !isPasswordValid(req.body.password))
-  //   res.send('not valid');
-
-  // else {
-  const token = jwt.sign({ userData: userData }, accessTokenSecret, { expiresIn: '24h' });
-
-  try {
-    sql.getUser(userData, (data) => {
-      if (data.length === 0)
-        res.send('email or password incorrect');
-      else {
-        res.cookie("access_token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        })
-          .status(200)
-          .json({ message: "Logged in successfully" });
-      }
-    }
-    );
-  }
-  catch (exc) {
-    console.error(exc.message);
-  }
-
-  // }
+  helpers.loginUser(req, res);
 });
 
 app.get("/logout", (req, res) => {
-  res
-    .clearCookie("access_token")
-    .status(200)
-    .json({ message: "Successfully logged out" });
+  helpers.logoutUser(res);
 });
 
 app.post("/forgotPassword", (req, res) => {
-  const mailGun = new MailGun({
-    apiKey: api_key,
-    domain: domain,
-  });
-  const data = {
-    //Specify email data.
-    from: "oriya.eizenman@workiz.com",
-    //The email to contact.
-    to: "oriya.eizenman@gmail.com",
-    //Subject and text data.
-    subject: "Hello",
-    html: "http://localhost:3000/reset-password",
-  };
-  //Invokes the method to send emails given the above data with the helper library
-  mailGun.messages().send(data, function (err, body) {
-    //If there is an error, render the error page
-    if (err) {
-      res.json({ error: err });
-      console.log("got an error: ", err);
-    } else {
-      res.json({ email: emailInput });
-    }
-  });
+  helpers.sendResetPasswordEmail(req, res);
+});
+
+app.post("/resetPassword", (req, res) => {
+  helpers.resetPassword(req, res);
+});
+
+app.post("/addUser", (req, res) => {
+  helpers.sendAddUserEmail(req, res);
+});
+
+app.post("/userSignup", (req, res) => {
+  helpers.addUser(req, res);
+});
+
+app.post("/bakeryEmployees", (req, res) => {
+  helpers.sendBakeryEmployees(req, res);
 });
 
 app.get('/', function (req, res) {
@@ -159,9 +60,8 @@ app.get('/', function (req, res) {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server running at http://localhost:${process.env.PORT}/`);
+  console.log(`Server running at http://localhost:${port}/`);
 });
-
 
 
 

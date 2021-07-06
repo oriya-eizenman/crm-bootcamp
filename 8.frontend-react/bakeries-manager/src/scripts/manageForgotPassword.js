@@ -1,7 +1,7 @@
-import { requestResetPassword } from './axios';
+import { sendResetPasswordEmail } from './axios';
 
 function resetPassword(userEmail) {
-    requestResetPassword(userEmail);
+    sendResetPasswordEmail(userEmail);
 }
 
 export default resetPassword;

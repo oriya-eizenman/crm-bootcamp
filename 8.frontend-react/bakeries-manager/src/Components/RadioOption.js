@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (props) => {
+export default function RadioOption(props) {
     return (
         <div>
             <label>
@@ -12,7 +12,6 @@ export default (props) => {
                     onChange={props.handleChange}
                     key={props.value}
                     checked={props.value === props.selectedOption}
-                    onChange={props.handleChange}
                 />
             </label>
         </div>
