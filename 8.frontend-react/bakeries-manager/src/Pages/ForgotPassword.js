@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Input from '../Components/Input';
-import Button from '../Components/Button';
 import manage from '../scripts/manageForgotPassword';
 import { Link } from "react-router-dom";
 import Page from '../Components/Page';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,77 +10,90 @@ import HomePage from './Pages/HomePage';
 import LandingPage from './Pages/LandingPage';
 import LoginForm from './Pages/LoginForm';
 import SignupForm from './Pages/SignupForm';
-import WithLoggedInUser from './Components/WithLoggedInUser';
 import ResetPassword from './Pages/ResetPassword';
 import manage from './scripts/manageLoggedinUser';
 import AfterPasswordReset from './Pages/AfterPasswordReset';
 import AfterForgotPassword from './Pages/AfterForgotPassword';
 import Users from './Pages/Users';
 import AfterUserSignUp from './Pages/AfterUserSignUp';
+import NewOrder2 from './Pages/NewOrder2';
+import Clients from './Pages/Clients';
+import Items from './Pages/Items';
+import Orders from './Pages/Orders';
 import 'normalize.css';
 import './styles/style.scss';
-const axios = require('axios');
+import UserContext from './UserContext';
+import Map from './Components/test'
+import DeliveryMap from './Pages/DeliveryMap';
+import OrderDetails from './Pages/OrderDetails';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedInUser: null
-    }
-    this.renderSwitch = this.renderSwitch.bind(this);
-  }
+const App = () => {
+  const [loggedInUser, setLoggedInUser] = useState(null);
 
-  componentDidMount() {
-    manage((loggedInUser) => this.setState({ loggedInUser }));
-  }
+  useEffect(() => {
+    manage(loggedInUser, (loggedInUser) => setLoggedInUser(loggedInUser));
+  }, [])
 
-  renderSwitch() {
-
-
-
+  const renderSwitch = () => {
     return (
-      this.state.loggedInUser ?
+      loggedInUser ?
         <Switch>
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
-          <Route path="/login">
+          <Route exact path="/login">
             <Redirect to="/home" />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <Redirect to="/home" />
           </Route>
-          <Route path="/home">
+          <Route exact path="/home">
             <HomePage
-              handleLogoutMethod={() => this.setState({ loggedInUser: null })}
             />
           </Route>
-          <Route path="/forgot-password">
+          <Route exact path="/forgot-password">
             <HomePage
-              handleLogoutMethod={() => this.setState({ loggedInUser: null })}
             />
           </Route>
-          <Route path="/reset-password/:userEmail">
+          <Route exact path="/reset-password/:userEmail">
             <ResetPassword />
           </Route>
-          <Route path="/password-updated">
+          <Route exact path="/password-updated">
             <AfterPasswordReset />
           </Route>
-          <Route path="/reset-password-email-sent">
+          <Route exact path="/reset-password-email-sent">
             <AfterForgotPassword />
           </Route>
-          <Route path="/users">
+          <Route exact path="/users">
             <Users
-              manager={this.state.loggedInUser}
+              manager={loggedInUser}
             />
           </Route>
-          <Route path="/user-signup/:userData">
+          <Route exact path="/user-signup/:userData">
             <SignupForm
               isAccount={false}
             />
           </Route>
-          <Route path="/user-signup-successful">
+          <Route exact path="/user-signup-successful">
             <AfterUserSignUp />
+          </Route>
+          <Route exact path="/new-order">
+            <NewOrder2 />
+          </Route>,
+          <Route exact path="/clients">
+            <Clients />
+          </Route>
+          <Route exact path="/items">
+            <Items />
+          </Route>
+          <Route exact path="/orders">
+            <Orders />
+          </Route>
+          <Route exact path="/delivery-map">
+            <DeliveryMap />
+          </Route>
+          <Route exact path="/order/:id">
+            <OrderDetails />
           </Route>
         </Switch>
         :
@@ -89,55 +102,67 @@ class App extends React.Component {
             <LandingPage />
           </Route>
           <Route exact path="/login">
-            <LoginForm
-              populateLoggedInUser={(loggedInData) => this.setState({ loggedInUser: loggedInData })}
-            />
+            <LoginForm />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignupForm
-              populateLoggedInUser={(loggedInData) => this.setState({ loggedInUser: loggedInData })}
               isAccount={true}
             />
           </Route>
-          <Route path="/home">
+          <Route exact path="/home">
             <Redirect to="/" />
           </Route>
-          <Route path="/forgot-password">
+          <Route exact path="/forgot-password">
             <ForgotPassword />
           </Route>
-          <Route path="/reset-password/:userEmail">
+          <Route exact path="/reset-password/:userEmail">
             <ResetPassword />
           </Route>
-          <Route path="/password-updated">
+          <Route exact path="/password-updated">
             <AfterPasswordReset />
           </Route>
-          <Route path="/reset-password-email-sent">
+          <Route exact path="/reset-password-email-sent">
             <AfterForgotPassword />
           </Route>
-          <Route path="/users">
+          <Route exact path="/users">
             <Redirect to="/" />
           </Route>
-          <Route path="/user-signup/:userData">
+          <Route exact path="/user-signup/:userData">
             <SignupForm
               isAccount={false}
             />
           </Route>
-          <Route path="/user-signup-successful">
+          <Route exact path="/user-signup-successful">
             <AfterUserSignUp />
+          </Route>
+          <Route exact path="/new-order">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/clients">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/items">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/orders">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/delivery-map">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/order/:order-id">
+            <Redirect to="/" />
           </Route>
         </Switch>
     )
   }
-
-  render() {
-    return (
-      <Router>
-
-        {this.renderSwitch()}
-
+  return (
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]} >
+      <Router >
+        {renderSwitch()}
       </Router>
-    );
-  }
+    </UserContext.Provider>
+  );
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import { getLoggedInUser } from './axios';
 
-function testLoginInput(populateLoggedInUser) {
-    getLoggedInUser(populateLoggedInUser);
+function testLoginInput(loggedInUser, populateLoggedInUser) {
+    getLoggedInUser(loggedInUser, populateLoggedInUser);
 }
 
 export default testLoginInput;

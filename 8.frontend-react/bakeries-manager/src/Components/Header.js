@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import Href from './Href';
+import logo from "../media/logo/logo_transparent copy.png";
 
 export default function Header({ links }) {
     return (
         <div className="header">
             <div className="container">
                 <div>
-                    <h1 className="title">PIE CHART</h1>
-                    <h2 className="subtitle">Your tool to manage your bakery</h2>
+                    <img className="logo" src={logo} />
+                    {/* <h1 className="title">PIE CHART</h1> */}
+                    {/* <h2 className="subtitle">Your tool to manage your bakery</h2> */}
                 </div>
                 <div className="headerLinks">
                     {links &&

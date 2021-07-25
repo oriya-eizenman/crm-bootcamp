@@ -34,3 +34,16 @@
     padding: $m-size $xxl-size;
     margin: $xl-size 0;
 }
+
+.fieldsGroup{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.formContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

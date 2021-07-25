@@ -50,13 +50,12 @@ const loginUser = (req, res) => {
         password: password
     };
 
-    const token = jwt.sign({ userData: userData }, accessTokenSecret, { expiresIn: '24h' });
-
     try {
         sql.getUser(userData, (data) => {
             if (data.length === 0)
                 res.send('email or password incorrect');
             else {
+                const token = jwt.sign({ userData: data[0] }, accessTokenSecret, { expiresIn: '24h' });
                 res.cookie("access_token", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
@@ -213,4 +212,16 @@ const sendBakeryEmployees = (req, res) => {
     }
 }
 
-module.exports = { makeNewUser, loginUser, logoutUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, addUser, sendBakeryEmployees };
+const deleteUser = (req, res) => {
+    const userEmail = req.body.userEmail;
+    console.log(userEmail)
+    try {
+        sql.deleteUser(userEmail);
+        res.status(200);
+    }
+    catch (exc) {
+        console.error(exc.message);
+    }
+}
+
+module.exports = { makeNewUser, loginUser, logoutUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, addUser, sendBakeryEmployees, deleteUser };

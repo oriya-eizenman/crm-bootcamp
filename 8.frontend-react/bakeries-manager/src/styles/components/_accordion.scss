@@ -1,0 +1,68 @@
+.accordion{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+}
+
+.Collapsible{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    text-align: center;
+    border-radius: $l-size;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+
+}
+
+.Collapsible__trigger{
+    padding: $m-size;
+    background-color: $purple-red;
+    color: white;
+    border: solid white $s-size;
+    border-radius: $l-size;
+}
+
+.cardContent{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $m-size;
+}
+
+.accordionForm{
+    width:80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.accordionFieldSelect{
+    width: 100%;
+}
+
+.accordionQtyField{
+    width: 20%;
+}
+
+.accordionInputField{
+    width: 45%;
+}
+
+.counter{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.hr {
+	border-top: 1px solid #8c8b8b;
+	text-align: center;
+    width: 100%;
+}
+
+.accordionLabel{
+    align-self: flex-start;
+}

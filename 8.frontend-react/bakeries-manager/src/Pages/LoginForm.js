@@ -1,30 +1,21 @@
-import React, { useState } from 'react';
-import Input from '../Components/Input';
-import Button from '../Components/Button';
+import React, { useContext, useEffect, useState } from 'react';
 import manage from '../scripts/manageLogin';
 import { Link } from "react-router-dom";
-import Label from '../Components/Label';
 import Title from '../Components/Title';
 import Page from '../Components/Page';
-import Form from '../Components/Form'
+import Form from '../Components/Form';
+import UserContext from '../UserContext';
+import { visitorPageHeaderLinks } from '../Constants/VisitorHeaderLinks';
 
 export default function LoginForm(props) {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [showErrorMsg, setShowErrorMsg] = useState(false);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
     function handleLogin(event) {
-        manage(userEmail, userPassword, props.populateLoggedInUser, setShowErrorMsg, event);
+        manage(userEmail, userPassword, setLoggedInUser, setShowErrorMsg, event);
     }
-
-    const links =
-        [
-            {
-                to: "/",
-                value: "Home"
-
-            }
-        ];
 
     const fields =
         [
@@ -81,11 +72,10 @@ export default function LoginForm(props) {
                         SIGN UP!
                         </Link>
                 </div>
-                {/* </form> */}
             </div>
         </div>
 
     return (
-        <Page mainContent={mainContent} headerLinks={links} />
+        <Page mainContent={mainContent} headerLinks={visitorPageHeaderLinks} />
     );
 }
