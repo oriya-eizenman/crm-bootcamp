@@ -38,4 +38,23 @@ class orders extends controller
         $this->response["order_id"] = $order_id;
         return $this->response;
     }
+
+    public function updateOrder()
+    {
+        $order_id = $this->model->updateOrder(
+            $this->jsonData["order_id"],
+            $this->jsonData["total"]
+        );
+        $this->response["order_id"] = $order_id;
+        return $this->response;
+    }
+
+    public function getAddresses()
+    {
+        $addresses = $this->model->getAddresses(
+            $this->jsonData["bakery_id"]
+        );
+        $this->response["addresses"] = $addresses;
+        return $this->response;
+    }
 }

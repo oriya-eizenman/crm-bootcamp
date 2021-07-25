@@ -17,6 +17,14 @@ class Model_clients extends Model_crud
         return $this->getAll("clients", $conditions);
     }
 
+    public function getClient($client_id)
+    {
+        $conditions = [
+            "client_id" => $client_id
+        ];
+        return $this->getAll("clients", $conditions);
+    }
+
     public function deleteClient($client_email)
     {
         $conditions = [
@@ -28,8 +36,8 @@ class Model_clients extends Model_crud
     public function createClient(
         $bakery_id,
         $client_name,
-        $client_phone,
         $client_email,
+        $client_phone,
         $city,
         $street,
         $house_number,
@@ -46,5 +54,27 @@ class Model_clients extends Model_crud
             "apartment_number" => $apartment_number
         ];
         return $this->insert("clients", $conditions);
+    }
+
+    public function updateClient(
+        $client_id,
+        $client_name,
+        $client_email,
+        $client_phone,
+        $city,
+        $street,
+        $house_number,
+        $apartment_number
+    ) {
+        $conditions = [
+            "client_name" => $client_name,
+            "client_phone" => $client_phone,
+            "client_email" => $client_email,
+            "city" => $city,
+            "street" => $street,
+            "house_number" => $house_number,
+            "apartment_number" => $apartment_number
+        ];
+        return $this->update("clients", $conditions, "client_id", $client_id);
     }
 }

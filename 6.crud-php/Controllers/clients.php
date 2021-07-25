@@ -20,6 +20,13 @@ class clients extends controller
         return $this->response;
     }
 
+    public function getClient()
+    {
+        $client = $this->model->getClient($this->jsonData["client_id"]);
+        $this->response["client"] = $client;
+        return $this->response;
+    }
+
     public function deleteClient()
     {
         $clients = $this->model->deleteClient($this->jsonData["client_email"]);
@@ -38,6 +45,22 @@ class clients extends controller
             $this->jsonData["street"],
             $this->jsonData["house_number"],
             $this->jsonData["apartment_number"]
+        );
+        $this->response["client_id"] = $client_id;
+        return $this->response;
+    }
+
+    public function updateClient()
+    {
+        $client_id = $this->model->updateClient(
+            $this->jsonData["client"]["client_id"],
+            $this->jsonData["client"]["client_name"],
+            $this->jsonData["client"]["client_email"],
+            $this->jsonData["client"]["client_phone"],
+            $this->jsonData["client"]["city"],
+            $this->jsonData["client"]["street"],
+            $this->jsonData["client"]["house_number"],
+            $this->jsonData["client"]["apartment_number"]
         );
         $this->response["client_id"] = $client_id;
         return $this->response;

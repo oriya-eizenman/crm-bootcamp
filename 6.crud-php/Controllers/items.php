@@ -22,8 +22,25 @@ class items extends controller
 
     public function deleteItem()
     {
-        $items = $this->model->deleteItem($this->jsonData["bakery_id"], $this->jsonData["item"]);
+        $items = $this->model->deleteItem($this->jsonData["bakery_id"], $this->jsonData["item"]["item_id"]);
         $this->response["items"] = $items;
+        return $this->response;
+    }
+
+    public function createItem()
+    {
+        exit($this->jsonData["item"]->$_FILES["image"]);
+        $items = $this->model->createItem($this->jsonData["bakery_id"], $this->jsonData["item"]);
+        $this->response["items"] = $items;
+        return $this->response;
+    }
+
+    public function updateItem()
+    {
+        $item = $this->model->updateItem(
+            $this->jsonData["item"]
+        );
+        $this->response["item"] = $item;
         return $this->response;
     }
 }

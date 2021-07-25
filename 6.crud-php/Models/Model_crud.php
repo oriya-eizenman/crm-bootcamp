@@ -73,14 +73,14 @@ class Model_crud extends Model
             ->query($sql);
     }
 
-    public function update($data)
+    public function update($table_name, $data, $id_name, $id_value)
     {
         $set_statement = "";
         foreach ($data as $key => $value) {
             $set_statement .= "$key = '$value',";
         }
         $set_statement = substr_replace($set_statement, "", -1);
-        $sql = "UPDATE $this->table_name SET $set_statement WHERE (id = $data->id)";
+        $sql = "UPDATE $table_name SET $set_statement WHERE ($id_name = $id_value)";
         $res = $this->getDB()->query($sql);
         return $res;
     }

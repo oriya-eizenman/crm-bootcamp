@@ -49,4 +49,24 @@ class Model_orders extends Model_crud
         ];
         return $this->insert("orders", $conditions);
     }
+
+    public function updateOrder($order_id, $total)
+    {
+        $conditions = [
+            "total" => $total
+        ];
+        return $this->update("orders", $conditions, "order_id", $order_id);
+    }
+
+    public function getAddresses()
+    {
+        // $where = $this->parseWhere($values);
+        $sql = "
+        select DISTINCT CONCAT(clients.street,' ',clients.house_number, ', ', clients.city) AS address FROM
+        clients INNER JOIN orders 
+        ON clients.client_id = orders.client_id
+        ";
+
+        return $this->getSpecialQuery($sql);
+    }
 }

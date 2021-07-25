@@ -44,5 +44,6 @@ order_item_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
 bakery_id bigint NOT NULL,
 order_id bigint NOT NULL,
 qty bigint NOT NULL,
+item_id BIGINT NOT NULL,
 created timestamp default current_timestamp not null
 );
