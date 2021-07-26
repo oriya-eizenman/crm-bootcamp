@@ -1,0 +1,36 @@
+.form{
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.errorMsg{
+    color: red;
+    font-size: $m-size;
+}
+
+.formButtonContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: $xl-size;
+}
+
+.formButton{
+    text-decoration: none;
+    border-radius: 35%;
+    background-color: lighten($purple-red, 15%);
+    color: white;
+    padding: 1.2rem $l-size;
+    margin-bottom: $s-size;
+}
+
+.formButton:hover{
+    background-color: $purple-red;
+}
+
+.formFrame{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: $m-size $xxl-size;
+    margin: $xl-size 0;
+}

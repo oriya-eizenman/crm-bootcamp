@@ -23,7 +23,7 @@ const sendLoginData = (userEmail, password, populateLoggedInUser) => {
         password: password
     }, { withCredentials: true })
         .then(res => {
-            populateLoggedInUser(res.data);
+            populateLoggedInUser(res.data.loggedInUser);
         })
         .catch(err => {
             alert(err);
@@ -50,10 +50,23 @@ const requestLogout = () => {
         });
 }
 
-const requestResetPassword = (userEmail) => {
+const sendResetPasswordEmail = (userEmail) => {
     axios.post('http://localhost:8005/forgotPassword', {
         userEmail: userEmail
-    }, { withCredentials: true })
+    })
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            alert(err);
+        });
+}
+
+const resetPassword = (userEmail, password) => {
+    axios.post('http://localhost:8005/resetPassword', {
+        userEmail: userEmail,
+        password: password
+    })
         .then(res => {
 
         })
@@ -62,5 +75,45 @@ const requestResetPassword = (userEmail) => {
         });
 }
 
+const sendAddUserEmail = (managerEmail, userEmail) => {
+    axios.post('http://localhost:8005/addUser', {
+        managerEmail: managerEmail,
+        userEmail: userEmail
+    }, { withCredentials: true })
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            alert(err);
+        });
+}
 
-export { sendSignUpData, sendLoginData, requestLogout, getLoggedInUser, requestResetPassword };
+const sendUserSignUpData = (userName, userData, userPhone, password) => {
+    axios.post('http://localhost:8005/userSignup', {
+        userName: userName,
+        userData: userData,
+        userPhone: userPhone,
+        password: password
+    }, { withCredentials: true })
+        .then(res => {
+            console.log('new user added')
+        })
+        .catch(err => {
+            alert(err);
+        });
+}
+
+const getEmployeesInBakery = (managerEmail, populateEmployees) => {
+    axios.post('http://localhost:8005/bakeryEmployees', {
+        managerEmail: managerEmail
+    }, { withCredentials: true })
+        .then(res => {
+            populateEmployees(res.data);
+        })
+        .catch(err => {
+            alert(err);
+        });
+}
+
+
+export { sendSignUpData, sendLoginData, requestLogout, getLoggedInUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, sendUserSignUpData, getEmployeesInBakery };

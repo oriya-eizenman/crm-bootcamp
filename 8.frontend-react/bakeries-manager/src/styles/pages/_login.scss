@@ -1,0 +1,31 @@
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .linkToSignUp{
+        margin-top: $m-size;
+        font-size: $m-size;
+        text-align: center;
+    
+        .p{
+            display: inline;
+        }
+    }
+    
+    .linkToForgotPassword{
+        margin-top: $m-size;
+        font-size: $m-size;
+        margin-bottom: $m-size;
+    }
+
+    .button{
+        font-size: $l-size;
+        padding: $s-size $m-size;
+        width: 110%;
+        margin-bottom: $m-size;
+    }
+}
+
+

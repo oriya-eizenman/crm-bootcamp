@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 
-export default (props) => {
+export default function WithLoggedInUser(props) {
     return (
         <Route {...props.exact} path={props.path}>
             {

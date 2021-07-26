@@ -1,0 +1,12 @@
+.button{
+    font-family: 'Lato', sans-serif;
+    border: solid $purple-red 0.2rem;
+    color: $purple-red;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 1.5rem;
+    padding: $s-size $m-size;
+    background-color: white;
+    width: fit-content;
+    margin-bottom: $s-size;
+}

@@ -1,0 +1,37 @@
+.ReactModalPortal .ReactModal__Overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    inset: 0px;
+    background-color: $azure;
+    width: 30%;
+    align-content: center;
+    text-align: center;
+}
+
+.mainModal{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: $s-size;
+}
+
+.link{
+    text-align: right;
+}
+
+.modalContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
+    padding: $l-size;
+}
+
+.modalLink:hover{
+    text-decoration: none !important;
+    cursor: pointer;
+}

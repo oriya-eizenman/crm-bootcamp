@@ -1,0 +1,10 @@
+.select{
+    font-size: $l-size;
+    padding: $s-size $l-size;
+    outline: none;
+    border: solid $purple-red-darker 0.3rem;
+    border-radius: $border-m-size;
+    margin-top: $xs-size;
+    color:$purple-red;
+    width: 100%;
+}

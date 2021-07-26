@@ -1,0 +1,44 @@
+.header {
+    color: $dark-blue;
+    padding: $m-size 0;
+    background-color: $off-white;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+
+    .title{
+        font-size: $xl-size;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .subtitle{
+        color: $purple-red;
+        font-size: $l-size;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .container{
+        margin: 0 auto;
+        padding: 0 $m-size;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .headerLink{
+        text-decoration: none !important;
+        color: $purple-red;
+        font-weight: bold;
+        padding: $m-size;
+    }
+
+    .headerLink:hover{
+        // text-decoration: underline !important;
+        background-color: $purple-red-darker;
+        border-radius: 45%;
+    }
+}

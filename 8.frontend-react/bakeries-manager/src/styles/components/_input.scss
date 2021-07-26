@@ -1,0 +1,27 @@
+.input {
+    margin-bottom: $m-size;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .label{
+        font-size: $m-size;
+        font-weight: bolder;
+        margin-left: $m-size;
+        margin-bottom: $s-size;
+    }
+
+    .text{
+        font-size: $l-size;
+        padding: $s-size $m-size;
+        border-radius: $border-m-size;
+        outline: none;
+        border: solid $purple-red-darker 0.3rem;
+        margin-top: $xs-size;
+        color:$purple-red;
+    }
+
+    .text::placeholder{
+        color: lighten($purple-red, 40%);
+    }
+}
