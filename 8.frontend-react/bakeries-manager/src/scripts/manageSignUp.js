@@ -25,12 +25,9 @@ function testSignUpInput(userName, userEmail, businessName, userPhone, numOfWork
         event.preventDefault();
         setShowPasswordErrorMsg(true);
     }
-    if (numOfWorkers === 0) {
-        event.preventDefault();
-        setShowNumOfWorkersErrorMsg(true);
-    }
-    else
+    else {
         sendSignUpData(userName, userEmail, businessName, userPhone, numOfWorkers, password, populateLoggedInUser);
+    }
 }
 
 export default testSignUpInput;

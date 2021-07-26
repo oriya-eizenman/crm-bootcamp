@@ -9,6 +9,8 @@ const createUser = (userData) => {
             }
             console.log("1 user record inserted");
             mysql.query(`UPDATE bakery_user SET bakery_id='${results.insertId}' WHERE user_email='${userData.userEmail}'`, function (error, results, fields) {
+                console.log(results);
+                console.log(fields)
                 if (error) {
                     throw error;
                 }
@@ -110,5 +112,20 @@ const geyBakeryEmployees = (bakeryId, populateEmployees) => {
     }
 }
 
-module.exports = { createUser, getUser, isUserExists, updateUserPassword, getBakery, addUser, geyBakeryEmployees };
+const deleteUser = (userEmail) => {
+    console.log(userEmail)
+    try {
+        mysql.query(`DELETE FROM bakery_user WHERE user_email='${userEmail}'`, function (error, results, fields) {
+            if (error) {
+                throw error;
+            }
+            console.log("1 user record deleted");
+        })
+    }
+    catch (exception) {
+        console.error(exception);
+    }
+}
+
+module.exports = { createUser, getUser, isUserExists, updateUserPassword, getBakery, addUser, geyBakeryEmployees, deleteUser };
 
