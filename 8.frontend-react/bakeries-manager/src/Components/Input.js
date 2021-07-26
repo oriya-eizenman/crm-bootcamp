@@ -3,7 +3,7 @@ import Label from './Label';
 
 export default function Input(props) {
     return (
-        <div className="input">
+        <div className={"input " + props?.className}>
             <label className="label">
                 {props.label && props.label}
             </label>

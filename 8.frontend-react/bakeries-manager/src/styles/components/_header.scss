@@ -1,7 +1,8 @@
 .header {
     color: $dark-blue;
-    padding: $m-size 0;
-    background-color: $off-white;
+    padding: $s-size 0;
+    // background-color: $off-white;
+    background-color: white;
     width: 100%;
     position: sticky;
     top: 0;
@@ -40,5 +41,12 @@
         // text-decoration: underline !important;
         background-color: $purple-red-darker;
         border-radius: 45%;
+    }
+
+    .logo{
+        width: 18vw;
+        height: 10vh;
+        margin: 0;
+        // object-fit:scale-down;  
     }
 }

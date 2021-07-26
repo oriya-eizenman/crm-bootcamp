@@ -30,8 +30,10 @@ const sendLoginData = (userEmail, password, populateLoggedInUser) => {
         });
 }
 
-const getLoggedInUser = (populateLoggedInUser) => {
-    axios.post('http://localhost:8005/registred', {}, { withCredentials: true })
+const getLoggedInUser = (loggedInUser, populateLoggedInUser) => {
+    axios.post('http://localhost:8005/registred',
+        { loggedInUser },
+        { withCredentials: true })
         .then(res => {
             populateLoggedInUser(res.data);
         })
@@ -81,7 +83,6 @@ const sendAddUserEmail = (managerEmail, userEmail) => {
         userEmail: userEmail
     }, { withCredentials: true })
         .then(res => {
-            console.log(res.data)
         })
         .catch(err => {
             alert(err);
@@ -115,5 +116,17 @@ const getEmployeesInBakery = (managerEmail, populateEmployees) => {
         });
 }
 
+const removeUser = (userEmail) => {
+    axios.post('http://localhost:8005/deleteUser', {
+        userEmail: userEmail
+    }, { withCredentials: true })
+        .then(res => {
+            console.log('deleted User');
+        })
+        .catch(err => {
+            alert(err);
+        })
+}
 
-export { sendSignUpData, sendLoginData, requestLogout, getLoggedInUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, sendUserSignUpData, getEmployeesInBakery };
+
+export { sendSignUpData, sendLoginData, requestLogout, getLoggedInUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, sendUserSignUpData, getEmployeesInBakery, removeUser };

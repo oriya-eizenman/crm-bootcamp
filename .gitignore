@@ -1,3 +1,4 @@
 data/mysql/*
 2.landing-page-vanila/.DS_Store
 .DS_Store
+node_modules

@@ -1,7 +1,11 @@
-import { getEmployeesInBakery } from './axios';
+import { getEmployeesInBakery, removeUser } from './axios';
 
 function getUsers(managerEmail, populateEmployees) {
     getEmployeesInBakery(managerEmail, populateEmployees);
 }
 
-export default getUsers;
+function deleteUser(userEmail) {
+    removeUser(userEmail);
+}
+
+export { getUsers, deleteUser };

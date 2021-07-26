@@ -1,10 +1,9 @@
 const express = require('express');
 const app = express();
-const { port, domain, masterKey, accessTokenSecret } = require('./config');
+const { port } = require('./config');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
-const { isEmailValid, isPasswordValid } = require('./scripts/validations');
 const middlewares = require('./controllers/middlewares');
 const helpers = require('./controllers/helpers');
 
@@ -53,6 +52,11 @@ app.post("/userSignup", (req, res) => {
 
 app.post("/bakeryEmployees", (req, res) => {
   helpers.sendBakeryEmployees(req, res);
+});
+
+app.post("/deleteUser", (req, res) => {
+  console.log('here')
+  helpers.deleteUser(req, res);
 });
 
 app.get('/', function (req, res) {

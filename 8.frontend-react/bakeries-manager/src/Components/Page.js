@@ -5,10 +5,16 @@ import SideNav from './SideNav';
 export default function Page(props) {
     return (
         <div className="page">
-            <Header links={props.headerLinks} />
-            {props.showNavbar && <SideNav />}
-            <div className="mainContent">
-                {props.mainContent}
+            {props.headerLinks && <Header links={props.headerLinks} />}
+            <div className="body">
+                {props.showNavbar && <SideNav
+                    activatedPage={props.activatedPage}
+                    links={props.navbarLinks}
+                    setLoggedInUser={props.setLoggedInUser}
+                />}
+                <div className="mainContent">
+                    {props.mainContent}
+                </div>
             </div>
             {/* <Footer /> */}
         </div>

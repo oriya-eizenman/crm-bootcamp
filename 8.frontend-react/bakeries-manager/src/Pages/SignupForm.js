@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Input from '../Components/Input';
-import Button from '../Components/Button';
+import React, { useState, useEffect, useContext } from 'react';
 import Title from '../Components/Title';
-import RadioOption from '../Components/RadioOption';
 import manage from '../scripts/manageSignUp';
 import manageUserSignUp from '../scripts/manageUserSignUp';
 import { Link } from "react-router-dom";
-import Label from '../Components/Label';
 import { useParams } from 'react-router';
 import clearCookie from '../scripts/manageLogout';
 import Page from '../Components/Page';
 import Form from '../Components/Form';
+import UserContext from '../UserContext';
+import { visitorPageHeaderLinks } from '../Constants/VisitorHeaderLinks';
 
 export default function SignUpForm(props) {
 
@@ -30,6 +28,7 @@ export default function SignUpForm(props) {
     const [showGeneralErrMsg, setShowGeneralErrMsg] = useState(false);
     const [showUserExistsErrMsg, setShowUserExistsErrMsg] = useState(false);
     const { userData } = useParams();
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
     useEffect(() => {
         clearCookie();
@@ -38,30 +37,13 @@ export default function SignUpForm(props) {
     function sendUserData(event) {
         isAccount ?
             manage(userName, userEmail, businessName, userPhone, numOfWorkers, userPassword,
-                props.populateLoggedInUser, setShowFullNameErrorMsg, setShowEmailErrorMsg,
+                setLoggedInUser, setShowFullNameErrorMsg, setShowEmailErrorMsg,
                 setShowBusinessNameErrorMsg, setShowPhoneNumberErrorMsg, setShowPasswordErrorMsg,
                 setShowNumOfWorkersErrorMsg, event)
             :
             manageUserSignUp(userName, userData, userPhone, userPassword,
                 setShowFullNameErrorMsg, setShowPhoneNumberErrorMsg, setShowPasswordErrorMsg, event);
     }
-
-    // const radioOptions = [
-    //     <Input label="Just me" type="radio" value="oneWorker" name="numberOfWorkers" handleChange={(event) => setNumOfWorkers(event.target.value)} checked={numOfWorkers == "oneWorker"} />,
-    //     <Input label="2 people" type="radio" value="twoWorkers" name="numberOfWorkers" />,
-    //     <Input label="3-5 people" type="radio" value="threeToFiveWorkers" name="numberOfWorkers" />,
-    //     <Input label="6-10 people" type="radio" value="sixToTenWorkers" name="numberOfWorkers" />,
-    //     <Input label="11 or more people" type="radio" value="moreThanTenWorkers" name="numberOfWorkers" />,
-    //     <Input label="Password:" type="password" handleChange={(event) => setUserPassword(event.target.value)} value={userPassword} />];
-
-    const links =
-        [
-            {
-                to: "/",
-                value: "Home"
-
-            }
-        ];
 
     const fields =
         [
@@ -142,7 +124,7 @@ export default function SignUpForm(props) {
             },
             {
                 type: "input",
-                inputType: "text",
+                inputType: "password",
                 value: userPassword,
                 onChange: (event) => {
                     setUserPassword(event.target.value);
@@ -185,6 +167,6 @@ export default function SignUpForm(props) {
         </div>
 
     return (
-        <Page mainContent={mainContent} headerLinks={links} />
+        <Page mainContent={mainContent} headerLinks={visitorPageHeaderLinks} />
     );
 }

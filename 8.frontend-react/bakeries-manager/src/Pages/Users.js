@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useRef, useContext } from 'react';
 import Modal from 'react-modal';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 import Label from '../Components/Label';
 import Table from "../Components/Table";
 import manage from '../scripts/manageAddUser';
-import manageEmployees from '../scripts/manageUsers';
-import Page from '../Components/Page';
+import { getUsers, deleteUser } from '../scripts/manageUsers';
+import LoggedInPage from '../Components/LoggedInPage';
+import UserContext from '../UserContext';
 
 export default function Users(props) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -16,12 +17,13 @@ export default function Users(props) {
     const [employees, setEmployees] = useState([]);
     const employeesRef = useRef(employees);
     employeesRef.current = employees;
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
     useEffect(() => {
-        manageEmployees(props.manager[0]?.user_email ?? props.manager.userEmail, (data) => {
+        getUsers(loggedInUser.user_email, (data) => {
             setEmployees(data);
-        }, []);
-    })
+        });
+    }, [employees.length])
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -38,39 +40,26 @@ export default function Users(props) {
         manage(props.manager.userEmail, userEmail, setShowEmailErrorMsg);
     }
 
+    function handleDeleteUser(userEmail) {
+        deleteUser(userEmail);
+    }
+
     const columns = useMemo(
         () => [
             {
-                Header: "Users",
-                columns: [
-                    {
-                        Header: "Name",
-                        accessor: "user_name"
-                    },
-                    {
-                        Header: "Email",
-                        accessor: "user_email"
-                    },
-                    {
-                        Header: "Phone number",
-                        accessor: "user_phone"
-                    }
-                ]
+                Header: "Name",
+                accessor: "user_name"
+            },
+            {
+                Header: "Email",
+                accessor: "user_email"
+            },
+            {
+                Header: "Phone number",
+                accessor: "user_phone"
             }
         ]
     );
-
-    const headerLinks =
-        [
-            {
-                to: "/home",
-                value: "Home"
-            }
-        ]
-
-    const navbarLinks =
-        [
-        ]
 
     const mainContent =
         <div className="usersMainContent">
@@ -107,12 +96,18 @@ export default function Users(props) {
             {
                 employeesRef &&
                 <div className="App">
-                    <Table columns={columns} data={employeesRef.current} />
+                    <Table
+                        columns={columns}
+                        data={employeesRef.current}
+                        handleClick={(userEmail) => handleDeleteUser(userEmail)}
+                        databaseColumn="user_email"
+
+                    />
                 </div>
             }
         </div >
 
     return (
-        <Page mainContent={mainContent} headerLinks={headerLinks} />
+        <LoggedInPage mainContent={mainContent} activatedPage="Users" />
     );
 }

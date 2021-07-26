@@ -1,0 +1,36 @@
+.widgets{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.widget-border{
+    width: 30%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: $m-size $xxl-size;
+    margin: $s-size 0;
+}
+
+.incomes-widget-border{
+    display: flex;
+    justify-content: space-between;
+    width: 94%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: $m-size $xxl-size;
+    margin: $xl-size 0;
+}
+
+.second-row-widgets{
+    display: flex;
+}
+
+.incomes-widget{
+    width: 30%;
+}
+
+.widget{
+  width: 70%;  
+    
+}

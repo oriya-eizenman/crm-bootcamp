@@ -1,0 +1,107 @@
+.sidenav{
+    display: flex;
+    flex-direction: column;
+    color: $dark-blue;
+    padding: $m-size 0;
+    // background-color: lighten($azure, 17%);
+    background-color: white;
+    width: 17%;
+    height: 100%;
+    position: fixed;
+    z-index: 10;
+    padding: 0;
+    // transition: all 0.5s ease;
+
+}
+
+.sidenavLink{
+    text-decoration: none !important;
+    color: lighten($dark-blue, 17%);
+    font-weight: bold;
+    padding: $m-size;
+}
+
+.sidenavLink:hover{
+    background-color: lighten($dark-blue, 7%);
+    color:azure;
+}
+
+.sidenavLink:active{
+    background-color: darken($dark-blue, 5%);
+    color:azure;
+}
+
+.newOrder{
+    align-self: center;
+    // color: $purple-red;
+    // border: 2px solid $purple-red;
+    // border-radius: 20px;
+    // background-color: white;
+    // text-align: center;
+    // padding: $s-size $l-size;
+    // width: fit-content;
+    margin: $m-size 0;
+    background-image: linear-gradient(to right, #006175 0%, #00a950 100%);
+    border-radius: $border-m-size;
+    box-sizing: border-box;
+    color: #00a84f;
+    display: block;
+    height: $xxxl-size;
+    font-size: $xl-size;
+    padding: $xs-size;
+    position: relative;
+    text-decoration: none;
+    width: 6em;
+    z-index: 2;
+}
+
+.newOrder:hover{
+    // background-color: $purple-red;
+    // color: white;
+    // color: #fff;
+}
+
+.newOrder .newOrderSpan{
+    align-items: center;
+  background: white;
+  border-radius: $border-m-size;
+  display: flex;
+  justify-content: center;
+  height: 22%;
+  transition: background 0.5s ease;
+//   width: 100%;
+}
+
+.newOrder:hover .newOrderSpan{
+    background: transparent;
+}
+
+.activatedPage{
+    background-color: darken($dark-blue, 5%);
+    color:azure;
+}
+
+// .sidenav Link, .dropdown-btn {
+//     padding: 6px 8px 6px 16px;
+//     text-decoration: none;
+//     font-size: 20px;
+//     color: #818181;
+//     display: block;
+//     border: none;
+//     background: none;
+//     width:100%;
+//     text-align: left;
+//     cursor: pointer;
+//     outline: none;
+//   }
+
+//   .dropdown-container {
+//     display: none;
+//     background-color: #262626;
+//     padding-left: 8px;
+//   }
+
+//   .fa-caret-down {
+//     float: right;
+//     padding-right: 8px;
+//   }

@@ -18,7 +18,6 @@ export default function ResetPassword(props) {
         if (newPassword !== reenteredPassword) {
             setIsPasswordsMatch(false);
         }
-        console.log(userEmail)
         manage(userEmail, newPassword, setShowPasswordErrorMsg);
     }
 
