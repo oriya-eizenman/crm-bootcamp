@@ -82,6 +82,10 @@
         var typingMsg = document.getElementById('typing');
         var isFirstMsg = true;
 
+        window.addEventListener('load', function (e) {
+            socket.emit('get welcome message', "please enter your email");
+        })
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             if (input.value) {

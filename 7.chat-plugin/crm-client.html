@@ -4,23 +4,48 @@
 <head>
     <title>Socket.IO chat</title>
     <style>
+        html {
+            height: 100%;
+        }
+
         body {
             margin: 0;
-            padding-bottom: 3rem;
+            /* padding-bottom: 3rem; */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100%;
+        }
+
+        #crm-chat {
+            display: flex;
+            min-height: 100%;
+        }
+
+        #chats {
+            width: 50%;
+        }
+
+        #chats>li {
+            border: 2px solid black;
+        }
+
+        #leadChat {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         #form {
             background: rgba(0, 0, 0, 0.15);
             padding: 0.25rem;
-            position: fixed;
+            /* position: fixed; */
             bottom: 0;
             left: 0;
             right: 0;
             display: flex;
-            height: 3rem;
+            height: 100%;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
+            width: 50%;
         }
 
         #input {
@@ -62,12 +87,24 @@
 </head>
 
 <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <div id="typing"></div>
-        <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+
+    <div id="crm-chat">
+        <div id="chats">
+            <h3>messages</h3>
+            <ul id="leads"></ul>
+        </div>
+        <hr id="hr">
+        <div id="leadChat">
+            <ul id="messages"></ul>
+            <form id="form" action="">
+                <!-- <div id="typing"></div> -->
+                <input id="input" autocomplete="off" /><button>Send</button>
+            </form>
+        </div>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
         var socket = io();
         var typing = false;
@@ -78,49 +115,83 @@
         var form = document.getElementById('form');
         var input = document.getElementById('input');
         var typingMsg = document.getElementById('typing');
+        var chats = document.getElementById('chats');
         var rooms = {};
         let activatedRoom;
 
-        socket.emit('welcome message', { msg: "enter your email address" });
+        // function getAllRooms() {
+        //     console.log('here')
+        //     return rooms;
+        // }
+
+        // socket.emit('welcome message', { msg: "enter your email address" });
+
+        window.addEventListener('load', function (e) {
+            socket.emit('join room crm');
+            // var item = document.createElement('li');
+            // item.textContent = msg;
+            // messages.appendChild(item);
+            // window.scrollTo(0, document.body.scrollHeight);
+        })
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             if (input.value) {
-                console.log(activatedRoom)
-                console.log(rooms)
                 socket.emit('admin message', activatedRoom, input.value);
                 input.value = '';
             }
         });
 
         socket.on('welcome message', function (msg) {
-            var item = document.createElement('li');
-            item.textContent = msg;
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            // var item = document.createElement('li');
+            // item.textContent = msg;
+            // messages.appendChild(item);
+            // window.scrollTo(0, document.body.scrollHeight);
         });
 
         socket.on('lead message', function (roomId, msg) {
-            var item = document.createElement('li');
-            item.textContent = msg;
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            if (roomId === activatedRoom) {
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
             rooms[roomId].push(msg);
         });
 
         socket.on('admin message', function (roomId, msg) {
-            var item = document.createElement('li');
-            item.textContent = msg;
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            if (roomId === activatedRoom) {
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
             rooms[roomId].push(msg);
         });
 
         socket.on('new message', function (leadId, msg) {
             socket.emit('new lead', leadId, msg);
             rooms[leadId] = [];
-            activatedRoom = leadId;
+            var item = document.createElement('li');
+            item.addEventListener('click', function (e) {
+                const roomId = e.target.innerText;
+                activatedRoom = roomId;
+                populateMessages(roomId);
+            })
+            item.textContent = leadId;
+            chats.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
         });
+
+        function populateMessages(roomId) {
+            messages.innerHTML = "";
+            rooms[roomId].forEach(message => {
+                var item = document.createElement('li');
+                item.textContent = message;
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            })
+        }
     </script>
 </body>
 

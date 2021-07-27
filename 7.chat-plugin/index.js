@@ -13,10 +13,26 @@ app.get('/lead-client', (req, res) => {
     res.sendFile(__dirname + '/lead-client.html');
 });
 
+app.get('/getAllRooms', (req, res) => {
+    getAllRooms();
+});
+
+app.get('/plugin', (req, res) => {
+    res.sendFile(__dirname + '/mychat.js');
+});
+
 io.on('connection', (socket) => {
 
-    socket.on('welcome message', (data) => {
-        io.emit('welcome message', data.msg)
+    // socket.on('welcome message', (data) => {
+    //     io.emit('welcome message', data.msg)
+    //     socket.join('crm');
+    // });
+
+    socket.on('get welcome message', (message) => {
+        io.emit('welcome message', message)
+    });
+
+    socket.on('join room crm', () => {
         socket.join('crm');
     });
 
