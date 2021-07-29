@@ -1,4 +1,5 @@
 import { getDeliveryAddresses } from './axios-php';
+import { gKey } from '../Constants/keys/keys';
 const axios = require('axios');
 
 async function getAddresses(bakery_id) {
@@ -10,7 +11,7 @@ function getPosition(address) {
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: address,
-            key: "AIzaSyCQi8_SRDC00uhkijhmtvPGhtQPOo0STRM"
+            key: gKey
         }
     })
         .then(function (response) {
