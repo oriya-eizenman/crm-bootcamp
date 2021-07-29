@@ -135,6 +135,15 @@ footer {
     padding: 1em;
 }
 
+/* .chat {
+    position: fixed;
+    bottom: 59px;
+    right: 15px;
+    background: white;
+    min-height: 350px;
+    border: solid 1px #e1e1e1;
+} */
+
 /* mobile view */
 @media screen and (max-width: 600px) {
     main header .container.title {

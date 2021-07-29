@@ -12,15 +12,6 @@ var typingMsg = document.getElementById('typing');
 var rooms = {};
 let activatedRoom;
 
-function getAllRooms() {
-    console.log('here')
-    // return rooms;
-}
-
-function test() {
-    console.log('test')
-}
-
 // socket.emit('welcome message', { msg: "enter your email address" });
 
 window.addEventListener('load', function (e) {
