@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font: 14px/20px "Lato", Arial, sans-serif;
+            height: 100%;
+            background: #C5DDEB;
+            color: white;
+            overflow: hidden;
+        }
+
+        #crm-chat {
+            display: flex;
+            margin: 0 auto;
+            background: #444753;
+            border-radius: 5px;
+            min-height: 100%;
+            max-height: 100%;
+        }
+
+        #chats {
+            width: 30%;
+            background: #444753;
+            border-radius: 5px;
+        }
+
+        #leads>li {
+            padding-bottom: 20px;
+            color: white;
+        }
+
+        #leads {
+            padding: 20px;
+            list-style-type: none;
+        }
+
+        #leadChat {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            background: #F2F5F8;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        #chat-header {
+            padding: 20px;
+            border-bottom: 2px solid white;
+            margin-bottom: 10px;
+        }
+
+        #chat-about {
+            float: left;
+            padding-left: 10px;
+            margin-top: 6px;
+        }
+
+        #chat-with {
+            font-weight: bold;
+            font-size: 20px;
+            color: #434651;
+        }
+
+        #chat-num-messages {
+            color: #92959E;
+        }
+
+        #lead-email {
+            color: #2d2e30;
+        }
+
+        #chat-history {
+            padding: 0 30px 20px;
+            border-bottom: 2px solid white;
+            margin-bottom: 10px;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        /* 
+        #chat-history::-webkit-scrollbar {
+            width: 1em;
+        }
+
+        #chat-history::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #chat-history::-webkit-scrollbar-thumb {
+            background-color: darkgrey;
+            outline: 1px solid slategrey;
+        } */
+
+        .message {
+            color: white;
+            padding: 18px 20px;
+            line-height: 26px;
+            font-size: 16px;
+            border-radius: 7px;
+            /* margin-bottom: 30px; */
+            width: 90%;
+            position: relative;
+
+        }
+
+        .message:after {
+            bottom: 100%;
+            left: 7%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-bottom-color: #86BB71;
+            border-width: 10px;
+            margin-left: -10px;
+        }
+
+
+        #form {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #form>button {
+            background: #333;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+        }
+
+        #chat-message\ clearfix {
+            /* padding: 30px; */
+            width: 90%;
+            margin-left: 2%;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            padding: 10px 20px;
+            font: 14px/22px "Lato", Arial, sans-serif;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        button {
+            float: right;
+            color: #94C2ED;
+            font-size: 16px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            background: #F2F5F8;
+        }
+
+        button:hover {
+            color: darken(#94C2ED, 7%);
+        }
+
+        .admin-message {
+            background-color: #86BB71;
+        }
+
+        .lead-message {
+            text-align: right;
+            background-color: #94C2ED;
+        }
+
+        .lead-message:after {
+            border-bottom-color: #94C2ED;
+            left: 93%;
+        }
+
+        #messages {
+            list-style-type: none;
+        }
+
+        #messages>li {
+            padding: 0 0.5rem 1rem;
+        }
+
+        [data-letters]:before {
+            content: attr(data-letters);
+            display: inline-block;
+            font-size: 1em;
+            width: 2.5em;
+            height: 2.5em;
+            line-height: 2.5em;
+            text-align: center;
+            border-radius: 50%;
+            background: #94C2ED;
+            vertical-align: middle;
+            margin-right: 1em;
+            color: white;
+        }
+
+        .message-data {
+            margin-bottom: 15px;
+        }
+
+        .message-data-name {
+            color: #444753;
+        }
+
+        .align-left {
+            text-align: left;
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        .clearfix-lead {
+            text-align: right;
+        }
+
+        .message-data-time {
+            color: #78787d;
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        #typing {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="crm-chat">
+        <div id="chats">
+            <ul id="leads"></ul>
+        </div>
+        <div id="leadChat">
+            <div id="chat-header">
+                <div id="chat-about">
+                    <div id="chat-with">
+                        <h3>No messages to show</h3>
+                    </div>
+                    <div id="lead-email"></div>
+                    <div id="chat-num-messages"></div>
+                    <div id="typing"></div>
+                    <button id="getItems"></button>
+                </div>
+            </div>
+            <div id="chat-history">
+                <ul id="messages"></ul>
+            </div>
+            <div id="chat-message clearfix">
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        function receiveMessageFromIndex(event) {
+            alert(2);
+            console.log('I am an iframe, I accepted it:', event.data);
+        }
+
+        window.addEventListener("message", receiveMessageFromIndex, false);
+
+        var socket = io();
+        var typing = false;
+        var timeout = undefined;
+        var user;
+
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('chat-message clearfix');
+        var input = document.getElementById('input');
+        var typingMsg = document.getElementById('typing');
+        var chats = document.getElementById('leads');
+        var send = document.getElementById('send');
+        var rooms = {};
+        let activatedRoom;
+        const chatWithInitialText = "Chat with ";
+        const numOfMessagesInitialText = " messages";
+
+        window.addEventListener('load', function (e) {
+            socket.emit('join room crm');
+            socket.emit('get all rooms', 1);
+        })
+
+        // socket.on('welcome message', function (msg) {
+        // });
+
+        socket.on('set all rooms', function (allRooms) {
+            allRooms.map(room => {
+                rooms[room.leadEmail] = { leadName: room.leadName, leadEmail: room.leadEmail, roomId: room.roomId, messages: [] }
+                rooms[room.leadEmail].messages = room.messages;
+            })
+            allRooms.map(room => {
+                return newChat(room.leadName, room.leadEmail, room.roomId);
+            })
+        })
+
+        socket.on('lead typing message', function () {
+            let typing = document.getElementById("typing");
+            typing.innerText = "typing...";
+        })
+
+        socket.on('lead no longer typing message', function () {
+            let typing = document.getElementById("typing");
+            typing.innerHTML = "";
+        })
+
+        socket.on('lead message', function (msg, roomId, leadId, time) {
+            leadName = rooms[leadId].leadName;
+
+            if (roomId === activatedRoom) {
+                var item = document.createElement('li');
+
+                let messageContent = document.createElement('div');
+                messageContent.textContent = msg;
+
+                let messageData = document.createElement('div');
+                let senderData = document.createElement('span');
+                let timeData = document.createElement('span');
+
+                senderData.className = "message-data-name";
+
+                messageContent.className = "message lead-message";
+                messageData.className = "message-data align-right";
+                item.className = "clearfix clearfix-lead";
+
+                senderData.innerText = leadName;
+                timeData.className = "message-data-time";
+                timeData.innerText = time;
+
+                messageData.appendChild(timeData);
+                messageData.appendChild(senderData);
+
+                item.appendChild(messageData);
+
+                item.appendChild(messageContent);
+
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+            rooms[leadId].messages.push({ message: msg, sender: "lead", time: time });
+            let numOfMessages = document.getElementById("chat-num-messages");
+            if (activatedRoom) {
+                numOfMessages.innerText = rooms[leadId].messages.length + numOfMessagesInitialText;
+            }
+        });
+
+        socket.on('admin message', function (msg, roomId, leadId) {
+            leadName = rooms[leadId].leadName;
+            let time = rooms[leadId].messages[rooms[leadId].messages.length - 1].time;
+
+            if (roomId === activatedRoom) {
+                var item = document.createElement('li');
+
+                let messageContent = document.createElement('div');
+                messageContent.textContent = msg;
+
+                let messageData = document.createElement('div');
+                let senderData = document.createElement('span');
+                let timeData = document.createElement('span');
+
+                senderData.className = "message-data-name";
+                timeData.className = "message-data-time";
+                timeData.innerText = time;
+
+                messageContent.className = "message admin-message";
+                messageData.className = "message-data align-left"
+                item.className = "clearfix";
+
+                senderData.innerText = "Oriya";
+
+                messageData.appendChild(senderData);
+                messageData.appendChild(timeData);
+
+                item.appendChild(messageData);
+
+                item.appendChild(messageContent);
+
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
+            rooms[leadId].messages.push({ message: msg, sender: "admin", time: formatted_date() });
+            let numOfMessages = document.getElementById("chat-num-messages");
+            numOfMessages.innerText = rooms[leadId].messages.length + numOfMessagesInitialText;
+        });
+
+        socket.on('new message', function (leadName, leadEmail, leadId) {
+            rooms[leadEmail] = { room: leadId, leadName: leadName, messages: [] };
+            var item = document.createElement('li');
+            item.addEventListener('click', function (e) {
+                const roomId = e.target.data;
+                activatedRoom = Number(roomId);
+                populateMessages(leadEmail, leadName);
+                let lead = document.getElementById("chat-with");
+                lead.innerText = chatWithInitialText + leadName;
+
+                const fullName = leadName.split(' ');
+                const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+                const letters = initials.toUpperCase();
+
+                lead.setAttribute('data-letters', letters);
+                let leadEmailAddress = document.getElementById("lead-email");
+                leadEmailAddress.innerText = leadEmail;
+                let numOfMessages = document.getElementById("chat-num-messages");
+                numOfMessages.innerText = rooms[leadEmail].messages.length + numOfMessagesInitialText;
+                var getItemsButton = document.getElementById('getItems');
+                getItemsButton.value = 'Add to clients';
+                getItemsButton.addEventListener('click', (leadName, leadEmail) => {
+                    // parent.postMessage('message', '*')
+                    // window.parent.postMessage('message', '*');
+                })
+
+            })
+            item.textContent = leadName;
+
+            const fullName = leadName.split(' ');
+            const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+            const letters = initials.toUpperCase();
+
+            item.setAttribute('data-letters', letters);
+
+            item.data = leadId;
+            chats.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+            socket.emit("new lead", leadId)
+        });
+
+        function newChat(leadName, leadEmail, leadId) {
+            var item = document.createElement('li');
+            item.addEventListener('click', function (e) {
+                const roomId = e.target.data;
+                activatedRoom = Number(roomId);
+                populateMessages(leadEmail, leadName);
+                let lead = document.getElementById("chat-with");
+                lead.innerText = chatWithInitialText + leadName;
+
+                const fullName = leadName.split(' ');
+                const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+                const letters = initials.toUpperCase();
+
+                lead.setAttribute('data-letters', letters);
+                let leadEmailAddress = document.getElementById("lead-email");
+                leadEmailAddress.innerText = leadEmail;
+                let numOfMessages = document.getElementById("chat-num-messages");
+                numOfMessages.innerText = rooms[leadEmail].messages.length + numOfMessagesInitialText;
+                var getItemsButton = document.getElementById('getItems');
+                getItemsButton.innerText = 'Add to clients';
+                const test = JSON.parse(JSON.stringify({ leadEmail, leadName }))
+                getItemsButton.addEventListener('click', (leadName, leadEmail) => {
+                    // getItemsButton.contentWindow.postMessage('message', '*');
+                    window.top.postMessage(test, '*');
+                })
+            })
+            item.textContent = leadName;
+
+            const fullName = leadName.split(' ');
+            const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+            const letters = initials.toUpperCase();
+
+            item.setAttribute('data-letters', letters);
+
+            item.data = leadId;
+            chats.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+            socket.emit("new lead", leadId)
+        }
+
+        function onMessageSubmit(input, leadEmail) {
+            if (input.value) {
+                const time = formatted_date();
+
+                socket.emit('admin message', input.value, activatedRoom, leadEmail, time);
+                socket.emit('store message', leadEmail, { message: input.value, sender: "admin", time: formatted_date() })
+                input.value = '';
+            }
+        }
+
+        function populateMessages(leadEmail, leadName) {
+            messages.innerHTML = "";
+            form.innerHTML = "";
+            const input = document.createElement('textarea');
+            input.setAttribute('id', 'messageToSend');
+            input.setAttribute('placeholder', "Type your message");
+            input.setAttribute('rows', '3');
+            input.addEventListener('keypress', (event) => {
+                if (event.keyCode == 13) {
+                    if (!event.shiftKey) {
+                        //Stops enter from creating a new line
+                        event.preventDefault();
+                        onMessageSubmit(input, leadEmail);
+                    }
+                    else {
+                        input.value += "\n";
+                    }
+                }
+            })
+            form.appendChild(input);
+
+            const sendButton = document.createElement('button');
+            sendButton.setAttribute('id', 'send');
+            sendButton.innerText = 'Send';
+            sendButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                onMessageSubmit();
+            });
+            sendButton.addEventListener('keyup', function (e) {
+                e.preventDefault();
+                onMessageSubmit(input, leadEmail);
+            });
+            form.appendChild(sendButton);
+
+            rooms[leadEmail].messages.forEach(message => {
+                var item = document.createElement('li');
+
+                let messageContent = document.createElement('div');
+                messageContent.textContent = message.message;
+
+                let messageData = document.createElement('div');
+                let senderData = document.createElement('span');
+                let timeData = document.createElement('span');
+
+                senderData.className = "message-data-name";
+                timeData.className = "message-data-time";
+                timeData.innerText = message.time;
+
+                if (message.sender === "admin") {
+                    messageContent.className = "message admin-message";
+                    messageData.className = "message-data align-left"
+                    item.className = "clearfix";
+
+                    senderData.innerText = "Oriya";
+
+                    messageData.appendChild(senderData);
+                    messageData.appendChild(timeData);
+                }
+                else {
+                    messageContent.className = "message lead-message";
+                    messageData.className = "message-data align-right";
+                    item.className = "clearfix clearfix-lead";
+
+                    senderData.innerText = leadName;
+
+                    messageData.appendChild(timeData);
+                    messageData.appendChild(senderData);
+                }
+
+
+
+                item.appendChild(messageData);
+
+                item.appendChild(messageContent);
+
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            })
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function formatted_date() {
+            var result = "";
+            var d = new Date();
+            result += d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() +
+                " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+            return result;
+        }
+
+    </script>
+</body>
+
+</html>

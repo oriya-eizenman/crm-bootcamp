@@ -11,8 +11,9 @@ import LocationPin from './LocationPin';
 import Geocode from "react-geocode";
 import { getPosition } from '../scripts/manageMap';
 import { compose } from "recompose";
+import { gKey } from '../Constants/keys/keys';
 
-Geocode.setApiKey("AIzaSyCQi8_SRDC00uhkijhmtvPGhtQPOo0STRM");
+Geocode.setApiKey(gKey);
 
 function MapContainer(props) {
     const [activeMarker, setActiveMarker] = useState({});
@@ -136,7 +137,7 @@ function MapContainer(props) {
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyCQi8_SRDC00uhkijhmtvPGhtQPOo0STRM'
+    apiKey: gKey
 })(MapContainer);
 
 
@@ -149,8 +150,6 @@ export default GoogleApiWrapper({
 // import LocationPin from './LocationPin';
 // import Geocode from "react-geocode";
 // import { getPosition } from '../scripts/manageMap';
-
-// Geocode.setApiKey("AIzaSyCQi8_SRDC00uhkijhmtvPGhtQPOo0STRM");
 
 // function MapContainer(props) {
 //     const [activeMarker, setActiveMarker] = useState({});
@@ -248,8 +247,4 @@ export default GoogleApiWrapper({
 //         </div >
 //     );
 // }
-
-// export default GoogleApiWrapper({
-//     apiKey: 'AIzaSyCQi8_SRDC00uhkijhmtvPGhtQPOo0STRM'
-// })(MapContainer);
 

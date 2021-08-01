@@ -29,6 +29,10 @@ const getNavBarLinks = (setLoggedInUser) =>
             value: "Items"
         },
         {
+            to: "/messages",
+            value: "Messages"
+        },
+        {
             to: "/delivery-map",
             value: "Map"
         },

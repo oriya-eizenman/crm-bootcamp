@@ -44,6 +44,7 @@ const makeNewUser = (req, res) => {
 }
 
 const loginUser = (req, res) => {
+    // console.log(req.body)
     const password = (md5(req.body.password));
     const userData = {
         userEmail: req.body.userEmail,

@@ -26,6 +26,7 @@ import UserContext from './UserContext';
 import Map from './Components/test'
 import DeliveryMap from './Pages/DeliveryMap';
 import OrderDetails from './Pages/OrderDetails';
+import Messages from './Pages/Messages';
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -95,6 +96,10 @@ const App = () => {
           <Route exact path="/order/:id">
             <OrderDetails />
           </Route>
+
+          <Route exact path="/messages">
+            <Messages />
+          </Route>
         </Switch>
         :
         <Switch>
@@ -151,6 +156,9 @@ const App = () => {
             <Redirect to="/" />
           </Route>
           <Route exact path="/order/:order-id">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/messages">
             <Redirect to="/" />
           </Route>
         </Switch>
