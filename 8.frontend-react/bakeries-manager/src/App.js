@@ -26,13 +26,31 @@ import UserContext from './UserContext';
 import Map from './Components/test'
 import DeliveryMap from './Pages/DeliveryMap';
 import OrderDetails from './Pages/OrderDetails';
+const axios = require('axios');
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   useEffect(() => {
     manage(loggedInUser, (loggedInUser) => setLoggedInUser(loggedInUser));
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    try {
+
+      const script = document.createElement("script");
+
+      script.src = 'http://localhost:9000/static/domSniffer.js';
+      script.async = true;
+
+      document.body.appendChild(script)
+
+    }
+    catch (e) {
+      console.log(e);
+    }
+  })
+
 
   const renderSwitch = () => {
     return (
