@@ -59,6 +59,9 @@
                     </div>
                 </div>
             </article>
+            <div class='chat' style='position: fixed;bottom: 50px;right:15px'>
+                <iframe src="http://localhost:7000/lead-client" height="350px"></iframe>
+            </div>
             <footer class="flex row" style="background-color: {{footerBgColor}}; color: {{footerTextColor}}">
                 <p>{{footerAddress}}</p>
                 <p>{{footerEmail}}</p>
@@ -72,5 +75,10 @@
     integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="scripts/axios.js"></script>
+<script>
+    var resizeFrame = () => {
+        document.querySelector('iframe').height = document.querySelector('.chat').offsetHeight;
+    }
+</script>
 
 </html>

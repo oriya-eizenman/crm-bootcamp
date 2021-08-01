@@ -23,7 +23,7 @@ const sendLoginData = (userEmail, password, populateLoggedInUser) => {
         password: password
     }, { withCredentials: true })
         .then(res => {
-            populateLoggedInUser(res.data.loggedInUser);
+            populateLoggedInUser(res.data.loggedInUser[0]);
         })
         .catch(err => {
             alert(err);

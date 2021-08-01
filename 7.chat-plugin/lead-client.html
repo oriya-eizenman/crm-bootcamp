@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: transparent;
+        }
+
+        /* #chatWrapper {
+            position: relative;
+        } */
+
+        .open-button {
+            background-color: #0e2698;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: absolute;
+            bottom: 23px;
+            right: 28px;
+            width: fit-content;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            left: 5px;
+        }
+
+        #chat-popup {
+            display: none;
+            /* position: fixed; */
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            height: 90vh;
+            overflow-y: scroll;
+            background-color: white;
+        }
+
+        #chat-history {
+            padding: 0 30px 20px;
+            border-bottom: 2px solid white;
+            margin-bottom: 10px;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        #messages {
+            list-style-type: none;
+        }
+
+        #messages>li {
+            padding: 0 0.5rem 1rem;
+        }
+
+        #form {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #form>button {
+            background: #333;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages>li {
+            padding: 0.5rem 1rem;
+            list-style-type: none;
+        }
+
+        #typing {
+            color: #333;
+        }
+
+        .admin-message {
+            background-color: #86BB71;
+        }
+
+        .lead-message {
+            text-align: right;
+            background-color: #94C2ED;
+        }
+
+        .lead-message:after {
+            border-bottom-color: #94C2ED;
+            left: 93%;
+        }
+
+        .message {
+            color: white;
+            padding: 5px 10px;
+            line-height: 26px;
+            font-size: 16px;
+            border-radius: 7px;
+            /* margin-bottom: 30px; */
+            width: 90%;
+            position: relative;
+
+        }
+
+        /* 
+        .message:after {
+            bottom: 100%;
+            left: 7%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-bottom-color: #86BB71;
+            border-width: 10px;
+            margin-left: -10px;
+        } */
+
+        .message-data {
+            margin-bottom: 15px;
+        }
+
+        .message-data-name {
+            color: #444753;
+        }
+
+        .align-left {
+            text-align: left;
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        .clearfix-lead {
+            text-align: right;
+        }
+
+        .message-data-time {
+            color: #78787d;
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        #typing {
+            color: #333;
+        }
+
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div id="chatWrapper"> -->
+    <button class="open-button" onclick="openForm()">Chat</button>
+
+    <div id="chat-popup">
+        <div id="chat-container">
+            <div id="chat-history">
+                <button class="close-button" onclick="closeForm()">x</button>
+                <ul id="messages"></ul>
+            </div>
+            <form id="form" action="">
+                <div id="typing"></div>
+                <input id="input" autocomplete="off" /><button>Send</button>
+            </form>
+        </div>
+    </div>
+    <!-- </div> -->
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        function openForm() {
+
+            document.getElementById("chat-popup").style.display = "block";
+            document.getElementById("chat-popup").height = "350px";
+            document.querySelector(".open-button").style.display = "none";
+        }
+
+        function closeForm() {
+            document.querySelector(".open-button").style.display = "block";
+            document.getElementById("chat-popup").style.display = "none";
+        }
+
+        var socket = io();
+        var typing = false;
+        var timeout = undefined;
+        let leadName = "";
+        let leadEmail = "";
+        let roomId;
+        let leadMessages = [];
+
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        var typingMsg = document.getElementById('typing');
+
+        var typing = false;
+        var timeout = undefined;
+
+        window.addEventListener('load', function (e) {
+            if (window.localStorage.getItem("chat") !== null) {
+                const chatData = JSON.parse(window.localStorage.getItem("chat"));
+                leadName = chatData.leadName;
+                leadEmail = chatData.leadEmail;
+                roomId = chatData.roomId;
+                socket.emit('lead join to room', roomId);
+                socket.emit('check for lead', leadEmail, roomId);
+            }
+            else {
+                roomId = Date.now() + Math.random();
+                socket.emit('get welcome message', 'Hi, my name is Oriya and I will be your assistant', roomId, formatted_date());
+                socket.emit('send admin message', 'Please enter your email address', roomId, formatted_date());
+            }
+        })
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                let time = formatted_date();
+                socket.emit('lead message', input.value, roomId, leadEmail, time);
+                if (leadEmail !== "" && leadName !== "")
+                    socket.emit('store message', leadEmail, { message: input.value, sender: "lead", time: time });
+                input.value = '';
+                typing = false;
+                socket.emit('lead no longer typing message', roomId);
+            }
+        });
+
+        input.addEventListener('keyup', function (e) {
+            if (input.value === "") {
+                typing = false;
+                socket.emit('lead no longer typing message', roomId);
+            }
+            else if (e.keyCode !== 13) {
+                if (typing === false) {
+                    typing = true;
+                    socket.emit('lead typing message', roomId);
+                }
+            }
+        })
+
+        socket.on('admin message', function (msg, time) {
+            // var item = document.createElement('li');
+            // item.textContent = msg;
+            // item.className = "admin-message";
+            // messages.appendChild(item);
+            // window.scrollTo(0, document.body.scrollHeight);
+            var item = document.createElement('li');
+
+            let messageContent = document.createElement('div');
+            messageContent.textContent = msg;
+
+            let messageData = document.createElement('div');
+            let senderData = document.createElement('div');
+            let timeData = document.createElement('div');
+
+            senderData.className = "message-data-name";
+            timeData.className = "message-data-time";
+            timeData.innerText = time;
+
+            messageContent.className = "message admin-message";
+            messageData.className = "message-data align-left"
+            item.className = "clearfix";
+
+            senderData.innerText = "Oriya";
+
+            messageData.appendChild(senderData);
+            messageData.appendChild(timeData);
+
+            item.appendChild(messageData);
+
+            item.appendChild(messageContent);
+
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        socket.on('lead message', function (msg, room, leadId, time) {
+            // var item = document.createElement('li');
+            // item.textContent = msg;
+            // messages.appendChild(item);
+            // window.scrollTo(0, document.body.scrollHeight);
+            var item = document.createElement('li');
+
+            let messageContent = document.createElement('div');
+            messageContent.textContent = msg;
+
+            let messageData = document.createElement('div');
+            let senderData = document.createElement('div');
+            let timeData = document.createElement('div');
+
+            senderData.className = "message-data-name";
+
+            messageContent.className = "message lead-message";
+            messageData.className = "message-data align-right";
+            item.className = "clearfix clearfix-lead";
+
+            senderData.innerText = leadName;
+            timeData.className = "message-data-time";
+            timeData.innerText = time;
+
+            messageData.appendChild(senderData);
+            messageData.appendChild(timeData);
+
+            item.appendChild(messageData);
+
+            item.appendChild(messageContent);
+
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+
+            if (leadEmail === "") {
+                leadEmail = msg;
+                socket.emit('check for lead', leadEmail, roomId);
+            }
+            else if (leadName === "") {
+                leadName = msg;
+                socket.emit('send lead data', leadName, leadEmail, roomId);
+                setLocalStorage();
+            }
+        });
+
+        socket.on('set lead data', function (leadData) {
+            if (leadData) {
+                leadName = leadData.leadName;
+                leadMessages = leadData.messages;
+                populateMessages();
+                socket.emit('set room id', leadEmail, roomId);
+                setLocalStorage();
+            }
+            else {
+                socket.emit('send admin message', 'Please enter your full name', roomId);
+            }
+        });
+
+        function setLocalStorage() {
+            window.localStorage.setItem("chat", JSON.stringify({ leadEmail: leadEmail, leadName: leadName, roomId: roomId }));
+        }
+
+        function populateMessages() {
+            leadMessages.forEach(message => {
+                var item = document.createElement('li');
+
+                let messageContent = document.createElement('div');
+                messageContent.textContent = message.message;
+
+                let messageData = document.createElement('div');
+                let senderData = document.createElement('div');
+                let timeData = document.createElement('div');
+
+                senderData.className = "message-data-name";
+                timeData.className = "message-data-time";
+                timeData.innerText = message.time;
+
+                if (message.sender === "admin") {
+                    messageContent.className = "message admin-message";
+                    messageData.className = "message-data align-left"
+                    item.className = "clearfix";
+
+                    senderData.innerText = "Oriya";
+
+                    messageData.appendChild(senderData);
+                    messageData.appendChild(timeData);
+                }
+                else {
+                    messageContent.className = "message lead-message";
+                    messageData.className = "message-data align-right";
+                    item.className = "clearfix clearfix-lead";
+
+                    senderData.innerText = leadName;
+
+                    messageData.appendChild(senderData);
+                    messageData.appendChild(timeData);
+                }
+
+
+
+                item.appendChild(messageData);
+
+                item.appendChild(messageContent);
+
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            })
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function formatted_date() {
+            var result = "";
+            var d = new Date();
+            result += d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() +
+                " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+            return result;
+        }
+
+    </script>
+</body>
+
+</html>
