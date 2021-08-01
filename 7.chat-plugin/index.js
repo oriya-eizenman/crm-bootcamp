@@ -32,6 +32,7 @@ app.get('/plugin', (req, res) => {
     res.sendFile(__dirname + '/mychat.js');
 });
 
+
 io.on('connection', (socket) => {
 
     socket.on('get welcome message', (message, leadId, time) => {
@@ -43,6 +44,13 @@ io.on('connection', (socket) => {
         socket.join(roomId)
         // io.in(leadId).emit('admin message', message, time);
     });
+
+    // socket.on('check if online', (roomId) => {
+    //     const clients = io.sockets.adapter.rooms.get(Number(roomId));
+    //     console.log(clients.size > 1)
+    //     socket.emit('send if lead is online', clients.size > 1);
+    //     // io.in(leadId).emit('admin message', message, time);
+    // });
 
     socket.on('get all rooms', (accountId) => {
         axios.get(`http://localhost:7000/chat/getAllRooms/${accountId}`)
