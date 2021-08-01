@@ -89,7 +89,6 @@ const removeItem = (bakery_id, item) => {
 }
 
 const createItem = (bakery_id, item, selectedFile) => {
-    console.log(selectedFile)
     axios.post('http://localhost:9991/items/createItem/', {
         bakery_id: bakery_id,
         item: item,

@@ -27,13 +27,55 @@ import Map from './Components/test'
 import DeliveryMap from './Pages/DeliveryMap';
 import OrderDetails from './Pages/OrderDetails';
 import Messages from './Pages/Messages';
+const axios = require('axios');
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [stats, setStats] = useState([])
+
+  const handleClick = (event) => {
+    if (stats["click"]) {
+      let temp = stats;
+      temp["click"] += 1;
+      setStats(temp);
+    } else {
+      let temp = stats;
+      temp["click"] = 1;
+      setStats(temp);
+    }
+    // setStats({ click: stats.click + 1 })
+  }
 
   useEffect(() => {
     manage(loggedInUser, (loggedInUser) => setLoggedInUser(loggedInUser));
   }, [])
+
+  useEffect(() => {
+    try {
+      const res = axios.get('http://localhost:9000');
+      if (res) {
+        console.log(res)
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+  })
+
+  // useEffect(() => {
+  //   window.addEventListener('click', handleClick, []);
+
+  //   return () => {
+  //     window.removeEventListener('click', handleClick);
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log(stats);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [])
 
   const renderSwitch = () => {
     return (

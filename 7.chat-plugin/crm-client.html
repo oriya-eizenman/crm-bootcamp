@@ -286,6 +286,7 @@
                     <div id="lead-email"></div>
                     <div id="chat-num-messages"></div>
                     <div id="typing"></div>
+                    <button id="getItems"></button>
                 </div>
             </div>
             <div id="chat-history">
@@ -299,6 +300,13 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+        function receiveMessageFromIndex(event) {
+            alert(2);
+            console.log('I am an iframe, I accepted it:', event.data);
+        }
+
+        window.addEventListener("message", receiveMessageFromIndex, false);
+
         var socket = io();
         var typing = false;
         var timeout = undefined;
@@ -442,6 +450,13 @@
                 leadEmailAddress.innerText = leadEmail;
                 let numOfMessages = document.getElementById("chat-num-messages");
                 numOfMessages.innerText = rooms[leadEmail].messages.length + numOfMessagesInitialText;
+                var getItemsButton = document.getElementById('getItems');
+                getItemsButton.value = 'Add to clients';
+                getItemsButton.addEventListener('click', (leadName, leadEmail) => {
+                    // parent.postMessage('message', '*')
+                    // window.parent.postMessage('message', '*');
+                })
+
             })
             item.textContent = leadName;
 
@@ -475,6 +490,13 @@
                 leadEmailAddress.innerText = leadEmail;
                 let numOfMessages = document.getElementById("chat-num-messages");
                 numOfMessages.innerText = rooms[leadEmail].messages.length + numOfMessagesInitialText;
+                var getItemsButton = document.getElementById('getItems');
+                getItemsButton.innerText = 'Add to clients';
+                const test = JSON.parse(JSON.stringify({ leadEmail, leadName }))
+                getItemsButton.addEventListener('click', (leadName, leadEmail) => {
+                    // getItemsButton.contentWindow.postMessage('message', '*');
+                    window.top.postMessage(test, '*');
+                })
             })
             item.textContent = leadName;
 
@@ -588,6 +610,7 @@
                 " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
             return result;
         }
+
     </script>
 </body>
 
