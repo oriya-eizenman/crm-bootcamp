@@ -64,7 +64,7 @@ export default function Orders(props) {
     const mainContent =
         <div className="ordersMainContent">
             <Link to="/new-order">
-                <Button value="+" />
+                <Button className="addNewOrder" value="+" />
             </Link>
             {
                 ordersRef &&

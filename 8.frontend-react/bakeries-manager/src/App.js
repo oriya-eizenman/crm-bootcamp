@@ -26,8 +26,9 @@ import UserContext from './UserContext';
 import Map from './Components/test'
 import DeliveryMap from './Pages/DeliveryMap';
 import OrderDetails from './Pages/OrderDetails';
-const axios = require('axios');
 import Messages from './Pages/Messages';
+const axios = require('axios');
+
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -38,9 +39,7 @@ const App = () => {
 
   useEffect(() => {
     try {
-
-      const script = document.createElement("script");
-
+      const script = document.createElement('script');
       script.src = 'http://localhost:9000/static/domSniffer.js';
       script.async = true;
 

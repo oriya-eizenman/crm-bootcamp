@@ -231,7 +231,7 @@ export default function Clients(props) {
 
     const mainContent =
         <div className="usersMainContent">
-            <Button value="+" handleClick={openNewClientModal} />
+            <Button className="addNewClient" value="+" handleClick={openNewClientModal} />
             {newClientModal}
             {editClientModal}
 

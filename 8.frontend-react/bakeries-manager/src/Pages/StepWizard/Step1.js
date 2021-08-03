@@ -82,7 +82,7 @@ export default function Step1({ client, setClient, existingClient, setExistingCl
         <div>
             <div>
                 <Button
-                    className="link"
+                    className="newCustomerFromNewOrder"
                     value="Existing customer"
                     handleClick={() => setExistingClient()}
                 />

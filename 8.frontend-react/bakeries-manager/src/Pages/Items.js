@@ -247,6 +247,7 @@ export default function Items(props) {
     const mainContent =
         <div className="usersMainContent">
             <Button
+                className="addNewItem"
                 value="+"
                 handleClick={() => {
                     setIsNewItemModal(true);

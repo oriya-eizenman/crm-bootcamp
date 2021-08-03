@@ -63,7 +63,7 @@ export default function Users(props) {
 
     const mainContent =
         <div className="usersMainContent">
-            <Button value="+" handleClick={openModal} />
+            <Button className="addNewUser" value="+" handleClick={openModal} />
 
             <Modal
                 isOpen={modalIsOpen}

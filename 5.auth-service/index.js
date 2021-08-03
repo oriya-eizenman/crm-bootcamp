@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 app.use(middlewares);
 
 app.post('/registred', function (req, res) {
-  res.send(req.userData);
+  res.json(req.userData);
 })
 
 app.post('/signup', function (req, res) {
