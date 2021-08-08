@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-native": "^0.64.2",
+    "react-native-navigation": "^7.18.1",
+    "react-native-webview": "^11.6.6"
+  }
+}
