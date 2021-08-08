@@ -29,11 +29,13 @@ class orders extends controller
 
     public function createOrder()
     {
+        var_dump($this->jsonData["delivery_date"]);
         $order_id = $this->model->createOrder(
             $this->jsonData["client_id"],
             $this->jsonData["user_id"],
             $this->jsonData["bakery_id"],
-            $this->jsonData["total"]
+            $this->jsonData["total"],
+            $this->jsonData["delivery_date"]
         );
         $this->response["order_id"] = $order_id;
         return $this->response;

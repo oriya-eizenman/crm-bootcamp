@@ -8,7 +8,7 @@ import Select from 'react-select';
 
 export default function Form(props) {
     return (
-        <div className="formContainer">
+        <div className={`formContainer ${props.className}`}>
             <form className={"form " + props?.className}>
                 {props.fields.map(field => {
                     if (field.type === 'input')
@@ -23,21 +23,10 @@ export default function Form(props) {
                                 errMag={field.errMsg}
                                 key={field.label}
                                 className={field?.className}
+                                disabled={field?.disabled}
+                                min={field?.min}
                             />
                         )
-                    // else if (field.type === 'select')
-                    //     return (
-                    //         <select
-                    //             name={field.name}
-                    //             value={field.value}
-                    //             onChange={field.onChange}
-                    //             className={"select " + field?.className}
-                    //         >
-                    //             {field.options.map(option =>
-                    //                 <option value={option.value} className="select">{option.description}</option>
-                    //             )}
-                    //         </select>
-                    //     )
                     else if (field.type === 'select')
                         return (
                             <Select
@@ -47,6 +36,7 @@ export default function Form(props) {
                                 }}
                                 onChange={field.onChange}
                                 options={field.options}
+                                isDisabled={field.disabled}
                             />
                         )
                     else if (field.type === 'link')

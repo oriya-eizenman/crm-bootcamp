@@ -14,7 +14,9 @@ export default function Input(props) {
                 name={props.name ? props.name : ""}
                 onChange={props.handleChange}
                 placeholder={props.placeholder}
+                disabled={props.disabled}
                 className="text"
+                min={props.min}
             />
             {props.errMsg && <Label value={props.errMsg} className="errorMsg" />}
         </div>

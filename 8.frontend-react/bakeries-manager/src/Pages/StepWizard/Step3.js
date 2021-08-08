@@ -10,11 +10,9 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
     const [item, setItem] = useState({ item: "" });
     const [items, setItems] = useState([]);
     const [qty, setQty] = useState(1);
-    const [test, setTest] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
+    const [total, setTotal] = useState(0);
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    // const orderRef = useRef(order);
-    // orderRef.current = order;
 
     useEffect(() => {
         getItems(loggedInUser.bakery_id, (data) => {
@@ -25,27 +23,23 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
     const columns = useMemo(
         () => [
             {
-                Header: "Items",
-                columns: [
-                    {
-                        Header: "Item",
-                        accessor: "item"
-                    },
-                    {
-                        Header: "Qty",
-                        accessor: "qty"
-                    },
-                    {
-                        Header: "Price",
-                        accessor: "price"
-                    },
-                    {
-                        Header: "Total",
-                        accessor: "total"
-                    }
-                ]
+                Header: "Item",
+                accessor: "item"
+            },
+            {
+                Header: "Qty",
+                accessor: "qty"
+            },
+            {
+                Header: "Price",
+                accessor: "price"
+            },
+            {
+                Header: "Total",
+                accessor: "total"
             }
         ]
+
     );
 
     const fields =
@@ -87,34 +81,58 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                         type: "button",
                         value: "Add",
                         onClick: () => {
+
                             let tempOrder = order.items;
-                            tempOrder.push(
-                                {
-                                    item: item,
-                                    qty: qty
+                            const newItem =
+                            {
+                                item: item,
+                                qty: qty
+                            };
+
+
+                            let itemIndex = -1;
+                            for (let i = 0; i < orderItems.length; i++) {
+                                if (orderItems[i].item === newItem.item.item) {
+                                    itemIndex = i;
+                                    break;
                                 }
-                            );
-                            handleClick(tempOrder, order.total + qty * item.price);
-                            let tempOrderItems = [];
-                            tempOrderItems.push(
-                                {
-                                    item: item.item,
-                                    qty: qty,
-                                    price: item.price,
-                                    total: qty * item.price
-                                }
-                            )
-                            setOrderItems([...orderItems, ...tempOrderItems]);
+
+                            }
+
+                            if (itemIndex > -1) {
+                                let tempOrderItems = orderItems;
+                                let orderItem = tempOrderItems[itemIndex];
+                                tempOrderItems.splice(itemIndex, 1);
+                                orderItem = { item: orderItem.item, qty: orderItem.qty + qty, price: orderItem.price, total: orderItem.total + qty * orderItem.price };
+                                tempOrderItems.splice(itemIndex, 0, orderItem);
+                                setOrderItems([...tempOrderItems]);
+                                setTotal(total + qty * orderItem.price);
+                            }
+                            else {
+                                let tempOrderItems = [];
+                                tempOrderItems.push(
+                                    {
+                                        item: item.item,
+                                        qty: qty,
+                                        price: item.price,
+                                        total: qty * item.price
+                                    }
+                                )
+                                setOrderItems([...orderItems, ...tempOrderItems]);
+                                setTotal(total + qty * item.price);
+                            }
+                            tempOrder.push(newItem);
+                            // handleClick(tempOrder, order.total + qty * item.price);
+                            setQty(1);
                         }
                     }
                 ]
             },
         ];
-    // useEffect(() => console.log("here", order), [order])
 
     const component =
-        <div>
-            <div>
+        <div className="step3Content">
+            <div className="itemSelector">
                 <Select name={item.item}
                     options=
                     {items.map(item => {
@@ -131,13 +149,29 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                     } />
             </div>
             <div>
-                <Form fields={fields} />
-                {order.length !== 0 && <Table columns={columns} data={orderItems} />
+                <Form className="itemSelectorForm" fields={fields} />
+                {order.length !== 0 &&
+                    <div className="tableContainer">
+                        <Table
+                            columns={columns}
+                            data={orderItems}
+                            handleClick={itemData => {
+                                const tempOrderItems = orderItems;
+                                const itemIndex = tempOrderItems.indexOf(itemData);
+                                tempOrderItems.splice(itemIndex, 1);
+                                setOrderItems(tempOrderItems);
+                                setTotal(total - itemData.price * itemData.qty);
+                            }}
+                        />
+                    </div>
                 }
             </div>
         </div>
 
     const nextStep = () => {
+        console.log(orderItems)
+        console.log(total)
+        handleClick(orderItems, total)
         setCurrentStep(currentStep + 1);
     }
 

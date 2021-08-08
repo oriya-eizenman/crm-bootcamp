@@ -1,4 +1,3 @@
-const elasticsearch = require('elasticsearch');
 const express = require('express');
 const app = express();
 app.use('/static', express.static('public'))
@@ -9,47 +8,18 @@ const server = http.createServer(app);
 var cors = require('cors');
 app.use(cors());
 const axios = require('axios');
+var redis = require("redis");
+var publisher = redis.createClient();
 
-const client = new elasticsearch.Client({
-    host: 'http://localhost:9200',
-    apiVersion: '6.8'
-})
 
 app.post("/saveEvents", async (req, res) => {
     const events = req.body.events;
     if (events && events.length > 0) {
-
-        const body = events.flatMap(doc => [{ index: { _index: 'stats' } }, doc])
-
-        try {
-            const bulkResponse = await client.bulk({ refresh: true, body, type: "external" });
-            if (bulkResponse.errors) {
-                const erroredDocuments = []
-                bulkResponse.items.forEach((action, i) => {
-                    const operation = Object.keys(action)[0]
-                    if (action[operation].error) {
-                        erroredDocuments.push({
-                            status: action[operation].status,
-                            error: action[operation].error,
-                            operation: body[i * 2],
-                            document: body[i * 2 + 1]
-                        })
-                    }
-                })
-                console.log('errors', erroredDocuments)
-            }
-            else {
-                console.log("Indexing successful");
-            }
-        }
-        catch (err) {
-            console.log('error', err)
-        }
-
+        publisher.publish("events", JSON.stringify(events), function () {
+            // process.exit(0);
+            res.sendStatus(200);
+        });
     }
-    res.status(200).json({ msg: "msg" })
-
-
 })
 
 server.listen(9000, () => {

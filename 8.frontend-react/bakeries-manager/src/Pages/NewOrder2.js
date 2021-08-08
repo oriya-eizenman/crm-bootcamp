@@ -17,13 +17,10 @@ export default function NewOrder2(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const [client, setClient] = useState({});
     const [existingClient, setExistingClient] = useState(true);
-    const [order, setOrder] = useState({ total: 0, items: [] });
+    const [order, setOrder] = useState({ total: 0, items: [], deliveryDate: Date.now() });
     const [orderID, setOrderID] = useState(-1);
     const [currentStep, setCurrentStep] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
-
-    // const itemsRef = useRef(order);
-    // itemsRef.current = order;
 
     const handleClick = (orderReceived, total) => {
         setOrder({ items: orderReceived, total: total })
@@ -61,6 +58,7 @@ export default function NewOrder2(props) {
     }
 
     const addOrder = async () => {
+        console.log(order)
         const order_id = await createOrder(
             loggedInUser.bakery_id,
             loggedInUser.user_id,
@@ -84,7 +82,7 @@ export default function NewOrder2(props) {
                         client={client}
                         existingClient={existingClient}
                         setExistingClient={() => setExistingClient(!existingClient)}
-                        stepName='Contact info'
+                        stepName='Contact information'
                         currentStep={currentStep}
                         setCurrentStep={setCurrentStep}
                     />,
@@ -95,7 +93,7 @@ export default function NewOrder2(props) {
                         setClient={(client) => setClient(client)}
                         client={client}
                         existingClient={existingClient}
-                        stepName='Delivery Info'
+                        stepName='Delivery Information'
                         currentStep={currentStep}
                         setCurrentStep={setCurrentStep}
                     />
@@ -119,6 +117,8 @@ export default function NewOrder2(props) {
                         stepName='Order Summary'
                         currentStep={currentStep}
                         setCurrentStep={setCurrentStep}
+                        setOrder={setOrder}
+                        order={order}
                         handleSubmit={handleSubmit}
                     />
             }

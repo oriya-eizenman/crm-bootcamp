@@ -1,13 +1,48 @@
 const sql = require('../scripts/sql');
 const jwt = require('jsonwebtoken');
 const { domain, masterKey, accessTokenSecret } = require('../config');
-const Mailgun = require('mailgun-js');
+const config = require('../config');
 const md5 = require('md5');
+const redis = require("redis");
+const publisher = redis.createClient();
+const dotenv = require('dotenv');
+dotenv.config();
 
+const Enums = {
 
+    "ACCESS_TOKEN_NAME": "access_token"
+}
+
+const setCookie = (res, name, value) => {
+    res.cookie(name, value, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    })
+}
+
+const respond = (res, message, status = true, extra_data) => {
+
+    const code = status ? 200 : 500;
+    res.status(code).json({ message, ...extra_data });
+
+}
+
+const encrypt = (str, algo = "MD5") => {
+    switch (algo) {
+        case "MD5":
+            return md5(str);
+            break;
+
+        default:
+            break;
+    }
+    return str;
+
+}
 
 const makeNewUser = (req, res) => {
-    const password = (md5(req.body.password));
+
+    const password = encrypt(req.body.password);
     const userData = {
         userName: req.body.userName,
         userEmail: req.body.userEmail,
@@ -29,12 +64,8 @@ const makeNewUser = (req, res) => {
                     password: userData.password
                 }
             }, accessTokenSecret, { expiresIn: '24h' });
-            res.cookie("access_token", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-            })
-                .status(200)
-                .json({ message: "Logged in successfully" });
+            setCookie(Enums.ACCESS_TOKEN_NAME, token);
+            respond(res, "Logged in successfully");
         }
         catch (exc) {
             console.error(exc.message);
@@ -45,7 +76,7 @@ const makeNewUser = (req, res) => {
 
 const loginUser = (req, res) => {
     // console.log(req.body)
-    const password = (md5(req.body.password));
+    const password = encrypt(req.body.password);
     const userData = {
         userEmail: req.body.userEmail,
         password: password
@@ -57,12 +88,8 @@ const loginUser = (req, res) => {
                 res.send('email or password incorrect');
             else {
                 const token = jwt.sign({ userData: data[0] }, accessTokenSecret, { expiresIn: '24h' });
-                res.cookie("access_token", token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                })
-                    .status(200)
-                    .json({ message: "Logged in successfully", loggedInUser: data });
+                setCookie(res, "access_token", token);
+                respond(res, "Logged in successfully", true, { loggedInUser: data });
             }
         }
         );
@@ -79,10 +106,10 @@ const logoutUser = (res) => {
         .json({ message: "Successfully logged out" });
 }
 
-const sendEmail = (from, to, subject, text, html, res) => {
+const sendEmail = async (from, to, subject, text, html, res) => {
     const mailGun = new Mailgun({
-        apiKey: masterKey,
-        domain: domain,
+        apiKey: config.masterKey,
+        domain: config.domain,
     });
     const data = {
         from: from,
@@ -91,19 +118,24 @@ const sendEmail = (from, to, subject, text, html, res) => {
         text: text,
         html: html,
     };
-    mailGun.messages().send(data, function (err, body) {
+    await mailGun.messages().send(data, function (err, body) {
         if (err) {
-            res.json({ error: err });
             console.log("got an error: ", err);
-        } else {
-            res.json({});
         }
     });
 }
 
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+
 const sendResetPasswordEmail = (req, res) => {
     const userEmail = req.body.userEmail;
     try {
+
         sql.isUserExists(userEmail, (data) => {
             if (data.length === 0) {
                 res.send(false);
@@ -175,6 +207,20 @@ const sendAddUserEmail = (req, res) => {
     }
 }
 
+const sendEmailToMailingList = (req, res) => {
+    const userData = req.userData;
+    const mailingList = req.body.mailingList;
+    const mailData = {
+        sender: userData.user_email,
+        recipients: mailingList,
+        title: "test",
+        content: "test",
+    }
+    publisher.publish("mailingList", JSON.stringify(mailData), function () {
+        res.sendStatus(200);
+    });
+}
+
 const addUser = (req, res) => {
     jwt.verify(req.body.userData, accessTokenSecret, (err, result) => {
         if (err) {
@@ -225,4 +271,16 @@ const deleteUser = (req, res) => {
     }
 }
 
-module.exports = { makeNewUser, loginUser, logoutUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, addUser, sendBakeryEmployees, deleteUser };
+module.exports = {
+    makeNewUser,
+    loginUser,
+    logoutUser,
+    sendResetPasswordEmail,
+    resetPassword,
+    sendAddUserEmail,
+    addUser,
+    sendBakeryEmployees,
+    deleteUser,
+    sendEmailToMailingList,
+    sendEmail
+};

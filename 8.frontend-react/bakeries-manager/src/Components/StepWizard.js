@@ -23,7 +23,7 @@ export default function StepWizard({ steps, currentStep, setCurrentStep }) {
 
     return (
         // { mainContent }
-        <div>
+        <div className="stepContainer">
             {step.component}
         </div>
     );

@@ -49,7 +49,10 @@ export default function Table({
     handleEdit,
     isOrder,
     handleShow,
-    hideActions
+    hideActions,
+    showCheckBox,
+    handleToggleMailingList,
+    mailingList
 }) {
     const {
         getTableProps, // table props from react-table
@@ -109,7 +112,9 @@ export default function Table({
                             </th>
                         </tr>
                         {headerGroups.map(headerGroup => (
+                            // {showCheckBox && <input></input>}
                             <tr {...headerGroup.getHeaderGroupProps()}>
+                                {mailingList && <th></th>}
                                 {headerGroup.headers.map(column => (
                                     <th className="tableHeader"
                                         {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -126,8 +131,8 @@ export default function Table({
                                     </th>
                                 )
                                 )}
-                                {!hideActions && <th className="tableHeader">Delete</th>}
-                                {!hideActions && <th className="tableHeader">Edit</th>}
+                                {/* {!hideActions && <th className="tableHeader">Delete</th>}
+                                {!hideActions && <th className="tableHeader">Edit</th>} */}
                             </tr>
                         ))}
                     </thead>
@@ -136,6 +141,19 @@ export default function Table({
                             prepareRow(row);
                             return (
                                 <tr {...row.getRowProps()}>
+                                    {
+                                        mailingList &&
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                name="mailingList"
+                                                onChange={() => handleToggleMailingList(row.original)}
+                                            // checked={mailingList.includes(row.original)}
+                                            // checked={(   ) => isInMailingList(row.original)}
+                                            >
+                                            </input>
+                                        </td>
+                                    }
                                     {row.cells.map(cell => {
 
                                         return <td className="cell" {...cell.getCellProps()}>{cell.render("Cell")}</td>;

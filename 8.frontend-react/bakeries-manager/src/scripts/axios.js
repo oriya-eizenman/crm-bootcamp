@@ -128,5 +128,24 @@ const removeUser = (userEmail) => {
         })
 }
 
+const sendEmailToMailingList = async (mailingList) => {
+    const res = await axios.post('http://localhost:8005/sendEmailToMailingList', {
+        mailingList
+    }, { withCredentials: true });
+    console.log(res);
+}
 
-export { sendSignUpData, sendLoginData, requestLogout, getLoggedInUser, sendResetPasswordEmail, resetPassword, sendAddUserEmail, sendUserSignUpData, getEmployeesInBakery, removeUser };
+
+export {
+    sendSignUpData,
+    sendLoginData,
+    requestLogout,
+    getLoggedInUser,
+    sendResetPasswordEmail,
+    resetPassword,
+    sendAddUserEmail,
+    sendUserSignUpData,
+    getEmployeesInBakery,
+    removeUser,
+    sendEmailToMailingList
+};

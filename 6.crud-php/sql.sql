@@ -8,6 +8,7 @@ total varchar(100),
 invoice varchar(100),
 status varchar(100) DEFAULT "pending",
 created timestamp default current_timestamp not null
+delivery_time timestamp not null
 );
 
 -- items table

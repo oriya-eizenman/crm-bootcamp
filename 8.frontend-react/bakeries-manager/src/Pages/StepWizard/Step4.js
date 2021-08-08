@@ -3,8 +3,27 @@ import Form from '../../Components/Form';
 import UserContext from '../../UserContext';
 import Step from './Step';
 
-export default function Step4({ client, existingClient, stepName, currentStep, setCurrentStep, order, handleSubmit }) {
+export default function Step4({ client, existingClient, stepName, currentStep, setCurrentStep, order, handleSubmit, setOrder }) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const [deliveryDateIsSet, setDeliveryDateIsSet] = useState(false);
+
+    const getNowDateAndTime = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1; //January is 0 so need to add 1 to make it 1!
+        let yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        const h = today.getHours();
+        const M = today.getMinutes();
+
+        today = yyyy + '-' + mm + '-' + dd + 'T' + h + ':' + M;
+        return today;
+    }
 
     const fields =
         [
@@ -30,12 +49,22 @@ export default function Step4({ client, existingClient, stepName, currentStep, s
             },
             {
                 type: "label",
-                value: "Estimated delivery time: 90 minutes"
+                value: "Estimated delivery time:"
             },
+            {
+                type: "input",
+                inputType: "datetime-local",
+                onChange: (event) => {
+                    setOrder({ ...order, deliveryDate: event.target.value });
+                    setDeliveryDateIsSet(true);
+                },
+                min: getNowDateAndTime(),
+                // className: "accordionQtyField"
+            }
         ]
 
     const component =
-        <Form fields={fields} />
+        <Form fields={fields} className="newOrderForm" />
 
     const nextStep = () => {
         // if (!existingClient) {
@@ -57,7 +86,7 @@ export default function Step4({ client, existingClient, stepName, currentStep, s
             stepTitle={stepName}
             previousStep={previousStep}
             nextStep={nextStep}
-            disableNextPage={false}
+            disableNextPage={!deliveryDateIsSet}
             showPrevious={true}
         />
     );

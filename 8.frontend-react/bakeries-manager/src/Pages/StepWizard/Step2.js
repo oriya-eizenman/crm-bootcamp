@@ -9,10 +9,6 @@ export default function Step2({ client, setClient, existingClient, stepName, cur
     const fields =
         [
             {
-                type: "label",
-                value: "Delivery information"
-            },
-            {
                 type: "input",
                 inputType: "text",
                 value: client.city,

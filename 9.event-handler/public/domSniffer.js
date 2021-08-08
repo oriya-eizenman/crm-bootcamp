@@ -8,7 +8,6 @@ const handleClick = (event) => {
         oldUrl = window.location.href;
     }
     if (event.target.className.includes("sidenavLink")) {
-        console.log('here')
         addSidenavClick(event);
     }
     if (event.target.className.includes("button")) {

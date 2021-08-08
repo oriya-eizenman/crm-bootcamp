@@ -4,4 +4,73 @@
     justify-content: center;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
     width: 60%;
+    height:95vh;
+}
+
+.stepContainer {
+    height: 100%;
+    margin-bottom: 0.5em;
+}
+
+.stepData {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto 1em;
+}
+
+.stepContent{
+    align-self: start;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: scroll;
+}
+
+.step1Content {
+    margin-top: 1em;
+}
+
+.step3Content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    // justify-content: space-between;
+}
+
+.itemSelector {
+    margin-bottom: 1em;
+}
+
+.itemSelectorForm{
+    margin-bottom: 0.5em;
+}
+
+.stepNavigation {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    // justify-content: space-between;
+    position: relative;
+    padding: 1em;
+}
+
+.nextStep {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+}
+
+.tableContainer {
+    // overflow: scroll;
+    // height: 50%;
+}
+
+.newOrderForm {
+    height: 100%;
+    line-height: 2em;
+    // justify-content: flex-start;
 }

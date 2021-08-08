@@ -6,7 +6,8 @@ import UserContext from '../UserContext';
 import Modal from 'react-modal';
 import Button from '../Components/Button';
 import Form from '../Components/Form';
-import { createClient, updateClient } from '../scripts/manageClients';
+import { createClient, updateClient, sendToMailingList } from '../scripts/manageClients';
+import { RiWomenFill } from 'react-icons/ri';
 
 export default function Clients(props) {
     const clientInitialState = {
@@ -26,6 +27,7 @@ export default function Clients(props) {
     const [editClientModalIsOpen, setEditClientModalIsOpen] = useState(false);
     const [client, setClient] = useState(clientInitialState);
     const [updateTable, setUpdateTable] = useState(false);
+    const [mailingList, setMailingList] = useState([]);
 
     useEffect(() => {
         getClients(loggedInUser.bakery_id, (data) => {
@@ -228,10 +230,45 @@ export default function Clients(props) {
             </div>
         </Modal>
 
+    const addAllClients = () => {
+        setMailingList(clients);
+    }
+
+    const handleToggleMailingList = (clientData) => {
+        const clientIndex = mailingList.indexOf(clientData);
+        console.log(clientIndex)
+        let tempMailingList = mailingList;
+        if (clientIndex > -1) {
+            tempMailingList.splice(clientIndex, 1);
+        }
+        else {
+            tempMailingList.push(clientData);
+        }
+        setMailingList(tempMailingList);
+        console.log(mailingList)
+    }
+
+    const sendEmailToMailingList = () => {
+        sendToMailingList(mailingList);
+    }
 
     const mainContent =
         <div className="usersMainContent">
-            <Button className="addNewClient" value="+" handleClick={openNewClientModal} />
+            <Button
+                className="addNewClient"
+                value="+"
+                handleClick={openNewClientModal}
+            />
+            <Button
+                className="addAllClientsToEmail"
+                value="Select all"
+                handleClick={addAllClients}
+            />
+            <Button
+                className="sendEmailToClients"
+                value="Send Email"
+                handleClick={sendEmailToMailingList}
+            />
             {newClientModal}
             {editClientModal}
 
@@ -244,6 +281,8 @@ export default function Clients(props) {
                         handleClick={(clientData) => handleDeleteClient(clientData.client_email)}
                         handleEdit={(clientData) => handleEditClient(clientData)}
                         databaseColumn="client_email"
+                        mailingList={mailingList}
+                        handleToggleMailingList={(clientData) => handleToggleMailingList(clientData)}
                     />
                 </div>
             }

@@ -55,9 +55,12 @@ app.post("/bakeryEmployees", (req, res) => {
 });
 
 app.post("/deleteUser", (req, res) => {
-  console.log('here')
   helpers.deleteUser(req, res);
 });
+
+app.post("/sendEmailToMailingList", (req, res) => {
+  helpers.sendEmailToMailingList(req, res);
+})
 
 app.get('/', function (req, res) {
   res.send('hello there');

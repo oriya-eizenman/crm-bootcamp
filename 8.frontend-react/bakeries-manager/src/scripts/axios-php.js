@@ -140,13 +140,16 @@ const removeOrder = (bakery_id, order_id) => {
 }
 
 const addOrder = async (bakery_id, user_id, client_id, order, setOrder) => {
+    console.log(order)
     const result = await axios.post('http://localhost:9991/orders/CreateOrder/', {
         bakery_id: bakery_id,
         user_id: user_id,
         client_id: client_id,
         total: order.total,
+        delivery_date: order.deliveryDate
     }, { withCredentials: true });
     if (result) {
+        console.log(result.data)
         return result.data.order_id;
     }
 }

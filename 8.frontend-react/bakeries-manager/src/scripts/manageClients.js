@@ -1,4 +1,13 @@
-import { getClientsInBakery, removeClient, addClient, editClient, getClientData } from './axios-php';
+import {
+    getClientsInBakery,
+    removeClient,
+    addClient,
+    editClient,
+    getClientData,
+} from './axios-php';
+import {
+    sendEmailToMailingList
+} from './axios';
 
 function getClients(bakery_id, populateClients) {
     getClientsInBakery(bakery_id, populateClients);
@@ -21,10 +30,17 @@ function updateClient(client) {
     editClient(client);
 }
 
+function sendToMailingList(mailingList) {
+    sendEmailToMailingList(mailingList);
+}
+
+// export default addUser;
+
 export {
     getClients,
     deleteClient,
     createClient,
     updateClient,
-    getClient
+    getClient,
+    sendToMailingList
 };

@@ -39,13 +39,14 @@ class Model_orders extends Model_crud
         return $this->delete("orders", $conditions);
     }
 
-    public function createOrder($client_id, $user_id, $bakery_id, $total)
+    public function createOrder($client_id, $user_id, $bakery_id, $total, $delivery_date)
     {
         $conditions = [
             "client_id" => $client_id,
             "user_id" => $user_id,
             "bakery_id" => $bakery_id,
-            "total" => $total
+            "total" => $total,
+            "delivery-time" => $delivery_date
         ];
         return $this->insert("orders", $conditions);
     }
