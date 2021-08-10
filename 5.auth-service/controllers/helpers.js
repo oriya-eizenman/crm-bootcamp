@@ -89,7 +89,7 @@ const loginUser = (req, res) => {
             else {
                 const token = jwt.sign({ userData: data[0] }, accessTokenSecret, { expiresIn: '24h' });
                 setCookie(res, "access_token", token);
-                respond(res, "Logged in successfully", true, { loggedInUser: data });
+                respond(res, "Logged in successfully", true, { loggedInUser: data, token: token });
             }
         }
         );
