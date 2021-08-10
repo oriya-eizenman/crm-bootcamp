@@ -4,9 +4,7 @@ import {
     Text,
     Button,
     StyleSheet,
-    FlatList,
     SafeAreaView,
-    TouchableOpacity,
     ScrollView,
     TextInput,
     Modal,
@@ -15,17 +13,13 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation } from 'react-native-navigation';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { USER_KEY, USER_DATA } from './config'
+import { USER_DATA } from './config'
 import axios from 'axios';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-import { getOrderItems } from '../../../8.frontend-react/bakeries-manager/src/scripts/axios-php';
-import { updateOrder } from '../../../8.frontend-react/bakeries-manager/src/scripts/manageOrders';
+import { Table, Row } from 'react-native-table-component';
 
 export default function OrderDetails(props) {
     const [user, setUser] = useState(null);
     const [order, setOrder] = useState([]);
-    const [page, setPage] = useState(1);
-    const [selectedId, setSelectedId] = useState(null);
     const [client, setClient] = useState({});
     const [orderItems, setOrderItems] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -72,14 +66,6 @@ export default function OrderDetails(props) {
                             onClick: () => {
                                 setActionsModalIsOpen(true);
                             }
-                            // value: isEditMode ? 'Done' : 'Edit',
-                            // onClick: () => {
-                            //     setIsEditMode(!isEditMode);
-                            //     if (isEditMode) {
-                            //         updateOrder();
-                            //         updateOrderItems();
-                            //     }
-                            // }
                         }
                     }
                 },
@@ -104,38 +90,6 @@ export default function OrderDetails(props) {
                         }
 
                     }
-                    // {
-                    //     id: 'custom',
-                    //     component: {
-                    //         name: 'TopBarButton',
-                    //         passProps: {
-                    //             value: isEditMode ? 'Done' : 'Edit',
-                    //             onClick: () => {
-                    //                 setIsEditMode(!isEditMode);
-                    //                 if (isEditMode) {
-                    //                     updateOrder();
-                    //                     updateOrderItems();
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    // },
-                    // {
-                    //     id: 'custom',
-                    //     component: {
-                    //         name: 'TopBarButton',
-                    //         passProps: {
-                    //             value: 'Delete',
-                    //             onClick: () => {
-                    //                 // setIsEditMode(!isEditMode);
-                    //                 // if (isEditMode) {
-                    //                 //     updateOrder();
-                    //                 //     updateOrderItems();
-                    //                 // }
-                    //             }
-                    //         }
-                    //     }
-                    // }
                 ],
         },
     });
@@ -240,19 +194,12 @@ export default function OrderDetails(props) {
                                             /> :
                                             item.item,
                                         item.qty,
-                                        // <TextInput 
-                                        // value={item.qty} 
-                                        // onChange={setOrderItems([...orderItems, orderItems[]])}
-                                        // />,
                                         item.price,
                                         item.total
                                     ];
                                     return (
                                         <Row
-                                            // key={JSON.stringify(rowData)}
                                             data={rowData}
-                                            // widthArr={state.widthArr}
-                                            // style={[styles.row, index % 2 && { backgroundColor: '#F7F6E7' }]}
                                             textStyle={styles.text}
                                             widthArr={widthArr}
                                         />
@@ -319,7 +266,6 @@ export default function OrderDetails(props) {
                     transparent={true}
                     visible={actionsModalIsOpen}
                     onRequestClose={() => {
-                        // Alert.alert("Modal has been closed.");
                         setActionsModalIsOpen(!actionsModalIsOpen);
                     }}
                 >

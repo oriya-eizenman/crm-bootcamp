@@ -20,6 +20,15 @@ class orders extends controller
         return $this->response;
     }
 
+    public function getOrdersByPage()
+    {
+        $orders = $this->model->getAllOrders($this->jsonData["bakery_id"]);
+        $page = $this->jsonData["page"];
+        $per_page = $this->jsonData["per_page"];
+        $this->response["orders"] = array_slice($orders, ($page - 1) * $per_page, $per_page);
+        return $this->response;
+    }
+
     public function deleteOrder()
     {
         $orders = $this->model->deleteOrder($this->jsonData["bakery_id"], $this->jsonData["order_id"]);

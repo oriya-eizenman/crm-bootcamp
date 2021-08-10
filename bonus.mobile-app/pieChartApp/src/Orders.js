@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import {
-    View,
     Text,
-    Button,
     StyleSheet,
     FlatList,
     SafeAreaView,
     TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { USER_KEY, USER_DATA } from './config'
+import { USER_DATA } from './config'
 import axios from 'axios';
 import { Navigation } from 'react-native-navigation';
 
@@ -17,7 +15,6 @@ export default function Orders(props) {
     const [user, setUser] = useState(null);
     const [orders, setOrders] = useState([]);
     const [page, setPage] = useState(1);
-    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(async () => {
         try {
@@ -25,8 +22,7 @@ export default function Orders(props) {
                 componentDidAppear: async () => {
                     userData = JSON.parse(await AsyncStorage.getItem(USER_DATA));
                     setUser(userData);
-                    const bakeryOrders = await getOrders(userData.bakery_id);
-                    setOrders(bakeryOrders);
+                    fetchOrders(userData.bakery_id);
                 }
             }
             const unsubscribe = Navigation.events().registerComponentListener(listener, props.componentId);
@@ -39,10 +35,26 @@ export default function Orders(props) {
         }
     }, []);
 
+    const fetchOrders = async (bakery_id) => {
+        const bakeryOrders = await getOrders(bakery_id);
+        console.log('orders', orders)
+        setOrders([...orders, ...bakeryOrders]);
+    }
+
+    const fetchMoreOrders = () => {
+        console.log('in fetch more orders')
+        setPage(page + 1);
+        fetchOrders(user.bakery_id);
+    }
+
     const getOrders = async (bakery_id) => {
-        const res = await axios.post('http://localhost:9991/orders/getOrders/', {
+        const res = await axios.post(`http://localhost:9991/orders/getOrdersByPage/`, {
             bakery_id: bakery_id,
+            page: page,
+            per_page: 10
         }, { withCredentials: true });
+        console.log('page', page)
+        console.log('data', res.data.orders)
         return res.data.orders;
     }
 
@@ -77,6 +89,8 @@ export default function Orders(props) {
                     </TouchableOpacity>
                 }
                 keyExtractor={order => order.order_id}
+                onEndReached={fetchMoreOrders}
+            // onEndReachedThreshold={2}
             />
         </SafeAreaView >
     )
