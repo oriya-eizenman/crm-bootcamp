@@ -3,4 +3,14 @@
     flex-direction: column;
     height: 100%;
     margin-top: $xl-size;
+    width:100%;
+}
+
+.newUserModal {
+    width:50vw;
+    height: 20vw;
+}
+
+.newUserEmail{
+    text-align: center;
 }

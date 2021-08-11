@@ -3,15 +3,12 @@
     flex-direction: column;
     color: $dark-blue;
     padding: $m-size 0;
-    // background-color: lighten($azure, 17%);
     background-color: white;
     width: 17%;
     height: 100%;
     position: fixed;
     z-index: 10;
     padding: 0;
-    // transition: all 0.5s ease;
-
 }
 
 .sidenavLink{
@@ -22,24 +19,54 @@
 }
 
 .sidenavLink:hover{
-    background-color: lighten($dark-blue, 7%);
-    color:azure;
-}
-
-.sidenavLink:active{
     background-color: darken($dark-blue, 5%);
     color:azure;
+    transition: .35s ease color;
+    &:before{
+        transition: .35s ease color;
+    }
+}
+
+.settings{
+    display: none;
+    background-color: White;
+    top: 0;
+}
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+.Settings:hover{
+    background-color: white;
+    color: lighten($dark-blue, 20%);
+    .settings{
+        display: flex;
+        flex-direction: column;
+        z-index:50;
+        left: 2.5em;
+        -webkit-animation: fadeIn 1s;
+        animation: fadeIn 1s;
+    }
+
+    .sidenavLink:hover{
+        background-color: darken($dark-blue, 5%);
+
+    color:azure;
+    transition: .35s ease color;
+    &:before{
+        transition: .35s ease color;
+    }
+    }
 }
 
 .newOrder{
     align-self: center;
-    // color: $purple-red;
-    // border: 2px solid $purple-red;
-    // border-radius: 20px;
-    // background-color: white;
-    // text-align: center;
-    // padding: $s-size $l-size;
-    // width: fit-content;
     margin: $m-size 0;
     background-image: linear-gradient(to right, #006175 0%, #00a950 100%);
     border-radius: $border-m-size;
@@ -55,11 +82,6 @@
     z-index: 2;
 }
 
-.newOrder:hover{
-    // background-color: $purple-red;
-    // color: white;
-    // color: #fff;
-}
 
 .newOrder .newOrderSpan{
     align-items: center;
@@ -68,8 +90,7 @@
   display: flex;
   justify-content: center;
   height: 22%;
-  transition: background 0.5s ease;
-//   width: 100%;
+  transition: 0.5s ease background;
 }
 
 .newOrder:hover .newOrderSpan{
@@ -81,27 +102,7 @@
     color:azure;
 }
 
-// .sidenav Link, .dropdown-btn {
-//     padding: 6px 8px 6px 16px;
-//     text-decoration: none;
-//     font-size: 20px;
-//     color: #818181;
-//     display: block;
-//     border: none;
-//     background: none;
-//     width:100%;
-//     text-align: left;
-//     cursor: pointer;
-//     outline: none;
-//   }
-
-//   .dropdown-container {
-//     display: none;
-//     background-color: #262626;
-//     padding-left: 8px;
-//   }
-
-//   .fa-caret-down {
-//     float: right;
-//     padding-right: 8px;
-//   }
+.navbarIcon{
+    margin-right: 15px;
+    
+}

@@ -15,6 +15,7 @@ export default function LoggedInPage(props) {
             setLoggedInUser={setLoggedInUser}
             showNavbar={true}
             activatedPage={props.activatedPage}
+            loggedIn={true}
         />
     );
 }

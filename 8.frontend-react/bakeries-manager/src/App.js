@@ -27,6 +27,7 @@ import Map from './Components/test'
 import DeliveryMap from './Pages/DeliveryMap';
 import OrderDetails from './Pages/OrderDetails';
 import Messages from './Pages/Messages';
+import Statistics from './Pages/Statistics';
 const axios = require('axios');
 
 
@@ -64,6 +65,9 @@ const App = () => {
           </Route>
           <Route exact path="/signup">
             <Redirect to="/home" />
+          </Route>
+          <Route exact path="/logout">
+            <Redirect to="/" />
           </Route>
           <Route exact path="/home">
             <HomePage
@@ -113,9 +117,11 @@ const App = () => {
           <Route exact path="/order/:id">
             <OrderDetails />
           </Route>
-
           <Route exact path="/messages">
             <Messages />
+          </Route>
+          <Route exact path="/statistics">
+            <Statistics />
           </Route>
         </Switch>
         :
@@ -130,6 +136,9 @@ const App = () => {
             <SignupForm
               isAccount={true}
             />
+          </Route>
+          <Route exact path="/logout">
+            <Redirect to="/" />
           </Route>
           <Route exact path="/home">
             <Redirect to="/" />
@@ -176,6 +185,9 @@ const App = () => {
             <Redirect to="/" />
           </Route>
           <Route exact path="/messages">
+            <Redirect to="/" />
+          </Route>
+          <Route exact path="/statistics">
             <Redirect to="/" />
           </Route>
         </Switch>

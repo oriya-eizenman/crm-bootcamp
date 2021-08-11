@@ -11,7 +11,6 @@ class Model_orders extends Model_crud
 
     public function getAllOrders()
     {
-        // $where = $this->parseWhere($values);
         $sql = "
             SELECT orders.*, bakery_user.user_name, clients.client_name FROM 
             orders INNER JOIN bakery_user
@@ -21,14 +20,6 @@ class Model_orders extends Model_crud
 
         return $this->getSpecialQuery($sql);
     }
-
-    // public function getAllOrders($bakery_id)
-    // {
-    //     $conditions = [
-    //         "bakery_id" => $bakery_id
-    //     ];
-    //     return $this->getAll("orders", $conditions);
-    // }
 
     public function deleteOrder($bakery_id, $order_id)
     {
@@ -46,12 +37,12 @@ class Model_orders extends Model_crud
             "user_id" => $user_id,
             "bakery_id" => $bakery_id,
             "total" => $total,
-            "delivery-time" => $delivery_date
+            "delivery_time" => $delivery_date
         ];
         return $this->insert("orders", $conditions);
     }
 
-    public function updateOrder($order_id, $total)
+    public function updateOrderTotal($order_id, $total)
     {
         $conditions = [
             "total" => $total
@@ -59,9 +50,16 @@ class Model_orders extends Model_crud
         return $this->update("orders", $conditions, "order_id", $order_id);
     }
 
+    public function updateOrderStatus($order_id, $status)
+    {
+        $conditions = [
+            "status" => $status
+        ];
+        return $this->update("orders", $conditions, "order_id", $order_id);
+    }
+
     public function getAddresses()
     {
-        // $where = $this->parseWhere($values);
         $sql = "
         select DISTINCT CONCAT(clients.street,' ',clients.house_number, ', ', clients.city) AS address FROM
         clients INNER JOIN orders 

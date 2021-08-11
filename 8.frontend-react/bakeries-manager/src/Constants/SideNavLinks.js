@@ -1,11 +1,4 @@
-import manageLogout from '../scripts/manageLogout';
-
-function setUser(setLoggedInUser) {
-    manageLogout();
-    setLoggedInUser(null);
-}
-
-const getNavBarLinks = (setLoggedInUser) =>
+const getNavBarLinks = () =>
 (
     [
         {
@@ -33,18 +26,18 @@ const getNavBarLinks = (setLoggedInUser) =>
             value: "Messages"
         },
         {
-            to: "/delivery-map",
-            value: "Map"
+            to: "/statistics",
+            value: "Statistics"
         },
+        // {
+        //     to: "/delivery-map",
+        //     value: "Map"
+        // },
         {
-            to: "/",
-            value: "Home"
+            // to: "/delivery-map",
+            value: "Settings"
         },
-        {
-            to: "/logout",
-            value: "Logout",
-            handleClick: () => setUser(setLoggedInUser)
-        },
+
     ]
 )
 

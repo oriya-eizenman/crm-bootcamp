@@ -1,12 +1,24 @@
 .button{
     font-family: 'Lato', sans-serif;
-    border: solid $purple-red 0.2rem;
-    color: $purple-red;
+    border: solid lighten($dark-blue, 17%) 0.1rem;
+    color: lighten($dark-blue, 17%);
     font-weight: 600;
     cursor: pointer;
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     padding: $s-size $m-size;
     background-color: white;
+    width: fit-content;
+    margin-bottom: $s-size;
+}
+
+.button:disabled{
+    font-family: 'Lato', sans-serif;
+    border: solid lighten($dark-blue, 50%) 0.1rem;
+    color: lighten($dark-blue, 50%);
+    font-weight: 600;
+    cursor:not-allowed;
+    border-radius: 1rem;
+    padding: $s-size $m-size;
     width: fit-content;
     margin-bottom: $s-size;
 }

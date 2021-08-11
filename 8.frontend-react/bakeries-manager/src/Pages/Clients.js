@@ -7,7 +7,6 @@ import Modal from 'react-modal';
 import Button from '../Components/Button';
 import Form from '../Components/Form';
 import { createClient, updateClient, sendToMailingList } from '../scripts/manageClients';
-import { RiWomenFill } from 'react-icons/ri';
 
 export default function Clients(props) {
     const clientInitialState = {
@@ -25,9 +24,21 @@ export default function Clients(props) {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const [newClientModalIsOpen, setNewClientModalIsOpen] = useState(false);
     const [editClientModalIsOpen, setEditClientModalIsOpen] = useState(false);
+    const [messageModalIsOpen, setMessageModalIsOpen] = useState(false);
     const [client, setClient] = useState(clientInitialState);
     const [updateTable, setUpdateTable] = useState(false);
     const [mailingList, setMailingList] = useState([]);
+    const [message, setMessage] = useState("");
+    const [messageTitle, setMessageTitle] = useState("");
+    const [ensureDeleteModalIsOpen, setEnsureDeleteModalIsOpen] = useState(false);
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [messageSent, setMessageSent] = useState(false);
+
+    // io.on('connection', (socket) => {
+    //     socket.on('sent', client_email => {
+    //         console.log(client_email)
+    //     })
+    // })
 
     useEffect(() => {
         getClients(loggedInUser.bakery_id, (data) => {
@@ -54,8 +65,8 @@ export default function Clients(props) {
     }
 
     function handleDeleteClient(clientEmail) {
-        deleteClient(clientEmail);
-        setClients([]);
+        setSelectedClient(clientEmail)
+        setEnsureDeleteModalIsOpen(true);
     }
 
     function handleEditClient(clientData) {
@@ -82,8 +93,55 @@ export default function Clients(props) {
         closeEditClientModal();
     }
 
+    const deleteModal =
+        <Modal
+            isOpen={ensureDeleteModalIsOpen}
+            onRequestClose={() => setEnsureDeleteModalIsOpen(false)}
+            ariaHideApp={false}
+            contentLabel="Example Modal"
+            className="modal"
+        >
+            <div className="modalContainer">
+                Are you sure you want to delete this client?
+                <div>
+                    <Button
+                        value="Delete"
+                        handleClick={() => {
+                            deleteClient(selectedClient);
+                            setClients([]);
+                            setEnsureDeleteModalIsOpen(false)
+                        }
+                        }
+                    />
+                    <Button
+                        value="Cancel"
+                        handleClick={() => setEnsureDeleteModalIsOpen(false)}
+                    />
+                </div>
+            </div>
+        </Modal>
+
     const columns = useMemo(
         () => [
+            {
+                Header: "",
+                accessor: (row) =>
+                    messageSent && mailingList.includes(row)
+                        ?
+                        <div>
+                            sent
+                        </div>
+                        :
+                        <input
+                            type="checkbox"
+                            name="mailingList"
+                            onChange={() => handleToggleMailingList(row)}
+                        />
+                ,
+                id: 'action',
+                className: 'action'
+
+            },
             {
                 Header: "Name",
                 accessor: "client_name"
@@ -184,6 +242,46 @@ export default function Clients(props) {
             }
         ]
 
+    const messageModal =
+        <Modal
+            isOpen={messageModalIsOpen}
+            onRequestClose={() => setMessageModalIsOpen(false)}
+            ariaHideApp={false}
+            contentLabel="Example Modal"
+            className="modal"
+        >
+            <div className="modalContainer messageModal input">
+                Enter a message to your clients:
+                <textarea
+                    value={messageTitle}
+                    onChange={(event) => setMessageTitle(event.target.value)}
+                    placeholder="Message title"
+                    className="text"
+                    rows={1}
+                />
+                <textarea
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                    placeholder="Enter a message"
+                    rows={5}
+                    className="text"
+                />
+            </div>
+            <Button
+                value="Send"
+                handleClick={() => {
+                    sendToMailingList(mailingList, messageTitle, message)
+                    setMessageModalIsOpen(false);
+                    setTimeout(
+                        function () {
+                            setMessageSent(true);
+                        }
+                        , 3000)
+                }
+                }
+            />
+        </Modal>
+
     const newClientModal =
         <Modal
             isOpen={newClientModalIsOpen}
@@ -230,13 +328,12 @@ export default function Clients(props) {
             </div>
         </Modal>
 
-    const addAllClients = () => {
-        setMailingList(clients);
-    }
+    // const addAllClients = () => {
+    //     setMailingList(clients);
+    // }
 
     const handleToggleMailingList = (clientData) => {
         const clientIndex = mailingList.indexOf(clientData);
-        console.log(clientIndex)
         let tempMailingList = mailingList;
         if (clientIndex > -1) {
             tempMailingList.splice(clientIndex, 1);
@@ -248,29 +345,36 @@ export default function Clients(props) {
         console.log(mailingList)
     }
 
-    const sendEmailToMailingList = () => {
-        sendToMailingList(mailingList);
-    }
-
     const mainContent =
-        <div className="usersMainContent">
-            <Button
-                className="addNewClient"
-                value="+"
-                handleClick={openNewClientModal}
-            />
-            <Button
-                className="addAllClientsToEmail"
-                value="Select all"
-                handleClick={addAllClients}
-            />
-            <Button
-                className="sendEmailToClients"
-                value="Send Email"
-                handleClick={sendEmailToMailingList}
-            />
+        <div className="tableMainContent">
+            {deleteModal}
+
+            <div className="clientsPageHeader">
+                <Button
+                    className="addNewClient"
+                    value="+"
+                    handleClick={openNewClientModal}
+                />
+                <div className="emailListHeader">
+                    {/* <Button
+                        className="addAllClientsToEmail"
+                        value="Select all"
+                        handleClick={addAllClients}
+                    /> */}
+                    <Button
+                        className="sendEmailToClients"
+                        value="Send email"
+                        handleClick={() => {
+                            setMessageModalIsOpen(true)
+                            console.log(mailingList)
+                        }
+                        }
+                    />
+                </div>
+            </div>
             {newClientModal}
             {editClientModal}
+            {messageModal}
 
             {
                 clientsRef &&
@@ -281,8 +385,8 @@ export default function Clients(props) {
                         handleClick={(clientData) => handleDeleteClient(clientData.client_email)}
                         handleEdit={(clientData) => handleEditClient(clientData)}
                         databaseColumn="client_email"
-                        mailingList={mailingList}
-                        handleToggleMailingList={(clientData) => handleToggleMailingList(clientData)}
+                    // mailingList={mailingList}
+                    // handleToggleMailingList={(clientData) => handleToggleMailingList(clientData)}
                     />
                 </div>
             }

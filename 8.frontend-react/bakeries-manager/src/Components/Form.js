@@ -65,6 +65,7 @@ export default function Form(props) {
                                 <Button
                                     handleClick={field.onClick}
                                     value={field.value}
+                                    disabled={field.disabled}
                                 />
                             </div>
                         )
@@ -82,7 +83,7 @@ export default function Form(props) {
                         )
                     else if (field.type === 'subtitle')
                         return (
-                            <h3>
+                            <h3 className="subtitle">
                                 {field.value}
                             </h3>
                         )
@@ -95,6 +96,15 @@ export default function Form(props) {
                                     value="Upload"
                                 />
                                 {field.fileData}
+                            </div>
+                        )
+                    else if (field.type === "info")
+                        return (
+                            <div className="infoContainer">
+                                <div className="test">
+                                    <b className="b">{field.title}</b>
+                                </div>
+                                <Label value={field.content} className="infoLabel" />
                             </div>
                         )
                 })

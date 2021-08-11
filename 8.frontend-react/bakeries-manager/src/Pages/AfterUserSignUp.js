@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import Button from '../Components/Button';
 import Page from '../Components/Page';
+import { visitorPageHeaderLinks } from '../Constants/VisitorHeaderLinks';
 
 export default function AfterUserSignUp(props) {
     const mainContent =
@@ -14,6 +15,9 @@ export default function AfterUserSignUp(props) {
         </div>
 
     return (
-        <Page mainContent={mainContent} />
+        <Page
+            mainContent={mainContent}
+            headerLinks={visitorPageHeaderLinks}
+        />
     );
 }

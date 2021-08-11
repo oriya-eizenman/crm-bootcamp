@@ -18,6 +18,8 @@ export default function Users(props) {
     const employeesRef = useRef(employees);
     employeesRef.current = employees;
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const [ensureDeleteModalIsOpen, setEnsureDeleteModalIsOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         getUsers(loggedInUser.user_email, (data) => {
@@ -37,12 +39,41 @@ export default function Users(props) {
     function handleAddUser(event) {
         event.preventDefault();
         setEmailSubmitted(true);
-        manage(props.manager.userEmail, userEmail, setShowEmailErrorMsg);
+        manage(loggedInUser.user_email, userEmail, setShowEmailErrorMsg);
     }
 
     function handleDeleteUser(userEmail) {
-        deleteUser(userEmail);
+        setEnsureDeleteModalIsOpen(true);
+        setSelectedUser(userEmail);
     }
+
+    const deleteModal =
+        <Modal
+            isOpen={ensureDeleteModalIsOpen}
+            onRequestClose={() => setEnsureDeleteModalIsOpen(false)}
+            ariaHideApp={false}
+            contentLabel="Example Modal"
+            className="modal"
+        >
+            <div className="modalContainer">
+                Are you sure you want to delete this user?
+                <div>
+                    <Button
+                        value="Delete"
+                        handleClick={() => {
+                            deleteUser(selectedUser.user_email);
+                            setEmployees([]);
+                            setEnsureDeleteModalIsOpen(false)
+                        }
+                        }
+                    />
+                    <Button
+                        value="Cancel"
+                        handleClick={() => setEnsureDeleteModalIsOpen(false)}
+                    />
+                </div>
+            </div>
+        </Modal>
 
     const columns = useMemo(
         () => [
@@ -62,16 +93,17 @@ export default function Users(props) {
     );
 
     const mainContent =
-        <div className="usersMainContent">
+        <div className="tableMainContent">
+            {deleteModal}
+
             <Button className="addNewUser" value="+" handleClick={openModal} />
 
             <Modal
                 isOpen={modalIsOpen}
-                //onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 ariaHideApp={false}
                 contentLabel="Example Modal"
-                className="modal"
+                className="modal newUserModal"
             >
                 <div className="modalContainer">
                     <a className="link modalLink" onClick={closeModal}>x</a>
@@ -83,7 +115,7 @@ export default function Users(props) {
                         <div className="mainModal">
                             <div>Enter the new user's email:</div>
                             <form>
-                                <Input className="inputEmail" value={userEmail} handleChange={(event) => setUserEmail(event.target.value)} />
+                                <Input className="inputEmail newUserEmail" value={userEmail} handleChange={(event) => setUserEmail(event.target.value)} />
                                 <Button className="formButton" value="Add user" handleClick={(event) => handleAddUser(event)} />
                                 {!!showEmailErrorMsg && <Label value="Please enter a valid email" />}
                             </form>
@@ -101,7 +133,7 @@ export default function Users(props) {
                         data={employeesRef.current}
                         handleClick={(userEmail) => handleDeleteUser(userEmail)}
                         databaseColumn="user_email"
-
+                        hideEdit={true}
                     />
                 </div>
             }

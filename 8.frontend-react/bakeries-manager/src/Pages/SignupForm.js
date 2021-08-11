@@ -45,7 +45,58 @@ export default function SignUpForm(props) {
                 setShowFullNameErrorMsg, setShowPhoneNumberErrorMsg, setShowPasswordErrorMsg, event);
     }
 
-    const fields =
+    const fieldsUser =
+        [
+            {
+                type: "input",
+                inputType: "text",
+                value: userName,
+                onChange: (event) => {
+                    setUserName(event.target.value);
+                    setShowFullNameErrorMsg(false);
+                },
+                placeholder: "Full Name",
+                errMsg: showFullNameErrorMsg ? "Please enter a valid full name" : ""
+            },
+            {
+                type: "input",
+                inputType: "text",
+                value: userPhone,
+                onChange: (event) => {
+                    setUserPhone(event.target.value);
+                    setShowPhoneNumberErrorMsg(false);
+                },
+                placeholder: "Phone Number",
+                errMsg: showPhoneNumberErrorMsg ? "Phone number should only contain numbers, dashes and + character for prefix and number should be of 10 digits" : ""
+            },
+            {
+                type: "input",
+                inputType: "password",
+                value: userPassword,
+                onChange: (event) => {
+                    setUserPassword(event.target.value);
+                    setShowPasswordErrorMsg(false);
+                },
+                placeholder: "Password",
+                errMsg: showPhoneNumberErrorMsg ? "password should 8 characters or longer and contain at least one lowercase character, at least one uppercase character, at least one numeric character and at least one special character" : ""
+            },
+            {
+                type: "link",
+                to: isAccount ? "/home" : "/user-signup-successful",
+                value: "Sign up",
+                onClick: (event) => sendUserData(event),
+            },
+            {
+                type: "errorMsg",
+                value: showGeneralErrMsg ? "Please try again later" : "",
+            },
+            {
+                type: "errorMsg",
+                value: showUserExistsErrMsg ? "User already exists" : "",
+            }
+        ]
+
+    const fieldsAccount =
         [
             {
                 type: "input",
@@ -94,32 +145,33 @@ export default function SignUpForm(props) {
             {
                 type: "select",
                 name: "numOfEmployees",
-                value: numOfWorkers,
+                // value: numOfWorkers,
+                defaultValue: numOfWorkers,
                 options: [
                     {
-                        value: "1",
-                        description: "Just me"
+                        'value': "1",
+                        'label': "Just me"
                     },
                     {
-                        value: "2",
-                        description: "2 people"
+                        'value': "2",
+                        'label': "2 people"
                     },
                     {
-                        value: "3-5",
-                        description: "3-5 people"
+                        'value': "3-5",
+                        'label': "3-5 people"
                     },
                     {
-                        value: "6-10",
-                        description: "6-10 people"
+                        'value': "6-10",
+                        'label': "6-10 people"
                     },
                     {
-                        value: "11+",
-                        description: "11 people and more"
+                        'value': "11+",
+                        'label': "11 people and more"
                     },
 
                 ],
                 onChange: (event) => {
-                    setNumOfWorkers(event.target.value);
+                    setNumOfWorkers(event.value);
                 }
             },
             {
@@ -138,7 +190,6 @@ export default function SignUpForm(props) {
                 to: isAccount ? "/home" : "/user-signup-successful",
                 value: "Sign up",
                 onClick: (event) => sendUserData(event),
-                // className: "login-button"
             },
             {
                 type: "errorMsg",
@@ -154,7 +205,7 @@ export default function SignUpForm(props) {
         <div>
             <div className="container formFrame">
                 <Title title="Sign Up to PIE-CHART!" />
-                <Form fields={fields} />
+                <Form fields={isAccount ? fieldsAccount : fieldsUser} />
                 {!!isAccount &&
                     <div className="linkToLogin">
                         <p className="p">Already have an account? </p>
@@ -167,6 +218,9 @@ export default function SignUpForm(props) {
         </div>
 
     return (
-        <Page mainContent={mainContent} headerLinks={visitorPageHeaderLinks} />
+        <Page
+            mainContent={mainContent}
+            headerLinks={visitorPageHeaderLinks}
+        />
     );
 }

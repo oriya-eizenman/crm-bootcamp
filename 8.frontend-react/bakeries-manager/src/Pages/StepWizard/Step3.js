@@ -24,7 +24,7 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
         () => [
             {
                 Header: "Item",
-                accessor: "item"
+                accessor: "item_name"
             },
             {
                 Header: "Qty",
@@ -80,15 +80,14 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                     {
                         type: "button",
                         value: "Add",
+                        disabled: item.item === "",
                         onClick: () => {
-
                             let tempOrder = order.items;
                             const newItem =
                             {
                                 item: item,
                                 qty: qty
                             };
-
 
                             let itemIndex = -1;
                             for (let i = 0; i < orderItems.length; i++) {
@@ -103,26 +102,30 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                                 let tempOrderItems = orderItems;
                                 let orderItem = tempOrderItems[itemIndex];
                                 tempOrderItems.splice(itemIndex, 1);
-                                orderItem = { item: orderItem.item, qty: orderItem.qty + qty, price: orderItem.price, total: orderItem.total + qty * orderItem.price };
+                                orderItem = {
+                                    item: orderItem,
+                                    item_name: orderItem.item,
+                                    qty: orderItem.qty + qty,
+                                    price: orderItem.price,
+                                    total: orderItem.total + qty * orderItem.price
+                                };
                                 tempOrderItems.splice(itemIndex, 0, orderItem);
                                 setOrderItems([...tempOrderItems]);
                                 setTotal(total + qty * orderItem.price);
                             }
                             else {
                                 let tempOrderItems = [];
-                                tempOrderItems.push(
-                                    {
-                                        item: item.item,
-                                        qty: qty,
-                                        price: item.price,
-                                        total: qty * item.price
-                                    }
-                                )
+                                tempOrderItems.push({
+                                    item: item,
+                                    item_name: item.item,
+                                    qty: qty,
+                                    price: item.price,
+                                    total: qty * item.price
+                                })
                                 setOrderItems([...orderItems, ...tempOrderItems]);
                                 setTotal(total + qty * item.price);
                             }
                             tempOrder.push(newItem);
-                            // handleClick(tempOrder, order.total + qty * item.price);
                             setQty(1);
                         }
                     }
@@ -162,6 +165,7 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                                 setOrderItems(tempOrderItems);
                                 setTotal(total - itemData.price * itemData.qty);
                             }}
+                            hidePagination={true}
                         />
                     </div>
                 }
@@ -169,8 +173,6 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
         </div>
 
     const nextStep = () => {
-        console.log(orderItems)
-        console.log(total)
         handleClick(orderItems, total)
         setCurrentStep(currentStep + 1);
     }

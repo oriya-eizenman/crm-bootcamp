@@ -23,24 +23,25 @@ export default function NewOrder2(props) {
     const [isFinished, setIsFinished] = useState(false);
 
     const handleClick = (orderReceived, total) => {
-        setOrder({ items: orderReceived, total: total })
+        setOrder({ ...order, items: orderReceived, total: total })
     }
 
     const handleSubmit = async () => {
         try {
+            let updatedClient = client;
             if (!existingClient) {
-                await addClient();
+                updatedClient = await addClient();
             }
-            sendOrderData();
+            sendOrderData(updatedClient);
         }
         catch (err) {
             alert(err)
         }
     }
 
-    const sendOrderData = async () => {
+    const sendOrderData = async (client) => {
         try {
-            const order_id = await addOrder();
+            const order_id = await addOrder(client);
             await addOrderItems(order_id);
             setIsFinished(true);
         }
@@ -50,15 +51,16 @@ export default function NewOrder2(props) {
     }
 
     const addClient = async () => {
-        await createClient(
+        const client_id = await createClient(
             loggedInUser.bakery_id,
             client,
-            setClient
         );
+        const updatedClient = { ...client, client_id: client_id };
+        setClient(updatedClient);
+        return updatedClient;
     }
 
-    const addOrder = async () => {
-        console.log(order)
+    const addOrder = async (client) => {
         const order_id = await createOrder(
             loggedInUser.bakery_id,
             loggedInUser.user_id,
@@ -70,6 +72,7 @@ export default function NewOrder2(props) {
     }
 
     const addOrderItems = async (order_id) => {
+        console.log('in add order items', order)
         await createOrderItems(loggedInUser.bakery_id, order_id, order)
     }
 

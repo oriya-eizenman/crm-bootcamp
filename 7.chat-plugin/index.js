@@ -56,6 +56,7 @@ io.on('connection', (socket) => {
         axios.get(`http://localhost:7000/chat/getAllRooms/${accountId}`)
             .then((res) => {
                 res.data.forEach(lead => {
+                    console.log(lead)
                     socket.join(Number(lead.roomId));
                 })
                 io.emit('set all rooms', res.data);

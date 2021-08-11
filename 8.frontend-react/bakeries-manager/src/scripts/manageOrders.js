@@ -1,4 +1,9 @@
-import { getOrdersInBakery, removeOrder, addOrder, editOrder } from './axios-php';
+import {
+    getOrdersInBakery,
+    removeOrder, addOrder,
+    editOrder,
+    editOrderStatus
+} from './axios-php';
 
 function getOrders(bakery_id, populateOrders) {
     getOrdersInBakery(bakery_id, populateOrders);
@@ -16,4 +21,8 @@ function updateOrder(order_id, total) {
     editOrder(order_id, total);
 }
 
-export { getOrders, deleteOrder, createOrder, updateOrder };
+function updateOrderStatus(status, order_id) {
+    editOrderStatus(status, order_id);
+}
+
+export { getOrders, deleteOrder, createOrder, updateOrder, updateOrderStatus };

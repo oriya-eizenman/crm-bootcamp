@@ -7,6 +7,7 @@ const redis = require("redis");
 const publisher = redis.createClient();
 const dotenv = require('dotenv');
 dotenv.config();
+const Mailgun = require('mailgun-js');
 
 const Enums = {
 
@@ -116,21 +117,17 @@ const sendEmail = async (from, to, subject, text, html, res) => {
         to: to,
         subject: subject,
         text: text,
-        html: html,
+        // html: html,
     };
     await mailGun.messages().send(data, function (err, body) {
         if (err) {
             console.log("got an error: ", err);
         }
+        else {
+            console.log('email sent')
+        }
     });
 }
-
-
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- */
 
 const sendResetPasswordEmail = (req, res) => {
     const userEmail = req.body.userEmail;
@@ -185,17 +182,28 @@ const resetPassword = (req, res) => {
 }
 
 const sendAddUserEmail = (req, res) => {
+    console.log(req.body)
     const managerEmail = req.body.managerEmail;
     const userEmail = req.body.userEmail;
+
     try {
         sql.getBakery(managerEmail, (bakeryId) => {
+            console.log(bakeryId)
             const token = jwt.sign({ userEmail: userEmail, bakeryId: bakeryId }, accessTokenSecret, { expiresIn: '24h' });
+            const emailContent =
+                "Hello from PIE-CHART!\n\n" +
+                "You received an invitation to join PIE-CHART.\n" +
+                "Please follow the link below in order to register:\n" +
+                `http://localhost:3000/user-signup/${token}` +
+                "\n Please notice that this link is available for the next 24 hours.\n\n" +
+                "Enjoy your time in PIE-CHART!";
             sendEmail(
                 "oriya.eizenman@workiz.com",
                 userEmail,
                 "Sign up to PIE-CHART",
-                "Hi! Please enter the link to sign up to PIE-CHART:",
-                `http://localhost:3000/user-signup/${token}`,
+                emailContent,
+                // sendAddUserEmail,
+                // `http://localhost:3000/user-signup/${token}`,
                 res
             )
         });
@@ -210,11 +218,13 @@ const sendAddUserEmail = (req, res) => {
 const sendEmailToMailingList = (req, res) => {
     const userData = req.userData;
     const mailingList = req.body.mailingList;
+    const messageTitle = req.body.messageTitle;
+    const message = req.body.message;
     const mailData = {
         sender: userData.user_email,
         recipients: mailingList,
-        title: "test",
-        content: "test",
+        title: messageTitle,
+        content: message,
     }
     publisher.publish("mailingList", JSON.stringify(mailData), function () {
         res.sendStatus(200);
@@ -234,6 +244,7 @@ const addUser = (req, res) => {
                 password: (md5(req.body.password)),
                 bakeryId: result.bakeryId
             };
+            console.log(userData)
             try {
                 sql.addUser(userData);
                 res.status(200);

@@ -11,15 +11,26 @@
     
 }
 
+.bodyVisitor{
+    display: flex;
+    background-color: rgb(241, 244, 246);
+    min-height: 85vh;
+}
+
 .mainContent {
     position:relative;
     display: flex;
     justify-content: center;
-    // align-items:center;
-    // height: 100%;
     width: 79%;
     margin: $m-size $l-size;
     left: 17%;
+}
+
+.mainContentVisitor {
+    position:relative;
+    display: flex;
+    justify-content: center;
+    width:100%;
 }
 
 .logo{

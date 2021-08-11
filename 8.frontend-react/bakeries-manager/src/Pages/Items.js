@@ -29,6 +29,8 @@ export default function Items(props) {
     const [category, setCategory] = useState("")
     const [isNewItemModal, setIsNewItemModal] = useState(true);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [ensureDeleteModalIsOpen, setEnsureDeleteModalIsOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     useEffect(() => {
         getItems(loggedInUser.bakery_id, (data) => {
@@ -55,8 +57,8 @@ export default function Items(props) {
     }
 
     function handleDeleteItems(item) {
-        deleteItem(loggedInUser.bakery_id, item);
-        setItems([]);
+        setSelectedItem(item);
+        setEnsureDeleteModalIsOpen(true);
     }
 
     function handleEditItem(item) {
@@ -88,7 +90,6 @@ export default function Items(props) {
     }
 
     function onFileChange(event) {
-        // Update the state 
         setSelectedFile(event.target.files[0]);
         console.log(selectedFile)
         const formData = new FormData();
@@ -115,6 +116,34 @@ export default function Items(props) {
 
         //axios.post("api/uploadfile", formData); 
     };
+
+    const deleteModal =
+        <Modal
+            isOpen={ensureDeleteModalIsOpen}
+            onRequestClose={() => setEnsureDeleteModalIsOpen(false)}
+            ariaHideApp={false}
+            contentLabel="Example Modal"
+            className="modal"
+        >
+            <div className="modalContainer">
+                Are you sure you want to delete this item?
+                <div>
+                    <Button
+                        value="Delete"
+                        handleClick={() => {
+                            deleteItem(loggedInUser.bakery_id, selectedItem);
+                            setItems([]);
+                            setEnsureDeleteModalIsOpen(false);
+                        }
+                        }
+                    />
+                    <Button
+                        value="Cancel"
+                        handleClick={() => setEnsureDeleteModalIsOpen(false)}
+                    />
+                </div>
+            </div>
+        </Modal>
 
     const columns = useMemo(
         () => [
@@ -176,7 +205,6 @@ export default function Items(props) {
                 value: item.item,
                 onChange: (event) => {
                     setItem({ ...item, item: event.target.value });
-                    //setShowErrorMsg(false);
                 },
                 placeholder: "Item",
             },
@@ -245,7 +273,9 @@ export default function Items(props) {
         ]
 
     const mainContent =
-        <div className="usersMainContent">
+        <div className="tableMainContent">
+            {deleteModal}
+
             <Button
                 className="addNewItem"
                 value="+"

@@ -38,7 +38,6 @@ class orders extends controller
 
     public function createOrder()
     {
-        var_dump($this->jsonData["delivery_date"]);
         $order_id = $this->model->createOrder(
             $this->jsonData["client_id"],
             $this->jsonData["user_id"],
@@ -52,7 +51,7 @@ class orders extends controller
 
     public function updateOrder()
     {
-        $order_id = $this->model->updateOrder(
+        $order_id = $this->model->updateOrderTotal(
             $this->jsonData["order_id"],
             $this->jsonData["total"]
         );
@@ -66,6 +65,16 @@ class orders extends controller
             $this->jsonData["bakery_id"]
         );
         $this->response["addresses"] = $addresses;
+        return $this->response;
+    }
+
+    public function updateOrderStatus()
+    {
+        $order_id = $this->model->updateOrderStatus(
+            $this->jsonData["order_id"],
+            $this->jsonData["status"]
+        );
+        $this->response["order_id"] = $order_id;
         return $this->response;
     }
 }

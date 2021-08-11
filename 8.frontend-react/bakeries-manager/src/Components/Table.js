@@ -24,18 +24,16 @@ function GlobalFilter({
 
     return (
         <span>
-            Search:{' '}
+            {/* Search:{' '} */}
             <input
                 value={value || ""}
                 onChange={e => {
                     setValue(e.target.value);
                     onChange(e.target.value);
                 }}
-                placeholder={`${count} records...`}
-                style={{
-                    fontSize: '2rem',
-                    border: '0',
-                }}
+                // placeholder={`${count} records...`}
+                placeholder={'search...'}
+                className="searchTable"
             />
         </span>
     )
@@ -45,14 +43,14 @@ export default function Table({
     columns,
     data,
     handleClick,
-    databaseColumn,
     handleEdit,
     isOrder,
     handleShow,
     hideActions,
-    showCheckBox,
     handleToggleMailingList,
-    mailingList
+    mailingList,
+    hidePagination,
+    hideEdit
 }) {
     const {
         getTableProps, // table props from react-table
@@ -83,15 +81,6 @@ export default function Table({
         usePagination
     );
 
-    // const detailsColumn =
-    //     isOrder &&
-    //     <tr>
-    //         <BiDetail
-    //             className="icon"
-    //             onClick={() => handleEdit(row.original)}
-    //         />
-    //     </tr>
-
     return (
         <div>
             <div className="table">
@@ -101,7 +90,8 @@ export default function Table({
                             <th
                                 colSpan={visibleColumns.length}
                                 style={{
-                                    textAlign: 'left',
+                                    textAlign: 'center',
+                                    width: '100%',
                                 }}
                             >
                                 <GlobalFilter
@@ -112,16 +102,14 @@ export default function Table({
                             </th>
                         </tr>
                         {headerGroups.map(headerGroup => (
-                            // {showCheckBox && <input></input>}
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {mailingList && <th></th>}
+                            <tr className="rowHeader" {...headerGroup.getHeaderGroupProps()}>
+                                {mailingList && <th className="action"></th>}
                                 {headerGroup.headers.map(column => (
-                                    <th className="tableHeader"
+                                    <th className={column.getHeaderProps().key.includes("action") ? "action" : "tableHeader"}
                                         {...column.getHeaderProps(column.getSortByToggleProps())}
                                     >
                                         {column.render("Header")}
                                         <span>
-                                            {/* {column.isSorted = true} */}
                                             {column.isSorted
                                                 ? column.isSortedDesc
                                                     ? ' 🔽'
@@ -131,8 +119,8 @@ export default function Table({
                                     </th>
                                 )
                                 )}
-                                {/* {!hideActions && <th className="tableHeader">Delete</th>}
-                                {!hideActions && <th className="tableHeader">Edit</th>} */}
+                                <th className="action"></th>
+                                {!hideEdit && <th className="action"></th>}
                             </tr>
                         ))}
                     </thead>
@@ -143,22 +131,19 @@ export default function Table({
                                 <tr {...row.getRowProps()}>
                                     {
                                         mailingList &&
-                                        <td>
+                                        <td className="action">
                                             <input
                                                 type="checkbox"
                                                 name="mailingList"
                                                 onChange={() => handleToggleMailingList(row.original)}
-                                            // checked={mailingList.includes(row.original)}
-                                            // checked={(   ) => isInMailingList(row.original)}
                                             >
                                             </input>
                                         </td>
                                     }
                                     {row.cells.map(cell => {
-
-                                        return <td className="cell" {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                                        return <td className={cell.getCellProps().key.includes("action") ? "action" : "cell"}{...cell.getCellProps()}>{cell.render("Cell")}</td>;
                                     })}
-                                    {!hideActions && <td>
+                                    {!hideActions && <td className="action">
                                         <RiDeleteBin6Line
                                             className="icon"
                                             onClick={() => handleClick(row.original)}
@@ -167,18 +152,18 @@ export default function Table({
                                     {
                                         !hideActions &&
                                         (isOrder ?
-                                            <td>
+                                            <td className="action">
                                                 <BiDetail
                                                     className="icon"
                                                     onClick={() => handleShow(row.original)}
                                                 />
                                             </td> :
-                                            <td>
+                                            (!hideEdit && <td className="action">
                                                 <GrEdit
                                                     className="icon"
                                                     onClick={() => handleEdit(row.original)}
                                                 />
-                                            </td>
+                                            </td>)
                                         )
                                     }
                                 </tr>
@@ -187,50 +172,57 @@ export default function Table({
                     </tbody>
                 </table>
             </div >
-            <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                </button>{' '}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {'<'}
-                </button>{' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>{' '}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {'>>'}
-                </button>{' '}
-                <span>
-                    Page{' '}
-                    <strong>
-                        {state.pageIndex + 1} of {pageOptions.length}
-                    </strong>{' '}
-                </span>
-                <span>
-                    | Go to page:{' '}
-                    <input
-                        type="number"
-                        defaultValue={state.pageIndex + 1}
+            {!hidePagination &&
+                <div className="pagination">
+                    <div>
+                        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                            {'<<'}
+                        </button>{' '}
+                        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                            {'<'}
+                        </button>{' '}
+                        <button onClick={() => nextPage()} disabled={!canNextPage}>
+                            {'>'}
+                        </button>{' '}
+                        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                            {'>>'}
+                        </button>{' '}
+                    </div>
+                    <span>
+                        Page{' '}
+                        <strong>
+                            {state.pageIndex + 1} of {pageOptions.length}
+                        </strong>{' '}
+                    </span>
+                    <div>
+                        |
+                </div>
+                    <span>
+                        Go to page:{' '}
+                        <input
+                            type="number"
+                            defaultValue={state.pageIndex + 1}
+                            onChange={e => {
+                                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                                gotoPage(page)
+                            }}
+                            style={{ width: '100px' }}
+                        />
+                    </span>{' '}
+                    <select
+                        value={state.pageSize}
                         onChange={e => {
-                            const page = e.target.value ? Number(e.target.value) - 1 : 0
-                            gotoPage(page)
+                            setPageSize(Number(e.target.value))
                         }}
-                        style={{ width: '100px' }}
-                    />
-                </span>{' '}
-                <select
-                    value={state.pageSize}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value))
-                    }}
-                >
-                    {[10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                    >
+                        {[10, 20, 30, 40, 50].map(pageSize => (
+                            <option key={pageSize} value={pageSize}>
+                                Show {pageSize}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            }
         </div >
     );
 }

@@ -450,26 +450,26 @@
                 leadEmailAddress.innerText = leadEmail;
                 let numOfMessages = document.getElementById("chat-num-messages");
                 numOfMessages.innerText = rooms[leadEmail].messages.length + numOfMessagesInitialText;
-                var getItemsButton = document.getElementById('getItems');
-                getItemsButton.value = 'Add to clients';
-                getItemsButton.addEventListener('click', (leadName, leadEmail) => {
-                    // parent.postMessage('message', '*')
-                    // window.parent.postMessage('message', '*');
-                })
-
+                // var getItemsButton = document.getElementById('getItems');
+                // getItemsButton.value = 'Add to clients';
+                // getItemsButton.addEventListener('click', (leadName, leadEmail) => {
+                // parent.postMessage('message', '*')
+                // window.parent.postMessage('message', '*');
             })
-            item.textContent = leadName;
 
-            const fullName = leadName.split(' ');
-            const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
-            const letters = initials.toUpperCase();
+        })
+        item.textContent = leadName;
 
-            item.setAttribute('data-letters', letters);
+        const fullName = leadName.split(' ');
+        const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+        const letters = initials.toUpperCase();
 
-            item.data = leadId;
-            chats.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
-            socket.emit("new lead", leadId)
+        item.setAttribute('data-letters', letters);
+
+        item.data = leadId;
+        chats.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+        socket.emit("new lead", leadId)
         });
 
         function newChat(leadName, leadEmail, leadId) {

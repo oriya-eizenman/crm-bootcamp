@@ -19,20 +19,20 @@
 .formButton{
     text-decoration: none;
     border-radius: 35%;
-    background-color: lighten($purple-red, 15%);
+    background-color: lighten($dark-blue, 17%);
     color: white;
     padding: 1.2rem $l-size;
     margin-bottom: $s-size;
 }
 
 .formButton:hover{
-    background-color: $purple-red;
+    background-color: darken($dark-blue, 5%);
 }
 
 .formFrame{
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     padding: $m-size $xxl-size;
-    margin: $xl-size 0;
+    margin: $m-size 0;
 }
 
 .fieldsGroup{
@@ -46,4 +46,17 @@
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.infoContainer {
+    display: flex;
+}
+
+
+.test{
+    min-width:42%;
+}
+
+.subtitle{
+    color: lighten($dark-blue, 17%);
 }

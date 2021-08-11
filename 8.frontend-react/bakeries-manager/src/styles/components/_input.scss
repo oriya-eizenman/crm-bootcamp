@@ -14,14 +14,14 @@
     .text{
         font-size: $l-size;
         padding: $s-size $m-size;
-        border-radius: $border-m-size;
+        border-radius: 1rem;
         outline: none;
-        border: solid $purple-red-darker 0.3rem;
+        border: solid lighten($dark-blue, 17%) 0.1rem;
         margin-top: $xs-size;
-        color:$purple-red;
+        color:lighten($dark-blue, 5%);
     }
 
     .text::placeholder{
-        color: lighten($purple-red, 40%);
+        color: lighten($dark-blue, 40%);
     }
 }

@@ -14,7 +14,7 @@ import Button from '../Components/Button';
 import { updateOrder, deleteOrder } from '../scripts/manageOrders';
 import { updateOrderItems } from '../scripts/manageOrderItems';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-
+import { Link } from 'react-router-dom';
 
 export default function OrderDetails() {
     const history = useHistory();
@@ -104,44 +104,51 @@ export default function OrderDetails() {
                 value: 'Client info'
             },
             {
-                type: "label",
-                value: `Name: ${client.client_name}`
+                type: "info",
+                title: "Name: ",
+                content: client.client_name
             },
             {
-                type: "label",
-                value: `Phone number: ${client.client_phone}`
+                type: "info",
+                title: "Phone number: ",
+                content: client.client_phone
             },
             {
-                type: "label",
-                value: `Email: ${client.client_email}`
+                type: "info",
+                title: "Email: ",
+                content: client.client_email
             },
             {
                 type: "subtitle",
                 value: 'Delivery details'
             },
             {
-                type: "label",
-                value: `${client.street} ${client.house_number}, ${client.city}`
+                type: "info",
+                content: `${client.street} ${client.house_number}, ${client.city}`
             },
             {
                 type: "subtitle",
                 value: 'order'
             },
             {
-                type: "label",
-                value: `Created: ${order.created}`
+                type: "info",
+                title: "Created: ",
+                content: order.created
             },
             {
-                type: "label",
-                value: `Delivery time: ${order.delivery_time}`
+                type: "info",
+                title: "Delivery time: ",
+                content: order.delivery_time
             },
             {
-                type: "label",
-                value: `Status: ${order.status}`
+                type: "info",
+                title: "Status: ",
+                content: order.status
             },
             {
-                type: "label",
-                value: `Total: ${total} NIS`
+                type: "info",
+                title: "Total: ",
+                content: total + " NIS"
             }
         ])
 
@@ -203,24 +210,39 @@ export default function OrderDetails() {
         ]
 
     const mainContent =
-        <div>
-            <RiDeleteBin6Line
-                className="icon"
-                onClick={() => handleDelete()}
-            />
-            <GrEdit
-                className="icon"
-                onClick={() => openEditOrderModal()}
-            />
-            <h1>
+        <div className="orderDetailsContainer">
+            <div className="orderDetailsTopBar">
+                < Link
+                    to="/orders"
+                    className="link"
+                >
+                    Back
+                    </Link>
+                <div>
+                    <RiDeleteBin6Line
+                        className="icon"
+                        onClick={() => handleDelete()}
+                    />
+                    <GrEdit
+                        className="icon editOrderDetails"
+                        onClick={() => openEditOrderModal()}
+                    />
+                </div>
+            </div>
+            <h1 className="orderNumber">
                 Order no. {order.order_id}
             </h1>
-            <Form fields={showOrder} />
-            {orderItems.length !== 0 && <Table
-                columns={columns}
-                data={orderItems}
-                hideActions={true}
-            />}
+            <Form
+                className="orderDetailsForm"
+                fields={showOrder}
+            />
+            {orderItems.length !== 0 &&
+                <Table
+                    columns={columns}
+                    data={orderItems}
+                    hideActions={true}
+                    hidePagination={true}
+                />}
             <Modal
                 isOpen={editOrderModalIsOpen}
                 onRequestClose={closeEditOrderModal}
@@ -228,7 +250,7 @@ export default function OrderDetails() {
                 contentLabel="Example Modal"
                 className="modal"
             >
-                <div className="modalContainer">
+                <div className="modalContainer orderDetailsModal">
                     <a className="link modalLink" onClick={closeEditOrderModal}>x</a>
                     {false ?
                         <div>
@@ -236,7 +258,7 @@ export default function OrderDetails() {
 </div>
                         :
                         <div className="mainModal">
-                            <div>Edit the order:</div>
+                            <div className="modalTitle">Edit the order:</div>
                             <div>
                                 <Select name={item.item}
                                     options=
@@ -258,6 +280,8 @@ export default function OrderDetails() {
                                 columns={columns}
                                 data={orderItems}
                                 handleClick={(data) => handleItemDelete(data)}
+                                hidePagination={true}
+                                hideEdit={true}
                             />
                             <div>
                                 <Button

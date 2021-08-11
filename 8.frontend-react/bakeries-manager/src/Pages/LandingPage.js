@@ -4,19 +4,8 @@ import Page from '../Components/Page';
 import { landingPageHeaderLinks } from '../Constants/VisitorHeaderLinks';
 
 export default function LandingPage(props) {
-    // const links =
-    //     [
-    //         {
-    //             to: "/login",
-    //             className: "loginLink",
-    //             value: "Login"
-    //         }
-    //     ];
-
     const mainContent =
-        <div>
-            <img src={bakery} className="bakeryImg" alt="bakery" />
-        </div>
+        <img src={bakery} className="bakeryImg" alt="bakery" />
 
     return (
         <Page mainContent={mainContent} headerLinks={landingPageHeaderLinks} />

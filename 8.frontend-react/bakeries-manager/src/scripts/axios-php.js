@@ -38,7 +38,9 @@ const addClient = (async (bakery_id, client, setClient) => {
         apartment_number: client.apartment_number
     }, { withCredentials: true });
     if (result) {
-        setClient({ ...client, client_id: result.data.client_id })
+        console.log('in axios', result.data.client_id)
+        return result.data.client_id;
+        //setClient({ ...client, client_id: result.data.client_id })
     }
 })
 
@@ -149,7 +151,6 @@ const addOrder = async (bakery_id, user_id, client_id, order, setOrder) => {
         delivery_date: order.deliveryDate
     }, { withCredentials: true });
     if (result) {
-        console.log(result.data)
         return result.data.order_id;
     }
 }
@@ -167,6 +168,16 @@ const editOrder = async (order_id, total) => {
 const getDeliveryAddresses = async (bakery_id) => {
     const result = await axios.post('http://localhost:9991/orders/getAddresses/', {
         bakery_id: bakery_id,
+    }, { withCredentials: true });
+    if (result) {
+        return result.data.addresses;
+    }
+}
+
+const editOrderStatus = async (status, order_id) => {
+    const result = await axios.post('http://localhost:9991/orders/updateOrderStatus/', {
+        order_id: order_id,
+        status: status
     }, { withCredentials: true });
     if (result) {
         return result.data.addresses;
@@ -291,5 +302,6 @@ export {
     getBakeryItemsSells,
     getBakeryTotalRevenue,
     getBakeryTotalOrders,
-    getBakeryTotalClients
+    getBakeryTotalClients,
+    editOrderStatus
 };

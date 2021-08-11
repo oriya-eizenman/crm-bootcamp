@@ -28,28 +28,33 @@ export default function Step4({ client, existingClient, stepName, currentStep, s
     const fields =
         [
             {
-                type: "label",
-                value: "Client name:" + client.client_name
+                type: "info",
+                title: "Client name: ",
+                content: client.client_name
             },
             {
-                type: "label",
-                value: "Client phone: " + client.client_phone
+                type: "info",
+                title: "Client phone: ",
+                content: client.client_phone
             },
             {
-                type: "label",
-                value: "Client email: " + client.client_email
+                type: "info",
+                title: "Client email: ",
+                content: client.client_email
             },
             {
-                type: "label",
-                value: "Delivery address: " + client.street + ' ' + client.house_number + ', ' + client.city
+                type: "info",
+                title: "Delivery address: ",
+                content: client.street + ' ' + client.house_number + ', ' + client.city
             },
             {
-                type: "label",
-                value: "Total: " + order.total + " NIS"
+                type: "info",
+                title: "Total: ",
+                content: order.total + " NIS"
             },
             {
-                type: "label",
-                value: "Estimated delivery time:"
+                type: "info",
+                title: "Estimated delivery time:"
             },
             {
                 type: "input",

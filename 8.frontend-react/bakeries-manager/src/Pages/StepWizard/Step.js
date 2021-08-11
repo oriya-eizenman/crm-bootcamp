@@ -1,6 +1,9 @@
 import React from 'react';
 
 export default function Step(props) {
+    const nextStep = ">>"
+    const previousStep = "<<"
+
     return (
         <div className="stepData">
             <h2>{props.stepTitle}</h2>
@@ -8,8 +11,8 @@ export default function Step(props) {
                 {props.component}
             </div>
             <div className="stepNavigation">
-                {props.showPrevious && <button className="previousStep" onClick={props.previousStep}>Previous Step</button>}
-                <button className="nextStep" onClick={props.nextStep} disabled={props.disableNextPage}>Next Step</button>
+                {props.showPrevious && <button className="previousStep" onClick={props.previousStep}>{previousStep}</button>}
+                <button className="nextStep" onClick={props.nextStep} disabled={props.disableNextPage}>{nextStep}</button>
             </div>
         </div>
     );

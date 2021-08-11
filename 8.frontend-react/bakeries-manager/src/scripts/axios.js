@@ -128,9 +128,11 @@ const removeUser = (userEmail) => {
         })
 }
 
-const sendEmailToMailingList = async (mailingList) => {
+const sendEmailToMailingList = async (mailingList, messageTitle, message) => {
     const res = await axios.post('http://localhost:8005/sendEmailToMailingList', {
-        mailingList
+        mailingList,
+        messageTitle,
+        message
     }, { withCredentials: true });
     console.log(res);
 }

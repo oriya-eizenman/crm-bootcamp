@@ -1,0 +1,32 @@
+.orderDetailsContainer {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width: 70%;
+}
+
+.orderDetailsTopBar{
+    display:flex;
+    justify-content: space-between;
+    margin: 20px 20px 0;
+}
+
+.orderDetailsModal{
+    width:45vw;
+    height:75vh;
+    overflow: scroll;
+    // display: flex;
+    justify-content: flex-start !important;
+}
+
+.orderDetailsForm{
+    width: 100%;
+    margin: 0 40px;
+}
+
+.orderNumber{
+    font-size: 2em;
+    margin: 0.67em 40px;
+}
+
+.editOrderDetails{
+    margin-left:15px;
+}

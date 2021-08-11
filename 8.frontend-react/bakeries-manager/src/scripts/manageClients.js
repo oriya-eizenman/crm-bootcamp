@@ -23,15 +23,15 @@ function deleteClient(clientEmail) {
 }
 
 async function createClient(bakery_id, client, setClient) {
-    await addClient(bakery_id, client, setClient);
+    return await addClient(bakery_id, client, setClient);
 }
 
 function updateClient(client) {
     editClient(client);
 }
 
-function sendToMailingList(mailingList) {
-    sendEmailToMailingList(mailingList);
+function sendToMailingList(mailingList, messageTitle, message) {
+    sendEmailToMailingList(mailingList, messageTitle, message);
 }
 
 // export default addUser;

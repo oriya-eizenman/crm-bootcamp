@@ -1,7 +1,6 @@
 .header {
     color: $dark-blue;
     padding: $s-size 0;
-    // background-color: $off-white;
     background-color: white;
     width: 100%;
     position: sticky;
@@ -32,14 +31,15 @@
 
     .headerLink{
         text-decoration: none !important;
-        color: $purple-red;
+        color: lighten($dark-blue, 17%);
         font-weight: bold;
         padding: $m-size;
     }
 
     .headerLink:hover{
         // text-decoration: underline !important;
-        background-color: $purple-red-darker;
+        background-color: lighten($dark-blue, 17%);
+        color: white;
         border-radius: 45%;
     }
 

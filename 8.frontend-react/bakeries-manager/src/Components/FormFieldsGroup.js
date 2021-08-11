@@ -62,6 +62,7 @@ export default function FormFieldsGroup(props) {
                             <Button
                                 handleClick={field.onClick}
                                 value={field.value}
+                                disabled={field.disabled}
                             />
                         </div>
                     )
