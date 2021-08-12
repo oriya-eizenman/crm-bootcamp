@@ -103,7 +103,7 @@ export default function Clients(props) {
         >
             <div className="modalContainer">
                 Are you sure you want to delete this client?
-                <div>
+                <div className="modalOptions">
                     <Button
                         value="Delete"
                         handleClick={() => {
@@ -328,10 +328,6 @@ export default function Clients(props) {
             </div>
         </Modal>
 
-    // const addAllClients = () => {
-    //     setMailingList(clients);
-    // }
-
     const handleToggleMailingList = (clientData) => {
         const clientIndex = mailingList.indexOf(clientData);
         let tempMailingList = mailingList;
@@ -356,11 +352,6 @@ export default function Clients(props) {
                     handleClick={openNewClientModal}
                 />
                 <div className="emailListHeader">
-                    {/* <Button
-                        className="addAllClientsToEmail"
-                        value="Select all"
-                        handleClick={addAllClients}
-                    /> */}
                     <Button
                         className="sendEmailToClients"
                         value="Send email"
@@ -385,8 +376,6 @@ export default function Clients(props) {
                         handleClick={(clientData) => handleDeleteClient(clientData.client_email)}
                         handleEdit={(clientData) => handleEditClient(clientData)}
                         databaseColumn="client_email"
-                    // mailingList={mailingList}
-                    // handleToggleMailingList={(clientData) => handleToggleMailingList(clientData)}
                     />
                 </div>
             }

@@ -146,7 +146,7 @@ export default function SignUpForm(props) {
                 type: "select",
                 name: "numOfEmployees",
                 // value: numOfWorkers,
-                defaultValue: numOfWorkers,
+                defaultValue: "Number of workers",
                 options: [
                     {
                         'value': "1",

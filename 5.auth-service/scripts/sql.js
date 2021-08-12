@@ -1,6 +1,6 @@
 const mysql = require('../services/database');
 
-const createUser = (userData) => {
+const createUser = async (userData) => {
 
     try {
         mysql.query(`INSERT INTO bakery_user (user_name,user_email,user_phone,permission_level,user_password) VALUES ('${userData.userName}','${userData.userEmail}','${userData.userPhone}','manager','${userData.password}')`, function (error, results, fields) {

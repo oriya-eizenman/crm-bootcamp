@@ -16,13 +16,30 @@
     margin-top: $xl-size;
 }
 
+.css-2b097c-container{
+    margin-bottom: 1.6rem;
+}
+
 .formButton{
-    text-decoration: none;
-    border-radius: 35%;
-    background-color: lighten($dark-blue, 17%);
-    color: white;
-    padding: 1.2rem $l-size;
-    margin-bottom: $s-size;
+    // text-decoration: none;
+    // border-radius: 35%;
+    // background-color: lighten($dark-blue, 17%);
+    // color: white;
+    // padding: 1.2rem $l-size;
+    // margin-bottom: $s-size;
+
+        font-family: 'Lato', sans-serif;
+        border: solid lighten($dark-blue, 17%) 0.1rem;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 1rem;
+        padding: $s-size $m-size;
+        background-color: lighten($dark-blue, 17%);
+        width: fit-content;
+        margin-bottom: $s-size;
+        text-decoration: none;
+    
 }
 
 .formButton:hover{

@@ -25,3 +25,8 @@ getLeads = (sortBy, order, populateRes) => {
         })
 }
 
+module.exports = {
+    sendReq,
+    getLeads
+}
+

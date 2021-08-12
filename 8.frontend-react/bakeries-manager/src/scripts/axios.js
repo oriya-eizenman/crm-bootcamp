@@ -10,6 +10,8 @@ const sendSignUpData = (userName, userEmail, businessName, userPhone, numOfWorke
         password: password
     }, { withCredentials: true })
         .then(res => {
+            console.log('here')
+            console.log(res.data)
             populateLoggedInUser(res.data);
         })
         .catch(err => {

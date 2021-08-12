@@ -166,6 +166,7 @@ export default function Step3({ order, handleClick, currentStep, setCurrentStep,
                                 setTotal(total - itemData.price * itemData.qty);
                             }}
                             hidePagination={true}
+                            hideEdit={true}
                         />
                     </div>
                 }

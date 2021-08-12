@@ -43,7 +43,7 @@ app.get('/', function (req, res) {
   const video = req.query.video || "pastry";
 
   const hour = new Date().getHours();
-  const isNight = hour >= 19 || hour <= 6;
+  const isNight = false;//hour >= 19 || hour <= 6;
   const bgColor = isNight ? "black" : "rgba(236, 228, 228, 0.925)";
   const textColor = isNight ? "rgba(236, 228, 228, 0.925)" : "black";
   const footerBgColor = isNight ? "rgba(231, 213, 213, 0.925)" : "rgba(75, 72, 72, 0.925)";

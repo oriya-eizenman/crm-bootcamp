@@ -124,7 +124,13 @@ export default function OrderDetails() {
             },
             {
                 type: "info",
+                title: "Address: ",
                 content: `${client.street} ${client.house_number}, ${client.city}`
+            },
+            {
+                type: "info",
+                title: "Delivery time: ",
+                content: order.delivery_time
             },
             {
                 type: "subtitle",
@@ -134,11 +140,6 @@ export default function OrderDetails() {
                 type: "info",
                 title: "Created: ",
                 content: order.created
-            },
-            {
-                type: "info",
-                title: "Delivery time: ",
-                content: order.delivery_time
             },
             {
                 type: "info",

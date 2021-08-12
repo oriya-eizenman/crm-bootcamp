@@ -220,6 +220,7 @@ const getBakeryIncomes = async (bakery_id) => {
         bakery_id: bakery_id
     }, { withCredentials: true });
     if (result) {
+        console.log(result.data.incomes)
         return result.data.incomes;
     }
 }

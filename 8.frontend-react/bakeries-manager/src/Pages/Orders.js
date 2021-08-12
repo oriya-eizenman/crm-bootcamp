@@ -118,7 +118,7 @@ export default function Orders(props) {
         >
             <div className="modalContainer">
                 Are you sure you want to delete this order?
-                <div>
+                <div className="modalOptions">
                     <Button
                         value="Delete"
                         handleClick={() => {

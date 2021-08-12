@@ -41,7 +41,7 @@ const encrypt = (str, algo = "MD5") => {
 
 }
 
-const makeNewUser = (req, res) => {
+const makeNewUser = async (req, res) => {
 
     const password = encrypt(req.body.password);
     const userData = {
@@ -53,26 +53,31 @@ const makeNewUser = (req, res) => {
         password: password
     };
 
-    // TODO: add validations
-    let isValid = true;
-
-    if (isValid) {
-        try {
-            sql.createUser(userData);
-            const token = jwt.sign({
-                userData: {
-                    userName: userData.userName,
-                    password: userData.password
-                }
-            }, accessTokenSecret, { expiresIn: '24h' });
-            setCookie(Enums.ACCESS_TOKEN_NAME, token);
-            respond(res, "Logged in successfully");
-        }
-        catch (exc) {
-            console.error(exc.message);
-        }
-
+    try {
+        await sql.createUser(userData);
+        sql.getUser(userData, (data) => {
+            if (data.length === 0)
+                res.send('email or password incorrect');
+            else {
+                const token = jwt.sign({ userData: data[0] }, accessTokenSecret, { expiresIn: '24h' });
+                setCookie(res, "access_token", token);
+                respond(res, "Logged in successfully", true, { loggedInUser: data, token: token });
+            }
+        })
+        // const token = jwt.sign({
+        //     userData: {
+        //         userName: userData.userName,
+        //         password: userData.password
+        //     }
+        // }, accessTokenSecret, { expiresIn: '24h' });
+        // setCookie(Enums.ACCESS_TOKEN_NAME, token);
+        // respond(res, "Logged in successfully", { loggedInUser: data, token: token });
     }
+    catch (exc) {
+        console.error(exc.message);
+    }
+
+
 }
 
 const loginUser = (req, res) => {

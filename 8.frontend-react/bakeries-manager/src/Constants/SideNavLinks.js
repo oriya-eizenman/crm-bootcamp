@@ -25,10 +25,10 @@ const getNavBarLinks = () =>
             to: "/messages",
             value: "Messages"
         },
-        {
-            to: "/statistics",
-            value: "Statistics"
-        },
+        // {
+        //     to: "/statistics",
+        //     value: "Statistics"
+        // },
         // {
         //     to: "/delivery-map",
         //     value: "Map"

@@ -1,3 +1,5 @@
+const sendReq = require('./axios');
+
 function testFormInput() {
     let isValid = true;
     if (!isInputNameValid()) {

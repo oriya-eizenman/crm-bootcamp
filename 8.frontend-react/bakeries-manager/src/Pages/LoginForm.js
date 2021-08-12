@@ -46,7 +46,6 @@ export default function LoginForm(props) {
                 to: "/home",
                 value: "Login",
                 onClick: (event) => handleLogin(event),
-                // className: "login-button"
             },
             {
                 type: "errorMsg",

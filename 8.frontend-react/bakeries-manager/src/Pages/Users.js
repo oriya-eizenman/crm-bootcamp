@@ -57,7 +57,7 @@ export default function Users(props) {
         >
             <div className="modalContainer">
                 Are you sure you want to delete this user?
-                <div>
+                <div className="modalOptions">
                     <Button
                         value="Delete"
                         handleClick={() => {

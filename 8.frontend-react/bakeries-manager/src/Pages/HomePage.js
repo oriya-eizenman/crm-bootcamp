@@ -26,7 +26,7 @@ export default function Home({ handleLogoutMethod }) {
     useEffect(async () => {
         let tempIncomes = await getIncomes(loggedInUser.bakery_id);
         let temp = [];
-        tempIncomes.forEach(element => {
+        tempIncomes && tempIncomes.forEach(element => {
             temp[element.Month - 1] = element.Sum;
         });
         setIncomes(temp);
@@ -34,26 +34,26 @@ export default function Home({ handleLogoutMethod }) {
 
     useEffect(async () => {
         let tempPerformance = await getEmployeesPerformance(loggedInUser.bakery_id);
-        setEmployeesIncome(tempPerformance);
+        tempPerformance && setEmployeesIncome(tempPerformance);
     }, []);
 
     useEffect(async () => {
         let tempEmployeesOrders = await getEmployeesOrders(loggedInUser.bakery_id);
-        setEmployeesOrders(tempEmployeesOrders);
+        tempEmployeesOrders && setEmployeesOrders(tempEmployeesOrders);
     }, []);
 
     useEffect(async () => {
         let tempItemsSells = await getItemsSells(loggedInUser.bakery_id);
-        setItemsSells(tempItemsSells);
+        tempItemsSells && setItemsSells(tempItemsSells);
     }, []);
 
     useEffect(async () => {
         // const temp = await getTotalRevenue(loggedInUser.bakery_id)
         // setTotalRevenue(temp);
         const tempTotalOrders = await getTotalOrders(loggedInUser.bakery_id);
-        setTotalOrders(tempTotalOrders[0].num_of_orders);
+        tempTotalOrders && setTotalOrders(tempTotalOrders[0].num_of_orders);
         const tempTotalClients = await getTotalClients(loggedInUser.bakery_id);
-        setTotalClients(tempTotalClients[0].num_of_clients);
+        tempTotalClients && setTotalClients(tempTotalClients[0].num_of_clients);
     }, []);
 
     const dataIncomes = {
@@ -166,19 +166,19 @@ export default function Home({ handleLogoutMethod }) {
                 <div className="widget-border">
                     <div className="widget">
                         <h4>Incomes per Employee</h4>
-                        <Pie data={dataEmployeesIncome} />
+                        {dataEmployeesIncome && <Pie data={dataEmployeesIncome} />}
                     </div>
                 </div>
                 <div className="widget-border">
                     <div className="widget">
                         <h4>Items Sells</h4>
-                        <Doughnut data={dataItemsSells} />
+                        {dataItemsSells && <Doughnut data={dataItemsSells} />}
                     </div>
                 </div>
                 <div className="widget-border">
                     <div className="widget">
                         <h4>Orders per Employee</h4>
-                        <Pie data={dataEmployeesOrders} />
+                        {dataEmployeesOrders && <Pie data={dataEmployeesOrders} />}
                     </div>
                 </div>
             </div>

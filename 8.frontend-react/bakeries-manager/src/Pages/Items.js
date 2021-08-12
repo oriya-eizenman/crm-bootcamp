@@ -23,7 +23,7 @@ export default function Items(props) {
             description: "",
             price: "",
             cost: "",
-            category: ""
+            category: "Category"
         }
     )
     const [category, setCategory] = useState("")
@@ -82,7 +82,6 @@ export default function Items(props) {
     }
 
     function handleAddItem() {
-        console.log(selectedFile)
         addItem(loggedInUser.bakery_id, item, selectedFile);
         setItemAdded(!itemAdded);
         setItems([]);
@@ -91,18 +90,14 @@ export default function Items(props) {
 
     function onFileChange(event) {
         setSelectedFile(event.target.files[0]);
-        console.log(selectedFile)
         const formData = new FormData();
         formData.append(
             "myFile",
             event.target.files[0],
             // event.target.files[0].name
         );
-        console.log("form data", formData)
         // setItem({ ...item, item_img: selectedFile });
     };
-
-    console.log(selectedFile)
 
     function onFileUpload() {
         const formData = new FormData();
@@ -127,7 +122,7 @@ export default function Items(props) {
         >
             <div className="modalContainer">
                 Are you sure you want to delete this item?
-                <div>
+                <div className="modalOptions">
                     <Button
                         value="Delete"
                         handleClick={() => {
@@ -241,30 +236,30 @@ export default function Items(props) {
                 defaultValue: item.category,
                 onChange: (name) => setItem({ ...item, category: name.value })
             },
-            {
-                type: "file",
-                file: selectedFile,
-                onChange: onFileChange,
-                onClick: onFileUpload,
-                fileData: () => {
-                    if (selectedFile) {
-                        return (
-                            <div>
-                                <h2>File Details:</h2>
-                                <p>File Name: {this.state.selectedFile.name}</p>
-                                <p>File Type: {this.state.selectedFile.type}</p>
-                            </div>
-                        );
-                    } else {
-                        return (
-                            <div>
-                                <br />
-                                <h4>Choose before Pressing the Upload button</h4>
-                            </div>
-                        );
-                    }
-                }
-            },
+            // {
+            //     type: "file",
+            //     file: selectedFile,
+            //     onChange: onFileChange,
+            //     onClick: onFileUpload,
+            //     fileData: () => {
+            //         if (selectedFile) {
+            //             return (
+            //                 <div>
+            //                     <h2>File Details:</h2>
+            //                     <p>File Name: {this.state.selectedFile.name}</p>
+            //                     <p>File Type: {this.state.selectedFile.type}</p>
+            //                 </div>
+            //             );
+            //         } else {
+            //             return (
+            //                 <div>
+            //                     <br />
+            //                     <h4>Choose before Pressing the Upload button</h4>
+            //                 </div>
+            //             );
+            //         }
+            //     }
+            // },
             {
                 type: "button",
                 value: isNewItemModal ? "Add item" : "Edit",
